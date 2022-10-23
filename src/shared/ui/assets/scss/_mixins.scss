@@ -1,0 +1,50 @@
+@use 'sass:math';
+@use 'variables' as v;
+
+@mixin phone {
+  @media (min-width: v.$phone) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: v.$tablet) {
+    @content;
+  }
+}
+@mixin desktop {
+  @media (min-width: v.$desktop) {
+    @content;
+  }
+}
+
+@mixin grid($columns, $space) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $space;
+}
+
+@mixin flex($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin button($bgColor, $display ) {
+  background-color: $bgColor;
+  color: v.$white;
+  font-weight: $bold;
+  text-decoration: none;
+  padding: 1rem 5rem;
+  text-align: center;
+  margin-top: math.div(v.$spacing,2.5);
+  display: $display;
+  border: none;
+  border-radius: .5rem;
+
+  &:hover {
+    background-color: darken($bgColor, 5);
+    cursor: pointer;
+  }
+}

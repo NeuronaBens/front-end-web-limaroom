@@ -1,0 +1,9 @@
+@use 'sass:math';
+
+.section {
+  margin: math.div($spacing, 2) 0;
+}
+
+.text-center {
+  text-align: center;
+}

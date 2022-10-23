@@ -1,0 +1,17 @@
+@use 'variables' as v;
+
+.button-primary {
+  @include button(v.$primary, inline-block);
+}
+
+.button-primary-block {
+  @include button(v.$primary, block);
+}
+
+.button-black {
+  @include button(v.$black, inline-block);
+}
+
+.button-black-block {
+  @include button(v.$primary, block);
+}

@@ -1,0 +1,21 @@
+@use 'sass:math';
+
+$headingFont: 'Poppins', sans-serif;
+$paragraphFont: 'Abel', sans-serif;
+
+$primary: #B3061A;
+$grey: #797A7A;
+$grey50: #e1e1e1;
+$white: #fff;
+$black: #000;
+
+$spacing: 4rem;
+
+$phone: 480px;
+$tablet: 768px;
+$desktop: 992px;
+
+$thin: 300;
+$regular : 400;
+$bold: 700;
+$dark: 900
