@@ -24,5 +24,154 @@
       "password": "user4",
       "role": "ROLE_LESSOR"
     }
+  ],
+  "properties": [
+    {
+      "id": 1,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at malesuada massa. Fusce at diam turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas ultrices neque at metus feugiat tincidunt. Vestibulum convallis molestie leo vitae blandit. Praesent et molestie ante. Nam at est sit amet felis imperdiet rhoncus ut vitae metus. Vestibulum lacinia eu diam in commodo. Curabitur ac enim sit amet neque vulputate fringilla.",
+      "lessor": 2
+    },
+    {
+      "id": 2,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at malesuada massa. Fusce at diam turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas ultrices neque at metus feugiat tincidunt. Vestibulum convallis molestie leo vitae blandit. Praesent et molestie ante. Nam at est sit amet felis imperdiet rhoncus ut vitae metus. Vestibulum lacinia eu diam in commodo. Curabitur ac enim sit amet neque vulputate fringilla.",
+      "lessor": 4
+    },
+    {
+      "id": 3,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at malesuada massa. Fusce at diam turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas ultrices neque at metus feugiat tincidunt. Vestibulum convallis molestie leo vitae blandit. Praesent et molestie ante. Nam at est sit amet felis imperdiet rhoncus ut vitae metus. Vestibulum lacinia eu diam in commodo. Curabitur ac enim sit amet neque vulputate fringilla.",
+      "lessor": 4
+    },
+    {
+      "id": 4,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at malesuada massa. Fusce at diam turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas ultrices neque at metus feugiat tincidunt. Vestibulum convallis molestie leo vitae blandit. Praesent et molestie ante. Nam at est sit amet felis imperdiet rhoncus ut vitae metus. Vestibulum lacinia eu diam in commodo. Curabitur ac enim sit amet neque vulputate fringilla.",
+      "lessor": 2
+    },
+    {
+      "id": 5,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at malesuada massa. Fusce at diam turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas ultrices neque at metus feugiat tincidunt. Vestibulum convallis molestie leo vitae blandit. Praesent et molestie ante. Nam at est sit amet felis imperdiet rhoncus ut vitae metus. Vestibulum lacinia eu diam in commodo. Curabitur ac enim sit amet neque vulputate fringilla.",
+      "lessor": 2
+    }
+  ],
+  "assets": [
+    {
+      "id": 1,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 1,
+      "propertyId": 1
+    },
+    {
+      "id": 2,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 0,
+      "propertyId": 1
+    },
+    {
+      "id": 3,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 1,
+      "propertyId": 2
+    },
+    {
+      "id": 4,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 0,
+      "propertyId": 2
+    },
+    {
+      "id": 5,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 1,
+      "propertyId": 3
+    },
+    {
+      "id": 6,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 0,
+      "propertyId": 3
+    },
+    {
+      "id": 7,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 1,
+      "propertyId": 4
+    },
+    {
+      "id": 8,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 0,
+      "propertyId": 4
+    },
+    {
+      "id": 9,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 1,
+      "propertyId": 5
+    },
+    {
+      "id": 10,
+      "url": "https://drive.google.com/uc?export=view&id=1wEk06JKBvpftaVhVSBhq4Z6CO4hoitpO",
+      "preview": 0,
+      "propertyId": 5
+    }
+  ],
+  "offers": [
+    {
+      "id": 1,
+      "title": "Beautiful house at city",
+      "amount": {
+        "price": 100,
+        "currency": "EUR"
+      },
+      "conditions": "Offer 1 conditions",
+      "propertyId": 1
+    },
+    {
+      "id": 2,
+      "title": "Beautiful house at city",
+      "amount": {
+        "price": 100,
+        "currency": "EUR"
+      },
+      "conditions": "Offer 2 conditions",
+      "propertyId": 2
+    },
+    {
+      "id": 3,
+      "title": "Beautiful house at city",
+      "amount": {
+        "price": 100,
+        "currency": "EUR"
+      },
+      "conditions": "Offer 3 conditions",
+      "propertyId": 3
+    },
+    {
+      "id": 4,
+      "title": "Beautiful house at city",
+      "amount": {
+        "price": 100,
+        "currency": "EUR"
+      },
+      "conditions": "Offer 4 conditions",
+      "propertyId": 4
+    },
+    {
+      "id": 5,
+      "title": "Beautiful house at city",
+      "amount": {
+        "price": 100,
+        "currency": "EUR"
+      },
+      "conditions": "Offer 5 conditions",
+      "propertyId": 5
+    }
+  ],
+  "requests": [
+    {
+      "id": 1,
+      "message": "I want more information about the property",
+      "userId": 1,
+      "offerId": 1
+    }
   ]
 }

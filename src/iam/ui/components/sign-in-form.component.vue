@@ -1,16 +1,16 @@
 <template>
   <form class="form">
     <div class="input-group">
-      <InputText class="input" type="text" v-model="email" required="true" />
+      <InputText class="input" type="text" v-model="user.email" required="true" />
       <label>Email</label>
     </div>
     <div class="input-group">
-      <InputText class="input" type="password" v-model="password" required="true" />
+      <InputText class="input" type="password" v-model="user.password" required="true" />
       <label>Password</label>
     </div>
     <p class="forgot-password">Forgot password? <a href="#">Click Here</a></p>
-    <button class="button-primary-block">Login</button>
   </form>
+  <button @click="signIn" class="button-primary-block">Login</button>
 </template>
 
 <style lang="scss">
@@ -46,9 +46,32 @@
 </style>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { userStore } from '@/shared/config/store'
+import { useRouter } from 'vue-router'
 
-const email = ref('')
-const password = ref('')
+const router = useRouter()
+const currentUser = userStore()
+const user = ref({
+  email: '',
+  password: ''
+})
 
+const signIn = () => {
+  currentUser.signIn(user.value)
+    .then(() => {
+      if (currentUser.state.user.role === 'ROLE_USER_STUDENT') {
+        router.push({ name: 'offers-view' })
+      } else {
+        router.push({ name: 'properties-view' })
+      }
+    })
+}
+
+onMounted(() => {
+  console.log(currentUser.state)
+  if (currentUser.state.status.loggedIn) {
+    router.push({ name: 'offers-view' })
+  }
+})
 </script>

@@ -1,11 +1,25 @@
-import http from '../shared/services/http-common'
-export class UsersService {
-  sigInUser (data) {
-    return http.post('/users/sign-in', data)
+import http from '@/shared/services/http-common'
+export default class UsersService {
+  signIn ({ email, password }) {
+    return http.get(`/users?email=${email}`)
+      .then(response => {
+        if (response.data) {
+          const { id, role } = response.data
+          const user = {
+            id,
+            role: role.name
+          }
+          console.log('user: ', user)
+          localStorage.setItem('user', JSON.stringify(user))
+          return user
+        }
+        return null
+      })
+    // return http.get(`/users?email=${email}`)
   }
 
-  sigUpUser (data) {
-    return http.post('/users/sign-up', data)
+  signOut () {
+    localStorage.removeItem('user')
   }
 
   getUser (email, passord) {
