@@ -11,6 +11,7 @@
     <p class="forgot-password">Forgot password? <a href="#">Click Here</a></p>
   </form>
   <button @click="signIn" class="button-primary-block">Login</button>
+  <button @click="signInWithGoogle" class="button-primary-block">Sign In With Google</button>
 </template>
 
 <style lang="scss">
@@ -39,39 +40,32 @@
 
 .button-primary-block {
   width: 100%;
-  @include tablet {
-    width: auto;
-  }
 }
 </style>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { userStore } from '@/shared/config/store'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const currentUser = userStore()
+const store = userStore()
 const user = ref({
   email: '',
   password: ''
 })
 
 const signIn = () => {
-  currentUser.signIn(user.value)
+  store.signIn(user.value)
     .then(() => {
-      if (currentUser.state.user.role === 'ROLE_USER_STUDENT') {
-        router.push({ name: 'offers-view' })
-      } else {
-        router.push({ name: 'properties-view' })
-      }
+      router.push({ name: 'offers-view' })
     })
 }
 
-onMounted(() => {
-  console.log(currentUser.state)
-  if (currentUser.state.status.loggedIn) {
-    router.push({ name: 'offers-view' })
-  }
-})
+const signInWithGoogle = () => {
+  store.signInWithGoogle()
+    .then(() => {
+      router.push({ name: 'offers-view' })
+    })
+}
 </script>

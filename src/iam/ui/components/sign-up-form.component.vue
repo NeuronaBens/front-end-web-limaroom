@@ -30,15 +30,13 @@
 
 .button-primary-block {
   width: 100%;
-  @include tablet {
-    width: auto;
-  }
 }
 </style>
 
 <script setup>
 import { ref } from 'vue'
 import { userStore } from '@/shared/config/store'
+import router from '../../../shared/config/router'
 
 const email = ref('')
 const password = ref('')
@@ -68,33 +66,29 @@ const validations = {
 const submitSignUp = (e) => {
   e.preventDefault()
 
-  const emailErrors = validations.email.map(v => v()).filter(v => v !== true)
-  const passwordErrors = validations.password.map(v => v()).filter(v => v !== true)
-  const confirmPasswordErrors = validations.confirmPassword.map(v => v()).filter(v => v !== true)
+  emailErrors.value = validations.email.map(v => v()).filter(v => v !== true)
+  passwordErrors.value = validations.password.map(v => v()).filter(v => v !== true)
+  confirmPasswordErrors.value = validations.confirmPassword.map(v => v()).filter(v => v !== true)
 
-  if (emailErrors.length > 0) {
+  if (emailErrors.value.length > 0) {
     console.log(...emailErrors)
     return
   }
 
-  if (passwordErrors.length > 0) {
+  if (passwordErrors.value.length > 0) {
     console.log(...passwordErrors)
     return
   }
 
-  if (confirmPasswordErrors.length > 0) {
+  if (confirmPasswordErrors.value.length > 0) {
     console.log(...confirmPasswordErrors)
     return
   }
 
-  store.signUp({ email: email.value, password: password.value, name: 'user' })
-    .then((response) => {
-      console.log(response)
-      console.log('success')
-    })
-    .catch((error) => {
-      console.log(error)
-      console.log('error')
+  store.signUp({ email: email.value, password: password.value })
+    .then(() => {
+      router.push({ name: 'offers-view' })
+      console.log('sign up success')
     })
 }
 

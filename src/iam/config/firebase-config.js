@@ -1,5 +1,12 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, createUserWithEmailAndPassword as signUp, signInWithEmailAndPassword as signIn, signOut } from 'firebase/auth'
+import {
+  getAuth,
+  createUserWithEmailAndPassword as signUp,
+  signInWithEmailAndPassword as signIn,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY ?? '',
@@ -15,4 +22,4 @@ const app = initializeApp(firebaseConfig)
 
 const auth = getAuth()
 
-export { app, auth, signIn, signUp, signOut }
+export { app, auth, signIn, signUp, signOut, GoogleAuthProvider, signInWithPopup }
