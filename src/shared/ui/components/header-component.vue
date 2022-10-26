@@ -114,7 +114,9 @@ const goToOffers = () => {
 }
 const signOut = () => {
   currentUser.signOut()
-  router.push({ name: 'sign-in-view' })
+    .then((result) => {
+      router.push({ name: 'sign-in-view' })
+    })
 }
 
 const isStudent = computed(() => {
