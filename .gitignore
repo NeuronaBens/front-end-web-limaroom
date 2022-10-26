@@ -26,3 +26,6 @@ dist-ssr
 
 # json-server
 server/*.json
+
+# Environment variables
+.env
