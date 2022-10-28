@@ -9,6 +9,7 @@ import {
   signInWithPopup
 } from '@/iam/config/firebase-config'
 import UsersService from '@/iam/services/users-api.service'
+import ProfilesService from '@/profile/services/profiles-api.service'
 
 const user = JSON.parse(localStorage.getItem('user'))
 
@@ -110,5 +111,20 @@ export const userStore = defineStore('user', () => {
         console.log(error)
       })
   }
-  return { state, signIn, signOut, signUp, signInWithGoogle }
+
+  const createProfile = (profile) => {
+    const { id } = state.value.user
+    const profilesService = new ProfilesService()
+    return profilesService.create(profile, id)
+      .then((response) => {
+        if (response.data) {
+          state.value.user.hasProfile = true
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  return { state, signIn, signOut, signUp, signInWithGoogle, createProfile }
 })

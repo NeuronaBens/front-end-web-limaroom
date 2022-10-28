@@ -9,7 +9,7 @@
         <router-link to="">Roommates</router-link>
         <div class="divider"></div>
         <div class="nav-user-options">
-          <router-link to="/">Profile</router-link>
+          <a href="#" @click="goToMyProfile">Profile</a>
           <a href="#" @click="goToMyRequest">Requests</a>
           <a href="#" @click="signOut">Sign Out</a>
         </div>
@@ -20,7 +20,7 @@
         <a href="#" @click="goToMyProperties">My Properties</a>
         <div class="divider"></div>
         <div class="nav-user-options">
-          <router-link to="/">Profile</router-link>
+          <a href="#" @click="goToMyProfile">Profile</a>
           <a href="#" @click="signOut">Sign Out</a>
         </div>
         <i class="pi pi-times icon" @click="toggleNav"></i>
@@ -42,6 +42,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 9999;
     width: 100%;
     background-color: $white;
     text-align: center;
@@ -117,6 +118,11 @@ const signOut = () => {
     .then((result) => {
       router.push({ name: 'sign-in-view' })
     })
+}
+
+const goToMyProfile = () => {
+  toggleNav()
+  router.push({ name: 'show-profile-view', params: { id: currentUser.state.user.id } })
 }
 
 const isStudent = computed(() => {

@@ -4,13 +4,15 @@ export default class UsersService {
     return http.get(`/users/${id}`)
       .then(response => {
         if (response.data) {
-          const { id, role, active } = response.data
+          const { id, role, active, profile } = response.data
+          const hasProfile = profile !== null
           const user = {
             id,
             role: role.name,
-            active
+            active,
+            hasProfile
           }
-          console.log('user: ', user)
+
           localStorage.setItem('user', JSON.stringify(user))
           return user
         }
@@ -35,7 +37,8 @@ export default class UsersService {
           const user = {
             id,
             role: role.name,
-            active
+            active,
+            hasProfile: false
           }
           localStorage.setItem('user', JSON.stringify(user))
           return user

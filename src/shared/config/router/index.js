@@ -10,6 +10,9 @@ const OffersView = () => import('@/rental/ui/views/students/offers-view.vue')
 const OfferDetailView = () => import('@/rental/ui/views/students/offer-detail-view.vue')
 const RequestsView = () => import('@/rental/ui/views/students/requests-view.vue')
 
+const CreateProfileView = () => import('@/profile/ui/views/create-profile-view.component.vue')
+const ProfileView = () => import('@/profile/ui/views/profile-view.component.vue')
+
 const NotFound = () => import('@/shared/ui/views/not-found-view.vue')
 
 const router = createRouter({
@@ -30,6 +33,22 @@ const router = createRouter({
           path: 'sign-up',
           name: 'sign-up-view',
           component: SignUpView
+        }
+      ]
+    },
+    {
+      path: '/profile/:id',
+      name: 'profile',
+      children: [
+        {
+          path: '',
+          name: 'show-profile-view',
+          component: ProfileView
+        },
+        {
+          path: 'create',
+          name: 'create-profile-view',
+          component: CreateProfileView
         }
       ]
     },
@@ -64,11 +83,11 @@ const router = createRouter({
 const routesUsers = {
   ROLE_USER_STUDENT: {
     main: 'offers-view',
-    routes: ['offers-view', 'offer-detail-view', 'requests-view', 'profile-view']
+    routes: ['offers-view', 'offer-detail-view', 'requests-view', 'profile-view', 'create-profile-view', 'show-profile-view']
   },
   ROLE_USER_LESSOR: {
     main: 'properties-view',
-    routes: ['properties-view', 'profile-view']
+    routes: ['properties-view', 'profile-view', 'create-profile-view', 'show-profile-view']
   }
 }
 
@@ -78,6 +97,12 @@ router.beforeEach((to, from) => {
   if (currentUser.state.status.loggedIn) {
     if (to.name === 'sign-in-view' || to.name === 'sign-up-view') {
       return { name: 'offers-view' }
+    }
+
+    if (!currentUser.state.user.hasProfile) {
+      if (to.name !== 'create-profile-view') {
+        return { name: 'create-profile-view', params: { id: currentUser.state.user.id } }
+      }
     }
 
     if (!routesUsers[currentUser.state.user.role].routes.includes(to.name)) {
