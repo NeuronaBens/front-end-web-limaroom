@@ -5,19 +5,23 @@ export default class RequestsService {
     return http.get('/rental/request')
   }
 
-  getRequestByUserId (id) {
+  getRequestsByUserId (id) {
     return http.get(`/users/${id}/requests`)
+  }
+
+  getRequestsByOfferId (id) {
+    return http.get(`/rental/offer/${id}/requests`)
   }
 
   createRequest (data) {
     return http.post('/rental/request', JSON.stringify(data))
   }
 
-  updateRequest (id, data) {
-    return http.put(`/requests/${id}`, data)
+  acceptRequest (id) {
+    return http.put(`/requests/${id}/accept`)
   }
 
-  deleteRequest (id) {
-    return http.delete(`/requests/${id}`)
+  declineRequest (id) {
+    return http.put(`/requests/${id}/decline`)
   }
 }

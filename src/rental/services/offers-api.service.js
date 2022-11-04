@@ -9,11 +9,11 @@ export default class OffersService {
   }
 
   getOffersByUserId (id) {
-    return http.get(`/rentaloffers/${id}`)
+    return http.get(`/users/${id}/rental/offers`)
   }
 
-  createOffer (data) {
-    return http.post('/offers', data)
+  createOffer (data, id) {
+    return http.post(`/users/${id}/rental/offer`, data)
   }
 
   updateOffer (id, data) {
