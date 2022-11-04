@@ -115,6 +115,7 @@ export const userStore = defineStore('user', () => {
   const createProfile = (profile) => {
     const { id } = state.value.user
     const profilesService = new ProfilesService()
+    console.log(profile)
     return profilesService.create(profile, id)
       .then((response) => {
         if (response.data) {

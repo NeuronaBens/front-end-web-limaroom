@@ -29,6 +29,8 @@
   }
 
   .auth-form {
+    width: 95%;
+    margin: 0 auto;
     // background-color: $white;
     text-align: center;
 

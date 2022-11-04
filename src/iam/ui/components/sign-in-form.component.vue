@@ -57,15 +57,24 @@ const user = ref({
 
 const signIn = () => {
   store.signIn(user.value)
-    .then(() => {
-      router.push({ name: 'offers-view' })
+    .then((response) => {
+      console.log(response)
+      if (response.role === 'ROLE_USER_LESSOR') {
+        router.push({ name: 'properties-view' })
+      } else {
+        router.push({ name: 'offers-view' })
+      }
     })
 }
 
 const signInWithGoogle = () => {
   store.signInWithGoogle()
-    .then(() => {
-      router.push({ name: 'offers-view' })
+    .then((response) => {
+      if (response.role === 'ROLE_USER_LESSOR') {
+        router.push({ name: 'properties-view' })
+      } else {
+        router.push({ name: 'offers-view' })
+      }
     })
 }
 </script>

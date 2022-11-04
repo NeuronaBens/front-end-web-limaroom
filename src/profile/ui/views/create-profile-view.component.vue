@@ -44,7 +44,7 @@ const onSubmit = (e) => {
   // TODO: Validations
 
   // Create profile
-  currentUser.createProfile(profile)
+  currentUser.createProfile(profile.value)
     .then(() => {
       router.push({ name: 'show-profile-view', params: { id: userId } })
     })

@@ -10,7 +10,17 @@ export default class ProfilesService {
   }
 
   create (data, userId) {
+    console.log(data)
     return http.post(`/profiles?userId=${userId}`, JSON.stringify(data))
+      .then(response => {
+        if (response.data) {
+          const user = JSON.parse(localStorage.getItem('user'))
+          user.hasProfile = true
+          localStorage.setItem('user', JSON.stringify(user))
+          return response.data
+        }
+        return null
+      })
   }
 
   update (id, data) {
