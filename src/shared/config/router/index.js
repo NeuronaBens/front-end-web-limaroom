@@ -6,6 +6,9 @@ const SignInView = () => import('@/iam/ui/views/sign-in-view.vue')
 const SignUpView = () => import('@/iam/ui/views/sign-up-view.vue')
 
 const MyOffersView = () => import('@/rental/ui/views/lessors/my-offers-view.vue')
+const CreateOfferView = () => import('@/rental/ui/views/lessors/create-offer-view.vue')
+const EditOfferView = () => import('@/rental/ui/views/lessors/edit-offer-view.vue')
+const MyOfferDetailView = () => import('@/rental/ui/views/lessors/my-offer-detail-view.vue')
 const OffersView = () => import('@/rental/ui/views/students/offers-view.vue')
 const OfferDetailView = () => import('@/rental/ui/views/students/offer-detail-view.vue')
 const RequestsView = () => import('@/rental/ui/views/students/requests-view.vue')
@@ -53,9 +56,24 @@ const router = createRouter({
       ]
     },
     {
-      path: '/properties',
-      name: 'properties-view',
+      path: '/my-offers/:id',
+      name: 'my-offers-view',
       component: MyOffersView
+    },
+    {
+      path: '/my-offers/:id/create-offer',
+      name: 'create-offer-view',
+      component: CreateOfferView
+    },
+    {
+      path: '/my-offers/offer/:id',
+      name: 'my-offer-detail-view',
+      component: MyOfferDetailView
+    },
+    {
+      path: '/my-offers/offer/:id/edit',
+      name: 'edit-offer-view',
+      component: EditOfferView
     },
     {
       path: '/offers/:id',
@@ -86,8 +104,8 @@ const routesUsers = {
     routes: ['offers-view', 'offer-detail-view', 'requests-view', 'profile-view', 'create-profile-view', 'show-profile-view']
   },
   ROLE_USER_LESSOR: {
-    main: 'properties-view',
-    routes: ['properties-view', 'profile-view', 'create-profile-view', 'show-profile-view']
+    main: 'my-offers-view',
+    routes: ['my-offers-view', 'profile-view', 'requests-view', 'create-profile-view', 'show-profile-view', 'create-offer-view', 'my-offer-detail-view', 'edit-offer-view']
   }
 }
 
