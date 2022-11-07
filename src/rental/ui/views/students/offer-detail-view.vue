@@ -14,7 +14,7 @@
       </div>
 
       <div class="offer__assets">
-        <div class="offer__asset" v-for="asset in assets" v-bind:key="asset.url">
+        <div class="offer__asset" v-for="asset in assets" v-bind:key="asset.urlImage">
           <img :src="asset.urlImage" alt="">
         </div>
       </div>
@@ -173,7 +173,7 @@ onMounted(() => {
     offer.value = response.data
     amount.value = response.data.amount
     property.value = response.data.property
-    assets.value = response.data.property.propertyAssets
+    assets.value = response.data.property.assets
   })
 })
 </script>

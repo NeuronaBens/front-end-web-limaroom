@@ -1,18 +1,39 @@
 <template>
-  <h1>Roommate Requests</h1>
-  <div>
-    <h2>My request</h2>
-    <p v-if="myRequests.length === 0">There's no requests rigth now</p>
-    <RequestComponent v-for="request in myRequests" v-bind:key="request.id" :request="request" :actions="false" />
-  </div>
-  <div>
-    <h2>Requests for me</h2>
-    <p v-if="requestsForMe.length === 0">There's no requests rigth now</p>
-    <RequestComponent v-for="request in requestsForMe" v-bind:key="request.id" :request="request" :actions="true"/>
+  <div class="roommate__requests">
+    <h2>Roommate Requests</h2>
+    <div class="requests">
+      <h3>My request</h3>
+      <p v-if="myRequests.length === 0">There's no requests rigth now</p>
+      <div class="request__list">
+        <RequestComponent v-for="request in myRequests" v-bind:key="request.id" :request="request" :actions="false"  />
+      </div>
+    </div>
+    <div class="requests">
+      <h3>Requests for me</h3>
+      <p v-if="requestsForMe.length === 0">There's no requests rigth now</p>
+      <div class="request__list">
+        <RequestComponent v-for="request in requestsForMe" v-bind:key="request.id" :request="request" :actions="true" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+.roommate__requests {
+  h2 {
+    text-transform: uppercase;
+  }
+
+  .requests {
+    margin-bottom: 1.5rem;
+  }
+  .request__list {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    gap: 2rem;
+  }
+}
 </style>
 
 <script setup>
