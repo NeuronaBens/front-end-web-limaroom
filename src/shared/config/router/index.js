@@ -16,6 +16,8 @@ const RequestsView = () => import('@/rental/ui/views/students/requests-view.vue'
 const CreateProfileView = () => import('@/profile/ui/views/create-profile-view.component.vue')
 const ProfileView = () => import('@/profile/ui/views/profile-view.component.vue')
 
+const RoommatesView = () => import('@/roommate/ui/views/roommates-view.component.vue')
+
 const NotFound = () => import('@/shared/ui/views/not-found-view.vue')
 
 const router = createRouter({
@@ -40,7 +42,7 @@ const router = createRouter({
       ]
     },
     {
-      path: '/profile/:id',
+      path: '/profile/:id?',
       name: 'profile',
       children: [
         {
@@ -91,6 +93,11 @@ const router = createRouter({
       component: RequestsView
     },
     {
+      path: '/roommates',
+      name: 'roommates-view',
+      component: RoommatesView
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found-view',
       component: NotFound
@@ -101,7 +108,7 @@ const router = createRouter({
 const routesUsers = {
   ROLE_USER_STUDENT: {
     main: 'offers-view',
-    routes: ['offers-view', 'offer-detail-view', 'requests-view', 'profile-view', 'create-profile-view', 'show-profile-view']
+    routes: ['offers-view', 'offer-detail-view', 'requests-view', 'profile-view', 'create-profile-view', 'show-profile-view', 'roommates-view']
   },
   ROLE_USER_LESSOR: {
     main: 'my-offers-view',

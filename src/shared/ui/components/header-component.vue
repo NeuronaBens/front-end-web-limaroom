@@ -85,13 +85,13 @@ const currentUser = userStore()
 const id = currentUser.state.user.id
 
 const accountRoutes = [
-  { name: 'Profile', to: 'show-profile-view', params: { id } },
+  { name: 'Profile', to: 'show-profile-view' },
   { name: 'Sign Out', to: '', callback: () => signOut() }
 ]
 
 const studentRoutes = [
   { name: 'Offers', to: 'offers-view' },
-  { name: 'Roommates', to: '' },
+  { name: 'Roommates', to: 'roommates-view' },
   { name: 'Requests', to: 'requests-view', params: { id } }
 ]
 
