@@ -46,6 +46,7 @@ const onSubmit = (e) => {
   // Create profile
   currentUser.createProfile(profile.value)
     .then(() => {
+      console.log('Profile created')
       router.push({ name: 'show-profile-view', params: { id: userId } })
     })
   console.log('submit')

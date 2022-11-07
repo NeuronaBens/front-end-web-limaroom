@@ -23,7 +23,8 @@ onMounted(() => {
   const profilesService = new ProfilesService()
   profilesService.getByUserId(userId)
     .then((response) => {
-      profile.value = response.data
+      console.log(response.data)
+      profile.value = response.data.resource
     })
     .catch((error) => {
       console.log(error)

@@ -60,7 +60,7 @@ const signIn = () => {
     .then((response) => {
       console.log(response)
       if (response.role === 'ROLE_USER_LESSOR') {
-        router.push({ name: 'my-offers-view' })
+        router.push({ name: 'my-offers-view', params: { id: response.id } })
       } else {
         router.push({ name: 'offers-view' })
       }
@@ -71,7 +71,7 @@ const signInWithGoogle = () => {
   store.signInWithGoogle()
     .then((response) => {
       if (response.role === 'ROLE_USER_LESSOR') {
-        router.push({ name: 'my-offers-view' })
+        router.push({ name: 'my-offers-view', params: { id: response.id } })
       } else {
         router.push({ name: 'offers-view' })
       }

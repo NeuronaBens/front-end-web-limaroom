@@ -6,7 +6,7 @@ export default class ProfilesService {
   }
 
   getByUserId (userId) {
-    return http.get(`/profiles?userId=${userId}`)
+    return http.get(`/users/${userId}/profiles`)
   }
 
   create (data, userId) {

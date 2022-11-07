@@ -96,6 +96,6 @@ const goToOfferDetail = () => {
 }
 
 onMounted(() => {
-  image.value = props.offer.property.propertyAssets[0] ? props.offer.property.propertyAssets[0].urlImage : ''
+  image.value = props.offer.property.assets[0] ? props.offer.property.assets[0].urlImage : ''
 })
 </script>
