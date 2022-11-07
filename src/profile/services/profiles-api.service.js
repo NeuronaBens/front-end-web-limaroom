@@ -9,6 +9,10 @@ export default class ProfilesService {
     return http.get(`/users/${userId}/profiles`)
   }
 
+  getById (id) {
+    return http.get(`/profiles/${id}`)
+  }
+
   create (data, userId) {
     console.log(data)
     return http.post(`/profiles?userId=${userId}`, JSON.stringify(data))

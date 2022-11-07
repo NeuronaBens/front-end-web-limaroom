@@ -10,7 +10,8 @@ export default class UsersService {
             id,
             role: role.name,
             active,
-            hasProfile
+            hasProfile,
+            profileId: profile.id ? profile.id : 0
           }
 
           localStorage.setItem('user', JSON.stringify(user))
@@ -38,7 +39,8 @@ export default class UsersService {
             id,
             role: role.name,
             active,
-            hasProfile: false
+            hasProfile: false,
+            profileId: 0
           }
           localStorage.setItem('user', JSON.stringify(user))
           return user
