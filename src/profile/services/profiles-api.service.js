@@ -20,6 +20,7 @@ export default class ProfilesService {
         if (response.data) {
           const user = JSON.parse(localStorage.getItem('user'))
           user.hasProfile = true
+          user.profileId = response.data.id
           localStorage.setItem('user', JSON.stringify(user))
           return response.data
         }
