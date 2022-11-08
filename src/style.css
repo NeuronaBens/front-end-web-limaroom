@@ -67,6 +67,9 @@ a {
   background-color: rgba(241, 241, 241, 0.26);
 }
 
+.fw-bold {
+  font-weight: bold;
+}
 .container {
   width: min(80%, 1200px);
   margin: 0 auto;

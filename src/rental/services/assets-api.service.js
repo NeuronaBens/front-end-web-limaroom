@@ -9,12 +9,8 @@ export default class AssetsService {
     return http.get(`/assets?propertyId=${id}&preview=1`)
   }
 
-  createAsset (data) {
-    return http.post('/assets', data)
-  }
-
-  updateAsset (id, data) {
-    return http.put(`/assets/${id}`, data)
+  createAsset (data, id) {
+    return http.post(`/property/${id}/propertyasset`, data)
   }
 
   deleteAsset (id) {

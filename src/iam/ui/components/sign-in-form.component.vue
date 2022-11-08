@@ -8,9 +8,11 @@
       <InputText class="input" type="password" v-model="user.password" required="true" />
       <label>Password</label>
     </div>
+    <p class="error">{{ errorMessage }}</p>
     <p class="forgot-password">Forgot password? <a href="#">Click Here</a></p>
   </form>
   <button @click="signIn" class="button-primary-block">Login</button>
+  <button @click="signInWithGoogle" class="button-primary-block">Sign In With Google</button>
 </template>
 
 <style lang="scss">
@@ -39,39 +41,53 @@
 
 .button-primary-block {
   width: 100%;
-  @include tablet {
-    width: auto;
-  }
 }
 </style>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { userStore } from '@/shared/config/store'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const currentUser = userStore()
+const store = userStore()
 const user = ref({
   email: '',
   password: ''
 })
 
+const errorMessage = ref('')
+
+const errorCodes = {
+  'auth/wrong-password': 'Wrong password',
+  'auth/user-not-found': 'User not found',
+  'auth/invalid-email': 'Invalid email',
+  'auth/user-disabled': 'User disabled'
+}
+
 const signIn = () => {
-  currentUser.signIn(user.value)
-    .then(() => {
-      if (currentUser.state.user.role === 'ROLE_USER_STUDENT') {
-        router.push({ name: 'offers-view' })
+  store.signIn(user.value)
+    .then((response) => {
+      console.log(response)
+      if (response.role === 'ROLE_USER_LESSOR') {
+        router.push({ name: 'my-offers-view', params: { id: response.id } })
       } else {
-        router.push({ name: 'properties-view' })
+        router.push({ name: 'offers-view' })
       }
+    })
+    .catch((error) => {
+      errorMessage.value = errorCodes[error.code]
     })
 }
 
-onMounted(() => {
-  console.log(currentUser.state)
-  if (currentUser.state.status.loggedIn) {
-    router.push({ name: 'offers-view' })
-  }
-})
+const signInWithGoogle = () => {
+  store.signInWithGoogle()
+    .then((response) => {
+      if (response.role === 'ROLE_USER_LESSOR') {
+        router.push({ name: 'my-offers-view', params: { id: response.id } })
+      } else {
+        router.push({ name: 'offers-view' })
+      }
+    })
+}
 </script>

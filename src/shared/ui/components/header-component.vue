@@ -3,25 +3,12 @@
     <img class="logo" src="@/shared/ui/assets/images/logo.png" alt="logo">
     <i class="pi pi-bars icon" @click="toggleNav"></i>
     <div class="nav" ref="nav">
-      <!-- STUDENT NAV -->
-      <nav v-if="isStudent">
-        <a href="#" @click="goToOffers">Offers</a>
-        <router-link to="">Roommates</router-link>
+      <nav>
+        <LinkGroup :routes="studentRoutes" :fn="toggleNav" v-if="isStudent"/>
+        <LinkGroup :routes="lessorRoutes" :fn="toggleNav" v-else/>
         <div class="divider"></div>
         <div class="nav-user-options">
-          <router-link to="/">Profile</router-link>
-          <a href="#" @click="goToMyRequest">Requests</a>
-          <a href="#" @click="signOut">Sign Out</a>
-        </div>
-        <i class="pi pi-times icon" @click="toggleNav"></i>
-      </nav>
-      <!-- LESSOR NAV -->
-      <nav v-else>
-        <a href="#" @click="goToMyProperties">My Properties</a>
-        <div class="divider"></div>
-        <div class="nav-user-options">
-          <router-link to="/">Profile</router-link>
-          <a href="#" @click="signOut">Sign Out</a>
+          <LinkGroup :routes="accountRoutes" :fn="toggleNav"/>
         </div>
         <i class="pi pi-times icon" @click="toggleNav"></i>
       </nav>
@@ -42,6 +29,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 9999;
     width: 100%;
     background-color: $white;
     text-align: center;
@@ -87,34 +75,41 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/shared/config/store/index.js'
+import LinkGroup from '@/shared/ui/components/link-group-component.vue'
 
 const router = useRouter()
 const isNavVisible = ref(false)
 const nav = ref(null)
 const currentUser = userStore()
 
+const id = currentUser.state.user.id
+
+const accountRoutes = [
+  { name: 'Profile', to: 'show-profile-view' },
+  { name: 'Sign Out', to: '', callback: () => signOut() }
+]
+
+const studentRoutes = [
+  { name: 'Offers', to: 'offers-view' },
+  { name: 'Roommates', to: 'roommates-view' },
+  { name: 'Requests', to: 'requests-view', params: { id } }
+]
+
+const lessorRoutes = [
+  { name: 'My Properties', to: 'my-offers-view', params: { id } }
+  // { name: 'Requests', to: 'requests-view', params: { id } }
+]
+
 const toggleNav = () => {
   isNavVisible.value = !isNavVisible.value
   nav.value.style.marginTop = isNavVisible.value ? '0' : '-150%'
 }
 
-const goToMyRequest = () => {
-  toggleNav()
-  router.push({ name: 'requests-view', params: { id: currentUser.id } })
-}
-
-const goToMyProperties = () => {
-  toggleNav()
-  router.push({ name: 'properties-view', params: { id: currentUser.id } })
-}
-
-const goToOffers = () => {
-  toggleNav()
-  router.push({ name: 'offers-view' })
-}
 const signOut = () => {
   currentUser.signOut()
-  router.push({ name: 'sign-in-view' })
+    .then((result) => {
+      router.push({ name: 'sign-in-view' })
+    })
 }
 
 const isStudent = computed(() => {

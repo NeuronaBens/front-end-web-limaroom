@@ -35,10 +35,13 @@
 </style>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import RequestsService from '@/rental/services/requests-api.service.js'
 import { useToast } from 'primevue/usetoast'
+import { userStore } from '@/shared/config/store'
+
+const currentUser = userStore()
 
 const props = defineProps({
   offerId: {
@@ -50,7 +53,7 @@ const props = defineProps({
 const request = ref({
   message: '',
   rentalOfferId: parseInt(props.offerId),
-  userId: 'user2'
+  userId: currentUser.state.user.id
 })
 
 const router = useRouter()
@@ -78,8 +81,14 @@ const save = () => {
       }, 2000)
     })
     .catch((err) => {
+      console.log(err)
       toast.add({ severity: 'error', summary: 'Error when sending request', detail: err.message, life: 3000 })
     })
 }
 
+onMounted(() => {
+  form.value.reset()
+  request.value.message = ''
+  console.log(currentUser.state.user.id)
+})
 </script>

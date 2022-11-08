@@ -4,7 +4,7 @@
       <img :src="image" alt="offer image" />
     </div>
     <div class="offer__information">
-      <h3 class="offer__title">Beautiful house at city</h3>
+      <h3 class="offer__title">{{ offer.property.title }}</h3>
       <div class="offer__extra">
         <p class="offer__location">Lima, Peru</p>
         <div class="offer__stars">
@@ -96,6 +96,7 @@ const goToOfferDetail = () => {
 }
 
 onMounted(() => {
-  image.value = props.offer.property.propertyAssets[0] ? props.offer.property.propertyAssets[0].urlImage : ''
+  console.log(props.offer)
+  image.value = props.offer.property.assets[0] ? props.offer.property.assets[0].urlImage : ''
 })
 </script>
