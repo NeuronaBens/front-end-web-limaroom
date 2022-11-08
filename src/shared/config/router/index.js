@@ -24,8 +24,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/',
+      redirect: { name: 'sign-in-view' }
+    },
+    {
       path: '/authentication',
-      alias: '/',
       name: 'authentication-view',
       component: AuthenticationView,
       children: [
