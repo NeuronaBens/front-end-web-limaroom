@@ -63,15 +63,16 @@ const onSubmit = (e) => {
   e.preventDefault()
   console.log(profile.value)
 
-  const userId = currentUser.state.user.id
+  // const userId = currentUser.state.user.id
   // TODO: Validations
 
   // Create profile
   currentUser.createProfile(profile.value)
     .then(() => {
       console.log('Profile created')
-      router.push({ name: 'show-profile-view', params: { id: userId } })
+      router.go()
     })
+
   console.log('submit')
 }
 
