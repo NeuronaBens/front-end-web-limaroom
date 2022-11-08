@@ -94,8 +94,18 @@ export const userStore = defineStore('user', () => {
             return null
           })
       })
-      .catch(error => {
-        console.log(error)
+  }
+
+  const changeRole = (id) => {
+    const usersService = new UsersService()
+    return usersService.changeRole(id)
+      .then(user => {
+        if (user) {
+          state.value.status.loggedIn = true
+          state.value.user = user
+          return user
+        }
+        return null
       })
   }
 
@@ -127,5 +137,5 @@ export const userStore = defineStore('user', () => {
       })
   }
 
-  return { state, signIn, signOut, signUp, signInWithGoogle, createProfile }
+  return { state, signIn, signOut, signUp, signInWithGoogle, createProfile, changeRole }
 })

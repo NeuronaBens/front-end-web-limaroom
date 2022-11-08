@@ -8,6 +8,7 @@
       <InputText class="input" type="password" v-model="user.password" required="true" />
       <label>Password</label>
     </div>
+    <p class="error">{{ errorMessage }}</p>
     <p class="forgot-password">Forgot password? <a href="#">Click Here</a></p>
   </form>
   <button @click="signIn" class="button-primary-block">Login</button>
@@ -55,6 +56,15 @@ const user = ref({
   password: ''
 })
 
+const errorMessage = ref('')
+
+const errorCodes = {
+  'auth/wrong-password': 'Wrong password',
+  'auth/user-not-found': 'User not found',
+  'auth/invalid-email': 'Invalid email',
+  'auth/user-disabled': 'User disabled'
+}
+
 const signIn = () => {
   store.signIn(user.value)
     .then((response) => {
@@ -64,6 +74,9 @@ const signIn = () => {
       } else {
         router.push({ name: 'offers-view' })
       }
+    })
+    .catch((error) => {
+      errorMessage.value = errorCodes[error.code]
     })
 }
 

@@ -49,6 +49,27 @@ export default class UsersService {
       })
   }
 
+  changeRole (id) {
+    return http.put(`/users/${id}/assign/lessor`)
+      .then(response => {
+        if (response.data) {
+          const { id, role, active, profile } = response.data
+          const hasProfile = profile !== null
+          const user = {
+            id,
+            role: role.name,
+            active,
+            hasProfile,
+            profileId: profile.id ? profile.id : 0
+          }
+
+          localStorage.setItem('user', JSON.stringify(user))
+          return user
+        }
+        return null
+      })
+  }
+
   signOut () {
     localStorage.removeItem('user')
   }

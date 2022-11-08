@@ -15,6 +15,8 @@
       <label>Password</label>
     </div>
     <p v-for="error in confirmPasswordErrors" v-bind:key="error">{{ error }}</p>
+
+    <p class="error">{{ errorMessage }}</p>
     <button type="submit" class="button-primary-block">Register</button>
   </form>
 </template>
@@ -47,6 +49,15 @@ const passwordErrors = ref('')
 const confirmPasswordErrors = ref('')
 
 const store = userStore()
+
+const errorCodes = {
+  'auth/wrong-password': 'Wrong password',
+  'auth/user-not-found': 'User not found',
+  'auth/invalid-email': 'Invalid email',
+  'auth/user-disabled': 'User disabled'
+}
+
+const errorMessage = ref('')
 
 const validations = {
   email: [
@@ -89,6 +100,9 @@ const submitSignUp = (e) => {
     .then(() => {
       router.push({ name: 'offers-view' })
       console.log('sign up success')
+    })
+    .catch((error) => {
+      errorMessage.value = errorCodes[error.code]
     })
 }
 
