@@ -1,29 +1,52 @@
 <template>
-  <h1>Create your profile! </h1>
-  <p>Let people know more about you</p>
+  <div class="container">
+    <div class="form-header">
+      <h1>Create your profile! </h1>
+      <p>Let people know more about you</p>
+    </div>
 
-  <form @submit="onSubmit">
-    <div class="input-group">
-      <InputText class="input" type="text" v-model="profile.name" required="true" />
-      <label>Name</label>
-    </div>
-    <div class="input-group">
-      <InputText class="input" type="text" v-model="profile.surname" required="true" />
-      <label>Surname</label>
-    </div>
-    <div class="input-group">
-      <InputText class="input" type="text" v-model="profile.phone.code" required="true" />
-      <label>Code</label>
-    </div>
-    <div class="input-group">
-      <InputText class="input" type="text" v-model="profile.phone.number" required="true" />
-      <label>Phone</label>
-    </div>
-    <button type="submit">Create</button>
-  </form>
+    <form @submit="onSubmit">
+      <div class="input-group">
+        <InputText class="input" type="text" v-model="profile.name" required="true" />
+        <label>Name</label>
+      </div>
+      <div class="input-group">
+        <InputText class="input" type="text" v-model="profile.surname" required="true" />
+        <label>Surname</label>
+      </div>
+      <div class="input-group">
+        <InputText class="input" type="text" v-model="profile.phone.code" required="true" />
+        <label>Code</label>
+      </div>
+      <div class="input-group">
+        <InputText class="input" type="text" v-model="profile.phone.number" required="true" />
+        <label>Phone</label>
+      </div>
+      <button type="submit" class="button-primary">Create</button>
+    </form>
+  </div>
+
 </template>
 
 <style lang="scss">
+@import "@/shared/ui/assets/scss/_buttons.scss";
+@import "@/shared/ui/assets/scss/_inputs.scss";
+
+.input-group {
+  @include input-group;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    font-size: 1.5rem;
+  }
+}
 </style>
 
 <script setup>

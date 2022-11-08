@@ -1,19 +1,56 @@
 <template>
-  <h1>This is my profile</h1>
-  <p>{{profile.name}}</p>
-  <p>{{profile.surname}}</p>
-  <p>{{profile.phone.code}} {{profile.phone.number}}</p>
+  <div class="container">
+    <div class="profile">
+      <div class="profile__title">
+        <h1>This is my profile</h1>
+      </div>
+      <div class="profile__image">
+        <img src="@/roommate/ui/assets/avatar.png" alt="">
+      </div>
+      <div class="profile__information">
+        <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
+        <p><span class="fw-bold">Surname: </span> {{ profile.surname }}</p>
+        <p><span class="fw-bold">Phone: </span>+{{ profile.phone.code }} {{ profile.phone.number }}</p>
+      </div>
 
-  <div v-if="!self">
-    <RequestComponent  :request="request"/>
-  </div>
+      <div class="divider"></div>
+      <div v-if="isStudent">
+        <div v-if="!self">
+          <RequestComponent :request="request" />
+        </div>
 
-  <div v-else>
-    <RoommateRequestComponent />
+        <div v-else>
+          <RoommateRequestComponent />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+.profile {
+  text-align: center;
+
+  .profile__image {
+    width: 100%;
+    overflow: hidden;
+
+    img {
+      border-radius: 1rem;
+      max-height: 35rem;
+      object-fit: cover;
+    }
+  }
+
+  .profile__information {
+    font-size: 2.2rem;
+  }
+
+  .divider {
+    margin: 3rem auto;
+    background-color: rgba($color: #000000, $alpha: 1.0);
+  }
+}
 </style>
 
 <script setup>
@@ -35,19 +72,23 @@ const self = computed(() => {
   return route.params.id ? route.params.id === '' : true
 })
 
+const isStudent = computed(() => {
+  return currentUser.state.user.role === 'ROLE_USER_STUDENT'
+})
+
 onMounted(() => {
   const profilesService = new ProfilesService()
   if (!self.value) {
     request.value.requestorId = currentUser.state.user.id
     request.value.requestedId = route.params.id
 
-    // profilesService.getById(route.params.id)
-    //   .then((response) => {
-    //     profile.value = response.data.resource
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //   })
+    profilesService.getById(route.params.id)
+      .then((response) => {
+        profile.value = response.data.resource
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   } else {
     const userId = currentUser.state.user.id
 

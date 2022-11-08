@@ -13,6 +13,9 @@
       <p class="request__name">{{ requested.name }} {{ requested.surname }}</p>
     </div>
   </div>
+
+  <Toast />
+
 </template>
 
 <style lang="scss">
@@ -39,9 +42,12 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import RequestsService from '@/roommate/services/request-api.service.js'
+import { useToast } from 'primevue/usetoast'
+
 const requestor = ref({})
 const requested = ref({})
 const status = ref('')
+const toast = useToast()
 
 const statusColors = {
   PENDING: '#c2a200',
@@ -63,24 +69,34 @@ const props = defineProps({
 })
 
 const acceptRequest = () => {
+  if (!isPending.value) {
+    return
+  }
   const requestsService = new RequestsService()
   requestsService.acceptRequest(props.request.id)
     .then((response) => {
       status.value = response.data.resource.status
+      toast.add({ severity: 'success', summary: 'Request accepted correctly', life: 3000 })
     })
     .catch((error) => {
       console.log(error)
+      toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
     })
   console.log('Accepting request...')
 }
 
 const declineRequest = () => {
+  if (!isPending.value) {
+    return
+  }
   const requestsService = new RequestsService()
   requestsService.declineRequest(props.request.id)
     .then((response) => {
       status.value = response.data.resource.status
+      toast.add({ severity: 'success', summary: 'Request declineds correctly', life: 3000 })
     })
     .catch((error) => {
+      toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
       console.log(error)
     })
   console.log('Declining request...')
