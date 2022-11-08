@@ -1,14 +1,31 @@
 <template>
-  <div class="properties">
+  <div class="properties container">
     <h1>My Properties</h1>
-    <OfferComponent v-for="offer in offers" v-bind:key="offer.id" :offer="offer" @click="goToOfferDetail(offer.id)"/>
+    <div class="property__list">
+      <OfferComponent v-for="offer in offers" v-bind:key="offer.id" :offer="offer" @click="goToOfferDetail(offer.id)" />
+    </div>
 
-    <router-link :to="{ name: 'create-offer-view', params: { id: route.params.id } }" class="button-primary">Create New Offer</router-link>
+    <router-link :to="{ name: 'create-offer-view', params: { id: route.params.id } }" class="button-primary">Create New
+      Offer</router-link>
   </div>
 </template>
 
 <style lang="scss">
 @import "@/shared/ui/assets/scss/_buttons.scss";
+
+.properties {
+  h1 {
+    text-transform: uppercase;
+    margin: 2rem 0;
+  }
+
+  .property__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    gap: 2rem;
+  }
+
+}
 </style>
 
 <script setup>

@@ -1,52 +1,73 @@
 <template>
-  <h1>Create new Offer</h1>
-  <form @submit="onSubmit">
-    <fieldset>
-      <legend>Property Information</legend>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="property.title" required />
-        <label>Title</label>
-      </div>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="offer.conditions" required />
-        <label>Conditions</label>
-      </div>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="property.description" required />
-        <label>Description</label>
-      </div>
-      <!-- TODO: Change url for file
+  <div class="container">
+    <h1>Create new Offer</h1>
+    <form @submit="onSubmit">
+      <fieldset>
+        <legend>Property Information</legend>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="property.title" required />
+          <label>Title</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="offer.conditions" required />
+          <label>Conditions</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="property.description" required />
+          <label>Description</label>
+        </div>
+        <!-- TODO: Change url for file
       <div class="input-group">
         <InputText class="input" type="text" v-model="image.urlImage" required />
         <label>Main image</label>
       </div> -->
-    </fieldset>
+      </fieldset>
 
-    <fieldset>
-      <legend>Price</legend>
-      <div class="input-group">
-        <InputText class="input" type="number" v-model="amount.price" required />
-        <label>Price</label>
-      </div>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="amount.currency" required />
-        <label>Currency</label>
-      </div>
-    </fieldset>
+      <fieldset>
+        <legend>Price</legend>
+        <div class="input-group">
+          <InputText class="input" type="number" v-model="amount.price" required />
+          <label>Price</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="amount.currency" required />
+          <label>Currency</label>
+        </div>
+      </fieldset>
 
-    <fieldset>
-      <legend>Offer information</legend>
-      <div class="input-group">
-        <InputText class="input" type="date" v-model="offer.lifecycle.endAt" required />
-        <label>End Offer Date</label>
-      </div>
-    </fieldset>
-    <button type="submit">Save</button>
-  </form>
+      <fieldset>
+        <legend>Offer information</legend>
+        <div class="input-group">
+          <InputText class="input" type="date" v-model="offer.lifecycle.endAt" required />
+          <label>End Offer Date</label>
+        </div>
+      </fieldset>
+      <button type="submit" class="button-primary">Save</button>
+      <router-link :to="{ name: 'my-offers-view', params: { id: route.params.id } }" class="button-black">Back</router-link>
+    </form>
+  </div>
 </template>
 
 <style lang="scss">
-
+@import "@/shared/ui/assets/scss/_buttons.scss";
+@import "@/shared/ui/assets/scss/_inputs.scss";
+h1 {
+  text-transform: uppercase;
+}
+fieldset {
+  margin: 1rem 0;
+  padding: 1.5rem 1rem;
+  border-color: rgba($color: #000000, $alpha: 0.2);
+  border-width: .1rem;
+  legend {
+    margin-bottom: 1rem;
+    font-weight: $bold;
+    text-transform: uppercase;
+  }
+  .input-group{
+    @include input-group;
+  }
+}
 </style>
 
 <script setup>
@@ -60,9 +81,9 @@ const router = useRouter()
 
 const offer = ref({
   lifecycle: {
-    endAt: ''
+    endAt: new Date().toISOString().split('T')[0]
   },
-  conditions: ''
+  conditions: 'Good conditions'
 })
 
 const amount = ref({
@@ -114,4 +135,5 @@ const onSubmit = (e) => {
 
   console.log(JSON.stringify(data))
 }
+
 </script>
