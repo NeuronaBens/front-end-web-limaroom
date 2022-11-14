@@ -8,6 +8,7 @@ import {
   signInWithPopup
 } from 'firebase/auth'
 
+import { getStorage } from 'firebase/storage'
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY ?? '',
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ?? '',
@@ -19,7 +20,17 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
-
 const auth = getAuth()
 
-export { app, auth, signIn, signUp, signOut, GoogleAuthProvider, signInWithPopup }
+const authentication = {
+  auth,
+  GoogleAuthProvider,
+  signIn,
+  signUp,
+  signOut,
+  signInWithPopup
+}
+
+const storage = getStorage(app)
+
+export { app, authentication, storage }

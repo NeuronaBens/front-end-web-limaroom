@@ -118,7 +118,7 @@ const onSubmit = (e) => {
 onMounted(() => {
   const offersService = new OffersService()
   offersService.getOffer(route.params.id).then((response) => {
-    const data = response.data
+    const data = response.data.resource
 
     offer.value = {
       lifecycle: {

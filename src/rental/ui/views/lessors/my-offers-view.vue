@@ -45,7 +45,7 @@ onMounted(() => {
   const offersService = new OffersService()
 
   offersService.getOffersByUserId(route.params.id).then((response) => {
-    offers.value = response.data
+    offers.value = response.data.resource
   })
 })
 

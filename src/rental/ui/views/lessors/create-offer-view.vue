@@ -122,9 +122,9 @@ const onSubmit = (e) => {
   const offersService = new OffersService()
   offersService.createOffer(data, route.params.id).then((response) => {
     console.log(response)
-    if (response.status === 200) {
+    if (response.data.resource) {
       const assetsServive = new AssetsService()
-      const propertyId = response.data.property.id
+      const propertyId = response.data.resource.property.id
 
       assetsServive.createAsset(image.value, propertyId).then((response) => {
         console.log(response)

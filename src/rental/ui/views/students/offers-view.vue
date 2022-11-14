@@ -30,8 +30,7 @@ onMounted(() => {
   const offersService = new OffersService()
 
   offersService.getOffers().then((response) => {
-    console.log(response.data[0])
-    offers.value = response.data
+    offers.value = response.data.resource
   })
 })
 </script>

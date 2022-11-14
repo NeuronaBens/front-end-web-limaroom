@@ -1,17 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import {
-  auth,
-  signIn as firebaseSignIn,
-  signUp as firebaseSignUp,
-  signOut as firebaseSignOut,
-  GoogleAuthProvider,
-  signInWithPopup
-} from '@/iam/config/firebase-config'
+import { authentication } from '@/shared/config/firebase'
 import UsersService from '@/iam/services/users-api.service'
 import ProfilesService from '@/profile/services/profiles-api.service'
 
 const user = JSON.parse(localStorage.getItem('user'))
+
+const { auth, GoogleAuthProvider, signInWithPopup } = authentication
 
 export const userStore = defineStore('user', () => {
   const state = ref({
@@ -32,8 +27,10 @@ export const userStore = defineStore('user', () => {
       .then(({ user }) => {
         const { uid, email } = user
         const usersService = new UsersService()
+
         return usersService.getById(uid)
           .then(response => {
+            console.log('signing in')
             return usersService.signIn(uid)
               .then(user => {
                 if (user) {
@@ -45,6 +42,7 @@ export const userStore = defineStore('user', () => {
               })
           })
           .catch(() => {
+            console.log('signing up')
             return usersService.signUp({ id: uid, address: email })
               .then(user => {
                 console.log('user-signup: ', user)
@@ -60,7 +58,7 @@ export const userStore = defineStore('user', () => {
   }
 
   const signUp = async ({ email, password }) => {
-    return await firebaseSignUp(auth, email, password)
+    return await authentication.signUp(auth, email, password)
       .then(({ user }) => {
         const usersService = new UsersService()
         return usersService.signUp({ id: user.uid, address: email })
@@ -80,7 +78,7 @@ export const userStore = defineStore('user', () => {
   }
 
   const signIn = async ({ email, password }) => {
-    return await firebaseSignIn(auth, email, password)
+    return await authentication.signIn(auth, email, password)
       .then(({ user }) => {
         const { uid } = user
         const usersService = new UsersService()
@@ -111,7 +109,7 @@ export const userStore = defineStore('user', () => {
 
   const signOut = async () => {
     const usersService = new UsersService()
-    await firebaseSignOut(auth)
+    await authentication.signOut(auth)
       .then(() => {
         usersService.signOut()
         state.value.status.loggedIn = false
@@ -128,7 +126,7 @@ export const userStore = defineStore('user', () => {
     console.log(profile)
     return profilesService.create(profile, id)
       .then((response) => {
-        if (response.data) {
+        if (response) {
           state.value.user.hasProfile = true
         }
       })

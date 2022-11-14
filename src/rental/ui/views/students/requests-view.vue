@@ -57,7 +57,7 @@ const statusColors = {
 onMounted(() => {
   const requestsService = new RequestsService()
   requestsService.getRequestsByUserId(route.params.id).then((response) => {
-    requests.value = response.data
+    requests.value = response.data.resource
     console.log(requests.value)
   })
 })

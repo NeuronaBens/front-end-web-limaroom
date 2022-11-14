@@ -3,8 +3,9 @@ export default class UsersService {
   signIn (id) {
     return http.get(`/users/${id}`)
       .then(response => {
-        if (response.data) {
-          const { id, role, active, profile } = response.data
+        console.log(response)
+        if (response.data.resource) {
+          const { id, role, active, profile } = response.data.resource
           const hasProfile = profile !== null
           const user = {
             id,
@@ -22,10 +23,11 @@ export default class UsersService {
   }
 
   signUp ({ id, address }) {
+    // TODO: Change adress to 'address' when backend is ready
     const user = {
       id,
       email: {
-        address
+        adress: address
       }
     }
     console.log(user)
@@ -33,8 +35,8 @@ export default class UsersService {
     return http.post('/users/register', user)
       .then(response => {
         console.log(response)
-        if (response.data) {
-          const { id, role, active } = response.data
+        if (response.data.resource) {
+          const { id, role, active } = response.data.resource
           const user = {
             id,
             role: role.name,
@@ -52,8 +54,8 @@ export default class UsersService {
   changeRole (id) {
     return http.put(`/users/${id}/assign/lessor`)
       .then(response => {
-        if (response.data) {
-          const { id, role, active, profile } = response.data
+        if (response.data.resource) {
+          const { id, role, active, profile } = response.data.resource
           const hasProfile = profile !== null
           const user = {
             id,

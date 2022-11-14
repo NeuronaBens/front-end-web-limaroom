@@ -12,7 +12,7 @@
       </div>
       <div class="input-group">
         <InputText class="input" type="text" v-model="profile.surname" required="true" />
-        <label>Surname</label>
+        <label>Last Name</label>
       </div>
       <div class="input-group">
         <InputText class="input" type="text" v-model="profile.phone.code" required="true" />

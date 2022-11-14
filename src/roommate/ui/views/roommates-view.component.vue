@@ -40,13 +40,11 @@ const roommates = ref([])
 const currentUser = userStore()
 
 const getRoommates = () => {
-  const currentProfileId = currentUser.state.user.profileId
+  const id = currentUser.state.user.id
   const roommatesService = new RoommatesService()
-  roommatesService.getAllRoommatesWithoutTeam()
+  roommatesService.getAllRoommatesWithoutTeam(id)
     .then((response) => {
-      roommates.value = response.data.resource.filter((roommate) => {
-        return roommate.id !== currentProfileId
-      })
+      roommates.value = response.data.resource
     })
     .catch((error) => {
       console.log(error)

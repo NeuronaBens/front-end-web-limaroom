@@ -170,10 +170,10 @@ onMounted(() => {
   const offersService = new OffersService()
 
   offersService.getOffer(route.params.id).then((response) => {
-    offer.value = response.data
-    amount.value = response.data.amount
-    property.value = response.data.property
-    assets.value = response.data.property.assets
+    offer.value = response.data.resource
+    amount.value = response.data.resource.amount
+    property.value = response.data.resource.property
+    assets.value = response.data.resource.property.assets
   })
 })
 </script>

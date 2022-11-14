@@ -9,7 +9,7 @@
       </div>
       <div class="profile__information">
         <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
-        <p><span class="fw-bold">Surname: </span> {{ profile.surname }}</p>
+        <p><span class="fw-bold">Last Name: </span> {{ profile.surname }}</p>
         <p><span class="fw-bold">Phone: </span>+{{ profile.phone.code }} {{ profile.phone.number }}</p>
       </div>
 
@@ -25,9 +25,11 @@
       </div>
       <div class="divider"></div>
       <div v-if="isStudent">
-        <div class="change__role">
-          <h2>Do you want to be a lessor?</h2>
-          <button @click="handleChangingRole = !handleChangingRole"  class="button-primary">Change to Lessor</button>
+        <div v-if="self">
+          <div class="change__role">
+            <h2>Do you want to be a lessor?</h2>
+            <button @click="handleChangingRole = !handleChangingRole" class="button-primary">Change to Lessor</button>
+          </div>
         </div>
       </div>
     </div>
@@ -73,6 +75,7 @@
     margin-bottom: 2rem;
   }
 }
+
 .modal {
   position: fixed;
   top: 0;

@@ -17,12 +17,12 @@ export default class ProfilesService {
     console.log(data)
     return http.post(`/profiles?userId=${userId}`, JSON.stringify(data))
       .then(response => {
-        if (response.data) {
+        if (response.data.resource) {
           const user = JSON.parse(localStorage.getItem('user'))
           user.hasProfile = true
-          user.profileId = response.data.id
+          user.profileId = response.data.resource.id
           localStorage.setItem('user', JSON.stringify(user))
-          return response.data
+          return response.data.resource
         }
         return null
       })
