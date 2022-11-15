@@ -1,7 +1,7 @@
 import http from '@/shared/services/http-common'
 export default class OffersService {
   getOffers () {
-    return http.get('/rentaloffers/all')
+    return http.get('/rentaloffers/visibles')
   }
 
   getOffer (id) {
@@ -16,11 +16,9 @@ export default class OffersService {
     return http.post(`/users/${id}/rental/offer`, data)
   }
 
-  updateOffer (id, data) {
-    return http.put(`/offers/${id}`, data)
-  }
+  changeOfferVisibility (id, visible) {
+    const path = visible ? 'not/visible' : 'visible'
 
-  deleteOffer (id) {
-    return http.delete(`/offers/${id}`)
+    return http.put(`/rentaloffers/${id}/${path}`)
   }
 }

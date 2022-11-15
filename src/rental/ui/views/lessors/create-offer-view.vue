@@ -16,11 +16,13 @@
           <InputText class="input" type="text" v-model="property.description" required />
           <label>Description</label>
         </div>
-        <!-- TODO: Change url for file
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="image.urlImage" required />
-        <label>Main image</label>
-      </div> -->
+        <div class="input-image">
+          <label class="button-black">
+            <input type="file" @change="changePreviewImage" ref="imageInput" />
+            UPLOAD MAIN IMAGE
+          </label>
+          <img :src="image.urlImage" alt="" class="preview-image">
+        </div>
       </fieldset>
 
       <fieldset>
@@ -43,7 +45,8 @@
         </div>
       </fieldset>
       <button type="submit" class="button-primary">Save</button>
-      <router-link :to="{ name: 'my-offers-view', params: { id: route.params.id } }" class="button-black">Back</router-link>
+      <router-link :to="{ name: 'my-offers-view', params: { id: route.params.id } }" class="button-black">Back
+      </router-link>
     </form>
   </div>
 </template>
@@ -51,21 +54,36 @@
 <style lang="scss">
 @import "@/shared/ui/assets/scss/_buttons.scss";
 @import "@/shared/ui/assets/scss/_inputs.scss";
+
 h1 {
   text-transform: uppercase;
 }
+
 fieldset {
   margin: 1rem 0;
   padding: 1.5rem 1rem;
   border-color: rgba($color: #000000, $alpha: 0.2);
   border-width: .1rem;
+
   legend {
     margin-bottom: 1rem;
     font-weight: $bold;
     text-transform: uppercase;
   }
-  .input-group{
+
+  .input-group {
     @include input-group;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .preview-image {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    max-width: 50rem;
   }
 }
 </style>
@@ -83,7 +101,7 @@ const offer = ref({
   lifecycle: {
     endAt: new Date().toISOString().split('T')[0]
   },
-  conditions: 'Good conditions'
+  conditions: ''
 })
 
 const amount = ref({
@@ -97,16 +115,24 @@ const property = ref({
 })
 
 const image = ref({
-  urlImage: 'https://a0.muscache.com/im/pictures/ec915ac0-c8b3-49e6-bea3-fbc659f95e4d.jpg?im_w=1200'
+  urlImage: ''
 })
 
 const validateOffer = (data) => {
   return true
 }
+const imageInput = ref(null)
+
+const changePreviewImage = (e) => {
+  const file = e.target.files[0]
+  if (file) {
+    image.value.urlImage = URL.createObjectURL(file)
+  }
+}
 
 const onSubmit = (e) => {
   e.preventDefault()
-  console.log('submit')
+
   const data = {
     rentalOfferingResource: {
       ...offer.value,
@@ -119,21 +145,21 @@ const onSubmit = (e) => {
     return
   }
 
+  const imageBlob = imageInput.value.files[0]
+
+  if (!imageBlob) return
+
   const offersService = new OffersService()
   offersService.createOffer(data, route.params.id).then((response) => {
-    console.log(response)
     if (response.data.resource) {
       const assetsServive = new AssetsService()
       const propertyId = response.data.resource.property.id
 
-      assetsServive.createAsset(image.value, propertyId).then((response) => {
-        console.log(response)
+      assetsServive.createAsset(imageBlob, propertyId).then((response) => {
         router.push({ name: 'my-offers-view', params: { id: route.params.id } })
       })
     }
   })
-
-  console.log(JSON.stringify(data))
 }
 
 </script>

@@ -37,14 +37,10 @@ const sendRequest = () => {
       setTimeout(() => {
         router.push({ name: 'roommates-view' })
       }, 2000)
-
-      console.log(response)
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: 'Error when sending request', detail: error.message, life: 3000 })
-      console.log(error)
     })
-  console.log('Sending request...')
 }
 
 </script>

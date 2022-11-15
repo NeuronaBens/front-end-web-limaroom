@@ -8,6 +8,7 @@
         <p class="offer__location">Lima, Peru</p>
       </div>
 
+      <!-- TODO: Change to a component, create default layout and slider -->
       <div class="offer__assets">
         <div class="offer__asset" v-for="asset in assets" v-bind:key="asset.url">
           <img :src="asset.urlImage" alt="">
@@ -38,13 +39,21 @@
             </div>
           </div>
 
+          <p>
+            <span class="fw-bold">Status:</span>
+            {{ offer.status }}
+          </p>
+          <p>
+            <span class="fw-bold">Visibility:</span>
+            {{ offer.visibility }}
+          </p>
         </div>
       </div>
 
       <div class="offer__actions">
         <button @click="editOffer" class="button-primary">Editar</button>
-        <button @click="addImage" class="button-primary">Añadir Imagenes</button>
-        <button @click="handleDelete = !handleDelete" class="button-black">Eliminar</button>
+        <button @click="hanldeUploadImage = !hanldeUploadImage" class="button-primary">Añadir Imagenes</button>
+        <button @click="handleChangeVisibility = !handleChangeVisibility" class="button-black">Change visibility</button>
       </div>
 
       <div class="divider offer__requets__divider"></div>
@@ -64,12 +73,29 @@
     </div>
   </div>
 
-  <div class="modal" v-if="handleDelete">
+  <div class="modal" v-if="handleChangeVisibility">
     <div class="modal__content">
-      <h1>Are you sure you want to delete offer?</h1>
+      <h1>Are you sure you want to change visibility?</h1>
       <div class="modal__actions">
-        <button @click="handleDelete = !handleDelete" class="button-black">Cancel</button>
-        <button @click="deleteOffer" class="button-primary">Delete</button>
+        <button @click="handleChangeVisibility = !handleChangeVisibility" class="button-black">Cancel</button>
+        <button @click="changeOfferVisibility" class="button-primary">Change</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" v-if="hanldeUploadImage">
+    <div class="modal__content">
+      <h1>Upload your image</h1>
+      <div class="input-image">
+        <label class="button-black">
+          <input type="file" @change="changePreviewImage" ref="imageBlob"/>
+          UPLOAD MAIN IMAGE
+        </label>
+        <img :src="imagePreview" alt="" class="preview-image">
+      </div>
+      <div class="modal__actions">
+        <button @click="hanldeUploadImage = !hanldeUploadImage" class="button-black">Cancel</button>
+        <button @click="uploadImage" class="button-primary">Upload</button>
       </div>
     </div>
   </div>
@@ -99,7 +125,8 @@
 
 .offer__assets {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   margin-bottom: 1rem;
 
   .offer__asset {
@@ -196,6 +223,26 @@
     }
   }
 }
+
+input[type="file"]{
+  display: none;
+}
+
+.input-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .preview-image {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    max-width: 50rem;
+    margin-top: 2rem;
+  }
+}
+
 </style>
 
 <script setup>
@@ -203,6 +250,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import OffersService from '@/rental/services/offers-api.service'
 import RequestsService from '@/rental/services/requests-api.service'
+import AssetsService from '@/rental/services/assets-api.service'
 import { useToast } from 'primevue/usetoast'
 
 const route = useRoute()
@@ -211,7 +259,10 @@ const offer = ref({})
 const amount = ref({})
 const property = ref({})
 const assets = ref([])
-const handleDelete = ref(false)
+const handleChangeVisibility = ref(false)
+const hanldeUploadImage = ref(false)
+const imagePreview = ref('')
+const imageBlob = ref(null)
 
 const requests = ref([])
 const toast = useToast()
@@ -222,17 +273,39 @@ const statusColors = {
   DECLINED: 'red'
 }
 
-const addImage = () => {
-  console.log('add image')
+const changePreviewImage = (e) => {
+  const file = e.target.files[0]
+  if (file) {
+    imagePreview.value = URL.createObjectURL(file)
+  }
+}
+
+const uploadImage = () => {
+  const blob = imageBlob.value.files[0]
+  if (!blob) return
+
+  const assetsService = new AssetsService()
+  assetsService.createAsset(blob, property.value.id)
+    .then((response) => {
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Image uploaded', life: 3000 })
+      hanldeUploadImage.value = false
+      assets.value.push(...response.data.resource)
+    })
 }
 
 const editOffer = () => {
-  console.log(route.params.id)
   router.push({ name: 'edit-offer-view', params: { id: route.params.id } })
 }
 
-const deleteOffer = () => {
-  console.log('delete')
+const changeOfferVisibility = () => {
+  const visible = offer.value.visibility === 'VISIBLE'
+  const offersService = new OffersService()
+  offersService.changeOfferVisibility(route.params.id, visible)
+    .then((response) => {
+      offer.value.visibility = response.data.resource.visibility
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Visibility changed', life: 3000 })
+      handleChangeVisibility.value = false
+    })
 }
 
 const acceptRequest = (id) => {

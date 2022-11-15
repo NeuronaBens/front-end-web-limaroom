@@ -98,7 +98,7 @@ const validateOffer = (data) => {
 
 const onSubmit = (e) => {
   e.preventDefault()
-  console.log('submit')
+
   const data = {
     rentalOfferingResource: {
       ...offer.value,
@@ -108,11 +108,10 @@ const onSubmit = (e) => {
   }
 
   if (!validateOffer(data)) {
-    return
+    console.log(data)
   }
 
   // TODO: Edit Offer Service Implemenation
-  console.log('Editing Offer')
 }
 
 onMounted(() => {

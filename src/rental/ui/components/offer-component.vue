@@ -96,7 +96,6 @@ const goToOfferDetail = () => {
 }
 
 onMounted(() => {
-  console.log(props.offer)
   image.value = props.offer.property.assets[0] ? props.offer.property.assets[0].urlImage : 'https://a0.muscache.com/im/pictures/ec915ac0-c8b3-49e6-bea3-fbc659f95e4d.jpg?im_w=1200'
 })
 </script>

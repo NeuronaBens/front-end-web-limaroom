@@ -82,24 +82,24 @@ const submitSignUp = (e) => {
   confirmPasswordErrors.value = validations.confirmPassword.map(v => v()).filter(v => v !== true)
 
   if (emailErrors.value.length > 0) {
-    console.log(...emailErrors)
     return
   }
 
   if (passwordErrors.value.length > 0) {
-    console.log(...passwordErrors)
     return
   }
 
   if (confirmPasswordErrors.value.length > 0) {
-    console.log(...confirmPasswordErrors)
     return
   }
 
   store.signUp({ email: email.value, password: password.value })
-    .then(() => {
-      router.push({ name: 'offers-view' })
-      console.log('sign up success')
+    .then((user) => {
+      if (user.role === 'ROLE_USER_STUDENT') {
+        router.push({ name: 'offers-view' })
+      } else {
+        router.push({ name: 'my-offers-view', params: { id: user.id } })
+      }
     })
     .catch((error) => {
       errorMessage.value = errorCodes[error.code]

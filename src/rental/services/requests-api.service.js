@@ -10,7 +10,7 @@ export default class RequestsService {
   }
 
   getRequestsByOfferId (id) {
-    return http.get(`/rental/offer/${id}/requests`)
+    return http.get(`/rentaloffers/${id}/requests`)
   }
 
   createRequest (data) {

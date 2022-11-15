@@ -14,8 +14,8 @@
         <InputText class="input" type="text" v-model="profile.surname" required="true" />
         <label>Last Name</label>
       </div>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="profile.phone.code" required="true" />
+      <div class="input-group" style="display: none;">
+        <InputText class="input" type="text" v-model="profile.phone.code" required="true" value="51"/>
         <label>Code</label>
       </div>
       <div class="input-group">
@@ -61,7 +61,6 @@ const router = useRouter()
 
 const onSubmit = (e) => {
   e.preventDefault()
-  console.log(profile.value)
 
   // const userId = currentUser.state.user.id
   // TODO: Validations
@@ -69,20 +68,16 @@ const onSubmit = (e) => {
   // Create profile
   currentUser.createProfile(profile.value)
     .then(() => {
-      console.log('Profile created')
       router.go()
     })
-
-  console.log('submit')
 }
 
 onMounted(() => {
   const hasProfile = currentUser.state.user.hasProfile
-  console.log(hasProfile)
+
   if (hasProfile) {
-    const userId = currentUser.state.user.id
-    router.push({ name: 'show-profile-view', params: { id: userId } })
+    const profileId = currentUser.state.user.profileId
+    router.push({ name: 'show-profile-view', params: { id: profileId } })
   }
-  console.log('mounted')
 })
 </script>

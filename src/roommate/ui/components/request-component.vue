@@ -79,10 +79,8 @@ const acceptRequest = () => {
       toast.add({ severity: 'success', summary: 'Request accepted correctly', life: 3000 })
     })
     .catch((error) => {
-      console.log(error)
       toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
     })
-  console.log('Accepting request...')
 }
 
 const declineRequest = () => {
@@ -97,9 +95,7 @@ const declineRequest = () => {
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
-      console.log(error)
     })
-  console.log('Declining request...')
 }
 
 onMounted(() => {

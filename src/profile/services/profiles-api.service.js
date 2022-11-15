@@ -14,7 +14,7 @@ export default class ProfilesService {
   }
 
   create (data, userId) {
-    console.log(data)
+     
     return http.post(`/profiles?userId=${userId}`, JSON.stringify(data))
       .then(response => {
         if (response.data.resource) {

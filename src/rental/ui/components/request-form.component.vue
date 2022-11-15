@@ -72,7 +72,7 @@ const save = () => {
 
   requestService.createRequest(request.value)
     .then((response) => {
-      console.log(response)
+       
       form.value.reset()
       request.value.message = ''
       toast.add({ severity: 'success', summary: 'Request sended correctly', life: 3000 })
@@ -81,7 +81,7 @@ const save = () => {
       }, 2000)
     })
     .catch((err) => {
-      console.log(err)
+       
       toast.add({ severity: 'error', summary: 'Error when sending request', detail: err.message, life: 3000 })
     })
 }
@@ -89,6 +89,6 @@ const save = () => {
 onMounted(() => {
   form.value.reset()
   request.value.message = ''
-  console.log(currentUser.state.user.id)
+   
 })
 </script>

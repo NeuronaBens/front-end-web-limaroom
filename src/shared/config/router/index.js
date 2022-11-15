@@ -123,21 +123,22 @@ router.beforeEach((to, from) => {
   const currentUser = userStore()
 
   if (currentUser.state.status.loggedIn) {
+    // TODO: change to main route
     if (to.name === 'sign-in-view' || to.name === 'sign-up-view') {
       return { name: 'offers-view' }
-    }
-
-    if (!currentUser.state.user.hasProfile) {
-      if (to.name !== 'create-profile-view') {
-        return { name: 'create-profile-view', params: { id: currentUser.state.user.id } }
+    } else {
+      if (!currentUser.state.user.hasProfile) {
+        if (to.name !== 'create-profile-view') {
+          return { name: 'create-profile-view', params: { id: currentUser.state.user.id } }
+        }
       }
-    }
 
-    if (!routesUsers[currentUser.state.user.role].routes.includes(to.name)) {
-      if (from.name) {
-        return { name: from.name }
+      if (!routesUsers[currentUser.state.user.role].routes.includes(to.name)) {
+        if (from.name) {
+          return { name: from.name }
+        }
+        return { name: routesUsers[currentUser.state.user.role].main }
       }
-      return { name: routesUsers[currentUser.state.user.role].main }
     }
   } else {
     if (to.name !== 'sign-in-view' && to.name !== 'sign-up-view') {

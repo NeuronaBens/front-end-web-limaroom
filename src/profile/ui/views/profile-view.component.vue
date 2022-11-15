@@ -13,19 +13,16 @@
         <p><span class="fw-bold">Phone: </span>+{{ profile.phone.code }} {{ profile.phone.number }}</p>
       </div>
 
-      <div class="divider"></div>
       <div v-if="isStudent">
         <div v-if="!self">
+          <div class="divider"></div>
           <RequestComponent :request="request" />
         </div>
-
-        <div v-else>
-          <RoommateRequestComponent />
-        </div>
       </div>
-      <div class="divider"></div>
+
       <div v-if="isStudent">
         <div v-if="self">
+          <div class="divider"></div>
           <div class="change__role">
             <h2>Do you want to be a lessor?</h2>
             <button @click="handleChangingRole = !handleChangingRole" class="button-primary">Change to Lessor</button>
@@ -50,7 +47,7 @@
 <style lang="scss">
 .profile {
   text-align: center;
-
+  margin-bottom: 2rem;
   .profile__image {
     width: 100%;
     overflow: hidden;
@@ -122,7 +119,6 @@ import Profile from '@/profile/domain/profile.entity.js'
 import Request from '@/roommate/domain/request.entity.js'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import RequestComponent from '@/roommate/ui/components/request-form-component.vue'
-import RoommateRequestComponent from '@/roommate/ui/components/roommate-requests-component.vue'
 import { userStore } from '@/shared/config/store'
 
 const profile = ref(new Profile({}))

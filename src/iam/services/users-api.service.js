@@ -3,7 +3,6 @@ export default class UsersService {
   signIn (id) {
     return http.get(`/users/${id}`)
       .then(response => {
-        console.log(response)
         if (response.data.resource) {
           const { id, role, active, profile } = response.data.resource
           const hasProfile = profile !== null
@@ -30,11 +29,9 @@ export default class UsersService {
         adress: address
       }
     }
-    console.log(user)
 
     return http.post('/users/register', user)
       .then(response => {
-        console.log(response)
         if (response.data.resource) {
           const { id, role, active } = response.data.resource
           const user = {

@@ -32,7 +32,7 @@
             <p class="offer__price">
               <span>{{ amount ? amount.price : '' }}</span>
               {{
-                 amount ? amount.currency : ''
+                amount ? amount.currency : ''
               }}
             </p>
             <div class="offer__stars">
@@ -150,9 +150,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import OffersService from '../../../services/offers-api.service'
 import RequestForm from '../../components/request-form.component.vue'
-import { userStore } from '@/shared/config/store'
 
-const currentUser = userStore()
 const route = useRoute()
 const router = useRouter()
 const offer = ref({})
@@ -166,7 +164,6 @@ const goBackToOffers = () => {
 }
 
 onMounted(() => {
-  console.log(currentUser)
   const offersService = new OffersService()
 
   offersService.getOffer(route.params.id).then((response) => {

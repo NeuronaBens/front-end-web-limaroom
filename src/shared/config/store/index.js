@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { authentication } from '@/shared/config/firebase'
+import { authentication } from '@/shared/config/firebase/authentication'
 import UsersService from '@/iam/services/users-api.service'
 import ProfilesService from '@/profile/services/profiles-api.service'
 
@@ -30,7 +30,6 @@ export const userStore = defineStore('user', () => {
 
         return usersService.getById(uid)
           .then(response => {
-            console.log('signing in')
             return usersService.signIn(uid)
               .then(user => {
                 if (user) {
@@ -42,10 +41,8 @@ export const userStore = defineStore('user', () => {
               })
           })
           .catch(() => {
-            console.log('signing up')
             return usersService.signUp({ id: uid, address: email })
               .then(user => {
-                console.log('user-signup: ', user)
                 if (user) {
                   state.value.status.loggedIn = true
                   state.value.user = user
@@ -63,7 +60,6 @@ export const userStore = defineStore('user', () => {
         const usersService = new UsersService()
         return usersService.signUp({ id: user.uid, address: email })
           .then(user => {
-            console.log('user-signup: ', user)
             if (user) {
               state.value.status.loggedIn = true
               state.value.user = user
@@ -123,7 +119,7 @@ export const userStore = defineStore('user', () => {
   const createProfile = (profile) => {
     const { id } = state.value.user
     const profilesService = new ProfilesService()
-    console.log(profile)
+
     return profilesService.create(profile, id)
       .then((response) => {
         if (response) {

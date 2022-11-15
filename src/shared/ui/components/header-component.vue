@@ -74,7 +74,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { userStore } from '@/shared/config/store/index.js'
+import { userStore } from '@/shared/config/store'
 import LinkGroup from '@/shared/ui/components/link-group-component.vue'
 
 const router = useRouter()
