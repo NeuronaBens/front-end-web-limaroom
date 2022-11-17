@@ -8,8 +8,8 @@ export default class PropertiesService {
     return http.get(`/properties/${id}`)
   }
 
-  createProperty (data) {
-    return http.post('/properties', data)
+  createProperty (property) {
+    return http.post('/properties', property)
   }
 
   updateProperty (id, data) {

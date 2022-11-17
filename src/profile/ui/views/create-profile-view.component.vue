@@ -6,22 +6,38 @@
     </div>
 
     <form @submit="onSubmit">
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="profile.name" required="true" />
-        <label>Name</label>
-      </div>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="profile.surname" required="true" />
-        <label>Last Name</label>
-      </div>
-      <div class="input-group" style="display: none;">
-        <InputText class="input" type="text" v-model="profile.phone.code" required="true" value="51"/>
-        <label>Code</label>
-      </div>
-      <div class="input-group">
-        <InputText class="input" type="text" v-model="profile.phone.number" required="true" />
-        <label>Phone</label>
-      </div>
+      <fieldset>
+        <legend>Personal Information</legend>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.name" required="true" />
+          <label>Name</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.surname" required="true" />
+          <label>Last Name</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.about" required="true"/>
+          <label>About</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.gender" required="true"/>
+          <label>Gender</label>
+        </div>
+        <ImageInput ref="imageInputRef" :uploadService="currentUser.createProfile" />
+      </fieldset>
+      <fieldset>
+        <legend>Extra Information</legend>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.phone.number" required="true" />
+          <label>Phone</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.location" required="true" />
+          <label>Location</label>
+        </div>
+      </fieldset>
+
       <button type="submit" class="button-primary">Create</button>
     </form>
   </div>
@@ -39,10 +55,12 @@
 .form-header {
   text-align: center;
   margin-bottom: 2rem;
+
   h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
   }
+
   p {
     font-size: 1.5rem;
   }
@@ -54,22 +72,30 @@ import { onMounted, ref } from 'vue'
 import Profile from '@/profile/domain/profile.entity.js'
 import { userStore } from '@/shared/config/store'
 import { useRouter } from 'vue-router'
+import ImageInput from '@/shared/ui/components/image-input-component.vue'
 
 const profile = ref(new Profile({}))
 const currentUser = userStore()
 const router = useRouter()
+const imageInputRef = ref(null)
 
 const onSubmit = (e) => {
   e.preventDefault()
+  profile.value.phone.code = '+51'
 
-  // const userId = currentUser.state.user.id
+  if (!imageInputRef.value.imageBlob.files[0]) {
+    console.log('No image')
+    return
+  }
+  console.log(profile.value)
+  const userId = currentUser.state.user.id
   // TODO: Validations
 
   // Create profile
-  currentUser.createProfile(profile.value)
-    .then(() => {
-      router.go()
-    })
+  imageInputRef.value.uploadImage({ profile: profile.value, userId })
+  // .then(() => {
+  //   router.go()
+  // })
 }
 
 onMounted(() => {

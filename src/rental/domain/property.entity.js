@@ -1,11 +1,10 @@
 export default class Property {
-  constructor ({ id, name, description, location, price, status, ownerId }) {
+  constructor ({ id = 0, title = '', description = '', propertyType = '', location = '', assets = [] } = {}) {
     this.id = id
-    this.name = name
+    this.title = title
     this.description = description
     this.location = location
-    this.price = price
-    this.status = status
-    this.ownerId = ownerId
+    this.assets = assets
+    this.propertyType = propertyType
   }
 }

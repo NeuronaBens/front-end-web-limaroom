@@ -5,12 +5,16 @@
         <h1>This is my profile</h1>
       </div>
       <div class="profile__image">
-        <img src="@/roommate/ui/assets/avatar.png" alt="">
+        <img :src="profile.photoUrl" alt="">
       </div>
       <div class="profile__information">
         <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
         <p><span class="fw-bold">Last Name: </span> {{ profile.surname }}</p>
-        <p><span class="fw-bold">Phone: </span>+{{ profile.phone.code }} {{ profile.phone.number }}</p>
+        <p><span class="fw-bold">Gender: </span> {{ profile.gender }}</p>
+        <p><span class="fw-bold">About me: </span> {{ profile.about }}</p>
+        <p><span class="fw-bold">Location: </span> {{ profile.location }}</p>
+        <p><span class="fw-bold">Status: </span> {{ teamStatus[profile.teamStatus] }}</p>
+        <p><span class="fw-bold">Phone: </span>{{ profile.phone.code }} {{ profile.phone.number }}</p>
       </div>
 
       <div v-if="isStudent">
@@ -122,11 +126,16 @@ import RequestComponent from '@/roommate/ui/components/request-form-component.vu
 import { userStore } from '@/shared/config/store'
 
 const profile = ref(new Profile({}))
-const route = useRoute()
 const request = ref(new Request({}))
+const route = useRoute()
 const currentUser = userStore()
 const router = useRouter()
 const handleChangingRole = ref(false)
+
+const teamStatus = {
+  WITHOUTTEAM: 'Looking for a roommate',
+  ONTEAM: "I'm already in a team"
+}
 
 const self = computed(() => {
   return route.params.id ? route.params.id === '' : true
@@ -153,6 +162,7 @@ onMounted(() => {
     profilesService.getById(route.params.id)
       .then((response) => {
         profile.value = response.data.resource
+        console.log(profile.value)
       })
       .catch((error) => {
         console.log(error)

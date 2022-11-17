@@ -12,8 +12,8 @@ export default class OffersService {
     return http.get(`/users/${id}/rental/offers`)
   }
 
-  createOffer (data, id) {
-    return http.post(`/users/${id}/rental/offer`, data)
+  createOffer (offer, id) {
+    return http.post(`/users/${id}/rental/offer`, offer)
   }
 
   changeOfferVisibility (id, visible) {

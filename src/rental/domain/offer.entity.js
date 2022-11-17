@@ -1,9 +1,10 @@
 export default class Offer {
-  constructor ({ id, propertyId, userId, status, price, createdAt }) {
+  constructor ({ id = 0, lifecycle = { endAt: '' }, amount = { price: 0, currency: '' }, conditions = '', status = '', visibility = '' } = {}) {
     this.id = id
-    this.propertyId = propertyId
-    this.userId = userId
+    this.lifecycle = lifecycle
+    this.amount = amount
+    this.conditions = conditions
     this.status = status
-    this.createdAt = createdAt
+    this.visibility = visibility
   }
 }
