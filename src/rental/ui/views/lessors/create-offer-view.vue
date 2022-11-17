@@ -3,29 +3,7 @@
   <div class="container">
     <h1>Create new Offer</h1>
     <form @submit="onSubmit">
-      <fieldset>
-        <legend>Property Information</legend>
-        <div class="input-group">
-          <InputText class="input" type="text" v-model="property.title" required />
-          <label>Title</label>
-        </div>
-        <div class="input-group">
-          <InputText class="input" type="text" v-model="offer.conditions" required />
-          <label>Conditions</label>
-        </div>
-        <div class="input-group">
-          <InputText class="input" type="text" v-model="property.description" required />
-          <label>Description</label>
-        </div>
-        <!-- <div class="input-image">
-          <label class="button-black">
-            <input type="file" @change="changePreviewImage" ref="imageInput" />
-            UPLOAD MAIN IMAGE
-          </label>
-          <img :src="image.urlImage" alt="" class="preview-image">
-        </div> -->
-        <ImageInput ref="imageInputRef" :uploadService="assetsService.createAsset" />
-      </fieldset>
+      <PropertyForm ref="propertyFormRef"/>
 
       <fieldset>
         <legend>Price</legend>
@@ -41,6 +19,10 @@
 
       <fieldset>
         <legend>Offer information</legend>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="amount.currency" required />
+          <label>Property Conditions</label>
+        </div>
         <div class="input-group">
           <InputText class="input" type="date" v-model="offer.lifecycle.endAt" required />
           <label>End Offer Date</label>
@@ -80,16 +62,16 @@ fieldset {
 </style>
 
 <script setup>
+/* eslint-disable */
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import OffersService from '@/rental/services/offers-api.service'
-import AssetsService from '@/rental/services/assets-api.service'
-import ImageInput from '@/shared/ui/components/image-input-component.vue'
+import PropertyForm from '@/rental/ui/components/lessor/property-form-component.vue'
 
 const route = useRoute()
 const router = useRouter()
-const imageInputRef = ref(null)
-const assetsService = new AssetsService()
+const propertyFormRef = ref(null)
+
 const offer = ref({
   lifecycle: {
     endAt: new Date().toISOString().split('T')[0]
@@ -102,39 +84,38 @@ const amount = ref({
   currency: ''
 })
 
-const property = ref({
-  id: '',
-  title: '',
-  description: ''
-})
-
-const validateOffer = (data) => {
+const validateOffer = () => {
   return true
 }
 
 const onSubmit = (e) => {
   e.preventDefault()
+  if(!propertyFormRef.value.validate()){
+    return
+  }
+
+  if (!validateOffer()) {
+    return
+  }
 
   const data = {
     rentalOfferingResource: {
       ...offer.value,
       amount: amount.value
     },
-    propertyResource: property.value
+    propertyResource: propertyFormRef.value.property
   }
 
-  if (!validateOffer(data)) {
-    return
-  }
 
-  if (!imageInputRef.value.imageBlob.files[0]) return
+  const imageInputRef = propertyFormRef.value.imageInputRef
+  if (!imageInputRef.imageBlob.files[0]) return
 
   const offersService = new OffersService()
   offersService.createOffer(data, route.params.id).then((response) => {
     if (response.data.resource) {
       const propertyId = response.data.resource.property.id
 
-      imageInputRef.value.uploadImage({ id: propertyId })
+      imageInputRef.uploadImage({ id: propertyId })
         .then((response) => {
           if (response) {
             setTimeout(() => {

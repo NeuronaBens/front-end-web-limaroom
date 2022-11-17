@@ -50,7 +50,7 @@ const uploadImage = (params = {}) => {
 
   return props.uploadService(blob, params)
     .then((response) => {
-      if (response.data.success) {
+      if (response) {
         toast.add({ severity: 'success', summary: 'Success', detail: 'Image uploaded', life: 3000 })
         return response.data.resource
       } else {

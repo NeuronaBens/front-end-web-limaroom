@@ -116,11 +116,10 @@ export const userStore = defineStore('user', () => {
       })
   }
 
-  const createProfile = (profile) => {
-    const { id } = state.value.user
+  const createProfile = (blob, params) => {
     const profilesService = new ProfilesService()
 
-    return profilesService.create(profile, id)
+    return profilesService.create(blob, params)
       .then((response) => {
         if (response) {
           state.value.user.hasProfile = true

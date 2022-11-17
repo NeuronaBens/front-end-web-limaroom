@@ -68,7 +68,6 @@ const errorCodes = {
 const signIn = () => {
   store.signIn(user.value)
     .then((response) => {
-       
       if (response.role === 'ROLE_USER_LESSOR') {
         router.push({ name: 'my-offers-view', params: { id: response.id } })
       } else {
