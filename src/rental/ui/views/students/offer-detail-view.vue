@@ -1,38 +1,46 @@
 <template>
   <div class="container">
     <div class="offer">
+      <!-- TODO: Change to Property View component -->
       <div class="offer__header">
         <div class="offer__title">
           <i class="pi pi-arrow-left icon" @click="goBackToOffers"></i>
-          <h1>Beautiful House at City</h1>
+          <h1>{{ property.title }}</h1>
         </div>
         <div class="offer__stars">
           <i class="pi pi-star-fill"></i>
           <p>5.00</p>
         </div>
-        <p class="offer__location">Lima, Peru</p>
+        <p class="offer__location">{{ property.location }}</p>
       </div>
 
       <div class="offer__assets">
-        <div class="offer__asset" v-for="asset in assets" v-bind:key="asset.urlImage">
+        <div class="offer__asset" v-for="asset in property.assets" v-bind:key="asset.urlImage">
           <img :src="asset.urlImage" alt="">
         </div>
       </div>
+      <!-- Property Component -->
 
       <div class="offer__footer">
+        <!-- TODO: Change to Offer Component -->
         <div class="offer__description">
           <h2>Descripción</h2>
           <p>{{ property.description }}</p>
           <div class="divider"></div>
           <h2>Aditional Information</h2>
           <p>{{ offer.conditions }}</p>
+          <p>{{ new Date(offer.lifecycle.endAt) }}</p>
+          <p>{{ offer.status }}</p>
+          <p></p>
         </div>
+        <!-- Offer Component -->
+        <!-- TODO: Change Offer Request to Component -->
         <div class="offer__request">
           <div class="offer__extra">
             <p class="offer__price">
-              <span>{{ amount ? amount.price : '' }}</span>
+              <span>{{ offer.amount.price }}</span>
               {{
-                amount ? amount.currency : ''
+                offer.amount.currency
               }}
             </p>
             <div class="offer__stars">
@@ -47,6 +55,7 @@
             <RequestForm :offer-id="id"/>
           </div>
         </div>
+        <!-- Offer Request Component -->
       </div>
     </div>
   </div>
@@ -148,15 +157,16 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import OffersService from '../../../services/offers-api.service'
-import RequestForm from '../../components/request-form.component.vue'
+import OffersService from '@/rental/services/offers-api.service'
+import RequestForm from '@/rental/ui/components/request-form.component.vue'
+
+import Property from '@/rental/domain/property.entity'
+import Offer from '@/rental/domain/offer.entity'
 
 const route = useRoute()
 const router = useRouter()
-const offer = ref({})
-const amount = ref({})
-const property = ref({})
-const assets = ref([])
+const offer = ref(new Offer({}))
+const property = ref(new Property({}))
 const id = route.params.id
 
 const goBackToOffers = () => {
@@ -168,9 +178,9 @@ onMounted(() => {
 
   offersService.getOffer(route.params.id).then((response) => {
     offer.value = response.data.resource
-    amount.value = response.data.resource.amount
     property.value = response.data.resource.property
-    assets.value = response.data.resource.property.assets
+
+    console.log(offer.value)
   })
 })
 </script>
