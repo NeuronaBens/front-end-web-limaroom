@@ -10,7 +10,7 @@ export default class AssetsService {
     return http.get(`/assets?propertyId=${id}&preview=1`)
   }
 
-  createAsset (image, id) {
+  createAsset (image, { id }) {
     return uploadImage(`properties/${id}`, image)
       .then((downloadUrl) => {
         return http.post(`/properties/${id}/assets`, [{ urlImage: downloadUrl }])

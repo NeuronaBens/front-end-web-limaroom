@@ -1,3 +1,4 @@
+
 <template>
   <div class="container">
     <h1>Create new Offer</h1>
@@ -16,13 +17,14 @@
           <InputText class="input" type="text" v-model="property.description" required />
           <label>Description</label>
         </div>
-        <div class="input-image">
+        <!-- <div class="input-image">
           <label class="button-black">
             <input type="file" @change="changePreviewImage" ref="imageInput" />
             UPLOAD MAIN IMAGE
           </label>
           <img :src="image.urlImage" alt="" class="preview-image">
-        </div>
+        </div> -->
+        <ImageInput ref="imageInputRef" :uploadService="assetsService.createAsset" />
       </fieldset>
 
       <fieldset>
@@ -74,17 +76,6 @@ fieldset {
   .input-group {
     @include input-group;
   }
-
-  input[type="file"] {
-    display: none;
-  }
-
-  .preview-image {
-    display: block;
-    margin: 0 auto;
-    width: 50%;
-    max-width: 50rem;
-  }
 }
 </style>
 
@@ -93,10 +84,12 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import OffersService from '@/rental/services/offers-api.service'
 import AssetsService from '@/rental/services/assets-api.service'
+import ImageInput from '@/shared/ui/components/image-input-component.vue'
 
 const route = useRoute()
 const router = useRouter()
-
+const imageInputRef = ref(null)
+const assetsService = new AssetsService()
 const offer = ref({
   lifecycle: {
     endAt: new Date().toISOString().split('T')[0]
@@ -110,24 +103,13 @@ const amount = ref({
 })
 
 const property = ref({
+  id: '',
   title: '',
   description: ''
 })
 
-const image = ref({
-  urlImage: ''
-})
-
 const validateOffer = (data) => {
   return true
-}
-const imageInput = ref(null)
-
-const changePreviewImage = (e) => {
-  const file = e.target.files[0]
-  if (file) {
-    image.value.urlImage = URL.createObjectURL(file)
-  }
 }
 
 const onSubmit = (e) => {
@@ -145,19 +127,21 @@ const onSubmit = (e) => {
     return
   }
 
-  const imageBlob = imageInput.value.files[0]
-
-  if (!imageBlob) return
+  if (!imageInputRef.value.imageBlob.files[0]) return
 
   const offersService = new OffersService()
   offersService.createOffer(data, route.params.id).then((response) => {
     if (response.data.resource) {
-      const assetsServive = new AssetsService()
       const propertyId = response.data.resource.property.id
 
-      assetsServive.createAsset(imageBlob, propertyId).then((response) => {
-        router.push({ name: 'my-offers-view', params: { id: route.params.id } })
-      })
+      imageInputRef.value.uploadImage({ id: propertyId })
+        .then((response) => {
+          if (response) {
+            setTimeout(() => {
+              router.push({ name: 'my-offers-view', params: { id: route.params.id } })
+            }, 3000)
+          }
+        })
     }
   })
 }
