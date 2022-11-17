@@ -1,4 +1,5 @@
 import http from '@/shared/services/http-common'
+import { uploadImage } from '@/shared/config/firebase/storage'
 
 export default class ProfilesService {
   getAll () {
@@ -13,18 +14,21 @@ export default class ProfilesService {
     return http.get(`/profiles/${id}`)
   }
 
-  create (data, userId) {
-     
-    return http.post(`/profiles?userId=${userId}`, JSON.stringify(data))
-      .then(response => {
-        if (response.data.resource) {
-          const user = JSON.parse(localStorage.getItem('user'))
-          user.hasProfile = true
-          user.profileId = response.data.resource.id
-          localStorage.setItem('user', JSON.stringify(user))
-          return response.data.resource
-        }
-        return null
+  create (image, { profile, userId }) {
+    return uploadImage(`profiles/${userId}`, image)
+      .then((downloadUrl) => {
+        profile.photoUrl = downloadUrl
+        return http.post(`/profiles?userId=${userId}`, JSON.stringify(profile))
+          .then(response => {
+            if (response.data.resource) {
+              const user = JSON.parse(localStorage.getItem('user'))
+              user.hasProfile = true
+              user.profileId = response.data.resource.id
+              localStorage.setItem('user', JSON.stringify(user))
+              return response.data.resource
+            }
+            return null
+          })
       })
   }
 
