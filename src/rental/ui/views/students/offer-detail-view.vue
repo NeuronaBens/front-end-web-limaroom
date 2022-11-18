@@ -4,18 +4,8 @@
       <PropertyComponent :property="property"/>
 
       <div class="offer__footer">
-        <!-- TODO: Change to Offer Component -->
-        <div class="offer__description">
-          <h2>Descripción</h2>
-          <p>{{ property.description }}</p>
-          <div class="divider"></div>
-          <h2>Aditional Information</h2>
-          <p>{{ offer.conditions }}</p>
-          <p>{{ new Date(offer.lifecycle.endAt) }}</p>
-          <p>{{ offer.status }}</p>
-          <p></p>
-        </div>
-        <!-- Offer Component -->
+        <OfferComponent :offer="offer" />
+
         <!-- TODO: Change Offer Request to Component -->
         <div class="offer__request">
           <div class="offer__extra">
@@ -47,13 +37,8 @@
 .offer {
   padding: 2rem 0;
 
-  .divider {
-    background-color: lighten($black, 80);
-  }
-
   .offer__footer {
     @include grid(2, 4rem);
-
     grid-template-columns: calc(60% - 4rem) 40%;
   }
 }
@@ -95,7 +80,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import RequestForm from '@/rental/ui/components/request-form.component.vue'
 import PropertyComponent from '@/rental/ui/components/student/property-component.vue'
-
+import OfferComponent from '@/rental/ui/components/student/offer-component.vue'
 import OffersService from '@/rental/services/offers-api.service'
 
 import Property from '@/rental/domain/property.entity'
