@@ -10,12 +10,23 @@
 <script setup>
 import Header from '@/shared/ui/components/header-component.vue'
 import { userStore } from '@/shared/config/store/index.js'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 const currentUser = userStore()
 
 const isAuthenticated = computed(() => {
   return currentUser.state.status.loggedIn
+})
+
+const sessionExpires = () => {
+  const now = new Date()
+  if (now.getTime() > currentUser.state.user.expiration) {
+    localStorage.removeItem('user')
+  }
+}
+
+onMounted(() => {
+  sessionExpires()
 })
 
 </script>

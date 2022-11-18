@@ -1,4 +1,9 @@
 import http from '@/shared/services/http-common'
+
+// Adding one day of expiration
+const ttlDays = 1
+const ttl = ttlDays * 24 * 60 * 60 * 1000
+
 export default class UsersService {
   signIn (id) {
     return http.get(`/users/${id}`)
@@ -11,7 +16,8 @@ export default class UsersService {
             role: role.name,
             active,
             hasProfile,
-            profileId: profile.id ? profile.id : 0
+            profileId: profile.id ? profile.id : 0,
+            expiration: new Date().getTime() + ttl
           }
 
           localStorage.setItem('user', JSON.stringify(user))
@@ -38,7 +44,8 @@ export default class UsersService {
             role: role.name,
             active,
             hasProfile: false,
-            profileId: 0
+            profileId: 0,
+            expiration: new Date().getTime() + ttl
           }
           localStorage.setItem('user', JSON.stringify(user))
           return user
@@ -58,7 +65,8 @@ export default class UsersService {
             role: role.name,
             active,
             hasProfile,
-            profileId: profile.id ? profile.id : 0
+            profileId: profile.id ? profile.id : 0,
+            expiration: new Date().getTime() + ttl
           }
 
           localStorage.setItem('user', JSON.stringify(user))
