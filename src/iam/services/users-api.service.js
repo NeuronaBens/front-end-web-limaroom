@@ -22,11 +22,10 @@ export default class UsersService {
   }
 
   signUp ({ id, address }) {
-    // TODO: Change adress to 'address' when backend is ready
     const user = {
       id,
       email: {
-        adress: address
+        address
       }
     }
 
