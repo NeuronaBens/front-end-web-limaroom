@@ -11,7 +11,9 @@ const EditOfferView = () => import('@/rental/ui/views/lessors/edit-offer-view.vu
 const MyOfferDetailView = () => import('@/rental/ui/views/lessors/my-offer-detail-view.vue')
 const OffersView = () => import('@/rental/ui/views/students/offers-view.vue')
 const OfferDetailView = () => import('@/rental/ui/views/students/offer-detail-view.vue')
-const RequestsView = () => import('@/rental/ui/views/students/requests-view.vue')
+
+const StudentRequetsView = () => import('@/rental/ui/views/students/requests-view.vue')
+const LessorRequetsView = () => import('@/rental/ui/views/lessors/requests-view.vue')
 
 const CreateProfileView = () => import('@/profile/ui/views/create-profile-view.component.vue')
 const ProfileView = () => import('@/profile/ui/views/profile-view.component.vue')
@@ -92,8 +94,19 @@ const router = createRouter({
     },
     {
       path: '/user/:id/requests',
-      name: 'requests-view',
-      component: RequestsView
+      name: 'requests',
+      children: [
+        {
+          path: 'lessor',
+          name: 'lessor-requests-view',
+          component: LessorRequetsView
+        },
+        {
+          path: 'student',
+          name: 'student-requests-view',
+          component: StudentRequetsView
+        }
+      ]
     },
     {
       path: '/roommates',
@@ -111,11 +124,11 @@ const router = createRouter({
 const routesUsers = {
   ROLE_USER_STUDENT: {
     main: 'offers-view',
-    routes: ['offers-view', 'offer-detail-view', 'requests-view', 'profile-view', 'create-profile-view', 'show-profile-view', 'roommates-view']
+    routes: ['offers-view', 'offer-detail-view', 'student-requests-view', 'profile-view', 'create-profile-view', 'show-profile-view', 'roommates-view']
   },
   ROLE_USER_LESSOR: {
     main: 'my-offers-view',
-    routes: ['my-offers-view', 'profile-view', 'requests-view', 'create-profile-view', 'show-profile-view', 'create-offer-view', 'my-offer-detail-view', 'edit-offer-view']
+    routes: ['my-offers-view', 'profile-view', 'lessor-requests-view', 'create-profile-view', 'show-profile-view', 'create-offer-view', 'my-offer-detail-view', 'edit-offer-view']
   }
 }
 
@@ -123,7 +136,6 @@ router.beforeEach((to, from) => {
   const currentUser = userStore()
 
   if (currentUser.state.status.loggedIn) {
-    // TODO: change to main route
     if (to.name === 'sign-in-view' || to.name === 'sign-up-view') {
       return { name: 'offers-view' }
     } else {

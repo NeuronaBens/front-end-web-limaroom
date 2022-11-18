@@ -36,30 +36,24 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import RequestsService from '@/rental/services/requests-api.service.js'
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { userStore } from '@/shared/config/store'
 
+import RequestsService from '@/rental/services/requests-api.service.js'
+
 const currentUser = userStore()
-
-const props = defineProps({
-  offerId: {
-    type: String,
-    required: true
-  }
-})
-
-const request = ref({
-  message: '',
-  rentalOfferId: parseInt(props.offerId),
-  userId: currentUser.state.user.id
-})
-
 const router = useRouter()
+const route = useRoute()
 const form = ref(null)
 const errors = ref([])
 const toast = useToast()
+
+const request = ref({
+  message: '',
+  rentalOfferId: route.params.id,
+  userId: currentUser.state.user.id
+})
 
 const save = () => {
   if (request.value.message.trim().length === 0) {
@@ -69,10 +63,8 @@ const save = () => {
   }
 
   const requestService = new RequestsService()
-
   requestService.createRequest(request.value)
     .then((response) => {
-       
       form.value.reset()
       request.value.message = ''
       toast.add({ severity: 'success', summary: 'Request sended correctly', life: 3000 })
@@ -81,7 +73,7 @@ const save = () => {
       }, 2000)
     })
     .catch((err) => {
-       
+      console.log(err)
       toast.add({ severity: 'error', summary: 'Error when sending request', detail: err.message, life: 3000 })
     })
 }
@@ -89,6 +81,5 @@ const save = () => {
 onMounted(() => {
   form.value.reset()
   request.value.message = ''
-   
 })
 </script>

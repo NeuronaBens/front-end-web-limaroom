@@ -71,7 +71,7 @@ a {
   font-weight: bold;
 }
 .container {
-  width: min(80%, 1200px);
+  width: min(90%, 120rem);
   margin: 0 auto;
 }
 

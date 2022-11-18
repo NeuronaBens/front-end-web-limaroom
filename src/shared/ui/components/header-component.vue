@@ -92,12 +92,12 @@ const accountRoutes = [
 const studentRoutes = [
   { name: 'Offers', to: 'offers-view' },
   { name: 'Roommates', to: 'roommates-view' },
-  { name: 'Requests', to: 'requests-view', params: { id } }
+  { name: 'Requests', to: 'student-requests-view', params: { id } }
 ]
 
 const lessorRoutes = [
-  { name: 'My Properties', to: 'my-offers-view', params: { id } }
-  // { name: 'Requests', to: 'requests-view', params: { id } }
+  { name: 'My Properties', to: 'my-offers-view', params: { id } },
+  { name: 'Requests', to: 'lessor-requests-view', params: { id } }
 ]
 
 const toggleNav = () => {

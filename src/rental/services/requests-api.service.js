@@ -14,7 +14,7 @@ export default class RequestsService {
   }
 
   createRequest (data) {
-    return http.post('/rental/request', JSON.stringify(data))
+    return http.post('/requests', JSON.stringify(data))
   }
 
   acceptRequest (id) {

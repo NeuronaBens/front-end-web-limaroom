@@ -1,5 +1,5 @@
 <template>
-  <div class="offer__footer">
+  <div class="offer__component">
     <h2>Offer Information</h2>
     <p><span class="fw-bold">Conditions:</span> {{ offer.conditions }}</p>
     <p class="offer__price">
@@ -46,25 +46,25 @@
 </template>
 
 <style lang="scss">
-.offer__stars {
-  p {
-    display: inline-block;
-    margin-left: 1rem;
-  }
-}
-
-.offer__footer {
+.offer__component {
   margin-bottom: 2rem;
-}
 
-.offer__actions {
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  .offer__stars {
+    p {
+      display: inline-block;
+      margin-left: 1rem;
+    }
+  }
 
-  a {
-    margin-top: 0;
+  .offer__actions {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    a {
+      margin-top: 0;
+    }
   }
 }
 </style>

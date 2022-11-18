@@ -20,6 +20,7 @@
 
     <div class="property__description">
       <h2>Descripción</h2>
+      <p><span class="fw-bold">Category:</span> {{ property.propertyType }}</p>
       <p>{{ property.description }}</p>
     </div>
 
@@ -99,7 +100,7 @@ defineProps({
 })
 
 const goBackToOffers = () => {
-  router.push({ name: 'propertys-view' })
+  router.push({ name: 'offers-view' })
 }
 
 </script>
