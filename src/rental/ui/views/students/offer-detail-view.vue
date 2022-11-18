@@ -1,25 +1,7 @@
 <template>
   <div class="container">
     <div class="offer">
-      <!-- TODO: Change to Property View component -->
-      <div class="offer__header">
-        <div class="offer__title">
-          <i class="pi pi-arrow-left icon" @click="goBackToOffers"></i>
-          <h1>{{ property.title }}</h1>
-        </div>
-        <div class="offer__stars">
-          <i class="pi pi-star-fill"></i>
-          <p>5.00</p>
-        </div>
-        <p class="offer__location">{{ property.location }}</p>
-      </div>
-
-      <div class="offer__assets">
-        <div class="offer__asset" v-for="asset in property.assets" v-bind:key="asset.urlImage">
-          <img :src="asset.urlImage" alt="">
-        </div>
-      </div>
-      <!-- Property Component -->
+      <PropertyComponent :property="property"/>
 
       <div class="offer__footer">
         <!-- TODO: Change to Offer Component -->
@@ -65,34 +47,6 @@
 .offer {
   padding: 2rem 0;
 
-  .offer__title {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-
-    .icon {
-      cursor: pointer;
-    }
-  }
-  .offer__stars {
-    display: inline-block;
-
-    p {
-      display: inline-block;
-      margin-left: .5rem;
-    }
-  }
-
-  .offer__location {
-    display: inline;
-    margin-left: 1.5rem;
-  }
-
-  .offer__header,
-  .offer__assets {
-    margin-bottom: 2rem;
-  }
-
   .divider {
     background-color: lighten($black, 80);
   }
@@ -101,24 +55,6 @@
     @include grid(2, 4rem);
 
     grid-template-columns: calc(60% - 4rem) 40%;
-  }
-}
-
-.offer__assets {
-
-  @include grid(2, 1rem);
-
-  .offer__asset {
-    width: 100%;
-    overflow: hidden;
-
-    img {
-      border-radius: 1rem;
-      width: 100%;
-      height: 100%;
-      max-height: 40rem;
-      object-fit: cover;
-    }
   }
 }
 
@@ -156,22 +92,19 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import OffersService from '@/rental/services/offers-api.service'
+import { useRoute } from 'vue-router'
 import RequestForm from '@/rental/ui/components/request-form.component.vue'
+import PropertyComponent from '@/rental/ui/components/student/property-component.vue'
+
+import OffersService from '@/rental/services/offers-api.service'
 
 import Property from '@/rental/domain/property.entity'
 import Offer from '@/rental/domain/offer.entity'
 
 const route = useRoute()
-const router = useRouter()
 const offer = ref(new Offer({}))
 const property = ref(new Property({}))
 const id = route.params.id
-
-const goBackToOffers = () => {
-  router.push({ name: 'offers-view' })
-}
 
 onMounted(() => {
   const offersService = new OffersService()
@@ -179,8 +112,6 @@ onMounted(() => {
   offersService.getOffer(route.params.id).then((response) => {
     offer.value = response.data.resource
     property.value = response.data.resource.property
-
-    console.log(offer.value)
   })
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="offers">
     <div class="offers__list">
-      <OfferComponent v-for="offer in offers" :key="offer.id" :offer="offer" />
+      <OfferPreviewComponent v-for="offer in offers" :key="offer.id" :offer="offer" />
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@
 </style>
 
 <script setup>
-import OfferComponent from '@/rental/ui/components/offer-component.vue'
+import OfferPreviewComponent from '@/rental/ui/components/offer-preview-component.vue'
 import { onMounted, ref } from 'vue'
 import OffersService from '@/rental/services/offers-api.service'
 // import AssetsService from '../../services/assets-api.service'
