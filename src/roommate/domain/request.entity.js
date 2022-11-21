@@ -1,7 +1,8 @@
 export default class Request {
-  constructor ({ id, requestorId, requestedId } = {}) {
+  constructor ({ id = 0, studentRequestor = {}, studentRequested = {}, status = '' } = {}) {
     this.id = id
-    this.requestorId = requestorId
-    this.requestedId = requestedId
+    this.studentRequestor = studentRequestor
+    this.studentRequested = studentRequested
+    this.status = status
   }
 }

@@ -5,12 +5,18 @@
       <p class="request__name">{{ requestor.name }} {{ requestor.surname}}</p>
 
       <div class="request__actions">
-        <button @click="acceptRequest" :disabled="!isPending" class="button-primary-block">Accept</button>
-        <button @click="declineRequest" :disabled="!isPending" class="button-black-block">Decline</button>
+        <a @click="acceptRequest" class="button-primary">Accept</a>
+        <a @click="declineRequest" class="button-black">Decline</a>
       </div>
     </div>
     <div v-else>
       <p class="request__name">{{ requested.name }} {{ requested.surname }}</p>
+    </div>
+  </div>
+
+  <div class="modal" v-if="handleTeamEnrollment">
+    <div class="modal__content">
+      <p>Congratulation! You've enroll a team!</p>
     </div>
   </div>
 
@@ -41,13 +47,15 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import RequestsService from '@/roommate/services/request-api.service.js'
 import { useToast } from 'primevue/usetoast'
+// Services
+import RequestsService from '@/roommate/services/request-api.service.js'
 
 const requestor = ref({})
 const requested = ref({})
 const status = ref('')
 const toast = useToast()
+const handleTeamEnrollment = ref(false)
 
 const statusColors = {
   PENDING: '#c2a200',
@@ -68,15 +76,23 @@ const props = defineProps({
   }
 })
 
+const teamEnrollAnimation = () => {
+  handleTeamEnrollment.value = true
+  setTimeout(() => {
+    handleTeamEnrollment.value = false
+  }, 2000)
+}
+
 const acceptRequest = () => {
   if (!isPending.value) {
     return
   }
   const requestsService = new RequestsService()
-  requestsService.acceptRequest(props.request.id)
+  requestsService.accept(props.request.id)
     .then((response) => {
-      status.value = response.data.resource.status
+      status.value = response.status
       toast.add({ severity: 'success', summary: 'Request accepted correctly', life: 3000 })
+      teamEnrollAnimation()
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
@@ -88,9 +104,9 @@ const declineRequest = () => {
     return
   }
   const requestsService = new RequestsService()
-  requestsService.declineRequest(props.request.id)
+  requestsService.decline(props.request.id)
     .then((response) => {
-      status.value = response.data.resource.status
+      status.value = response.status
       toast.add({ severity: 'success', summary: 'Request declineds correctly', life: 3000 })
     })
     .catch((error) => {
@@ -99,6 +115,7 @@ const declineRequest = () => {
 }
 
 onMounted(() => {
+  console.log(props.request)
   requestor.value = props.request.studentRequestor
   requested.value = props.request.studentRequested
   status.value = props.request.status

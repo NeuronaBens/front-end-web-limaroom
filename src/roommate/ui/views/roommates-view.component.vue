@@ -33,26 +33,22 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import RoommatesService from '@/roommate/services/roommate-api.service'
-import ProfileComponent from '@/roommate/ui/components/profile-component.vue'
 import { userStore } from '@/shared/config/store'
+// Services
+import RoommatesService from '@/roommate/services/roommate-api.service'
+// Components
+import ProfileComponent from '@/roommate/ui/components/profile-component.vue'
+
 const roommates = ref([])
 const currentUser = userStore()
 
-const getRoommates = () => {
+onMounted(() => {
   const id = currentUser.state.user.id
   const roommatesService = new RoommatesService()
   roommatesService.getAllRoommatesWithoutTeam(id)
     .then((response) => {
-      roommates.value = response.data.resource
+      roommates.value = response
     })
-    .catch((error) => {
-      console.log(error)
-    })
-}
-
-onMounted(() => {
-  getRoommates()
 })
 
 </script>

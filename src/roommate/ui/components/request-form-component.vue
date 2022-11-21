@@ -16,22 +16,23 @@
 </style>
 
 <script setup>
-import RequestsService from '@/roommate/services/request-api.service'
 import { useToast } from 'primevue/usetoast'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { userStore } from '@/shared/config/store'
+// Services
+import RequestsService from '@/roommate/services/request-api.service'
+
 const toast = useToast()
 const router = useRouter()
-const props = defineProps({
-  request: {
-    type: Object,
-    required: true
-  }
-})
+const route = useRoute()
+const currentUser = userStore()
 
 const sendRequest = () => {
   const requestsService = new RequestsService()
-  requestsService.createRequest(props.request)
-    .then((response) => {
+  const requestorId = currentUser.state.user.id
+  const requestedId = route.params.id
+  requestsService.create(requestorId, requestedId)
+    .then(() => {
       toast.add({ severity: 'success', summary: 'Request sended correctly', life: 2000 })
 
       setTimeout(() => {

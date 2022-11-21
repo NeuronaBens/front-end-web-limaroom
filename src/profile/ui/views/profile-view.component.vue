@@ -41,14 +41,16 @@
           </div>
         </div>
         <div v-else>
-          <div class="divider"></div>
-          <p>Tell us more about you! It will help us to find the best roommate for you</p>
-          <router-link :to="{ name: 'assign-attributes-view' }" class="button-primary">Take survey</router-link>
+          <div v-if="self">
+            <div class="divider"></div>
+            <p>Tell us more about you! It will help us to find the best roommate for you</p>
+            <router-link :to="{ name: 'assign-attributes-view' }" class="button-primary">Take survey</router-link>
+          </div>
         </div>
 
         <div v-if="!self">
           <div class="divider"></div>
-          <RequestComponent :request="request" />
+          <RequestComponent />
         </div>
         <div v-else>
           <div class="divider"></div>
@@ -147,14 +149,12 @@ import { onMounted, ref, computed } from 'vue'
 import ProfilesService from '@/profile/services/profiles-api.service.js'
 import AttributesService from '@/profile/services/attributes-api.service.js'
 import Profile from '@/profile/domain/profile.entity.js'
-import Request from '@/roommate/domain/request.entity.js'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import RequestComponent from '@/roommate/ui/components/request-form-component.vue'
 import { userStore } from '@/shared/config/store'
 
 const profile = ref(new Profile({}))
 const attributes = ref([])
-const request = ref(new Request({}))
 const route = useRoute()
 const currentUser = userStore()
 const router = useRouter()
@@ -189,9 +189,6 @@ onMounted(() => {
   const attributesService = new AttributesService()
   const profilesService = new ProfilesService()
   if (!self.value) {
-    request.value.requestorId = currentUser.state.user.id
-    request.value.requestedId = route.params.id
-
     profilesService.getById(route.params.id)
       .then((response) => {
         profile.value = response

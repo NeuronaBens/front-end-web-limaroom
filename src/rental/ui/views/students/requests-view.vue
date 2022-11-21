@@ -43,8 +43,8 @@ const requests = ref([])
 
 onMounted(() => {
   const requestsService = new RequestsService()
-  requestsService.getRequestsByUserId(route.params.id).then((response) => {
-    requests.value = response.data.resource
+  requestsService.getAllByUserId(route.params.id).then((response) => {
+    requests.value = response
     console.log(requests)
   })
 })

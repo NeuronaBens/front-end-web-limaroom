@@ -30,7 +30,7 @@
   .request__list {
     margin-top: 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
     gap: 2rem;
   }
 }
@@ -50,14 +50,15 @@ onMounted(() => {
   const requestsService = new RequestsService()
   requestsService.getMyRequests(currentUser.state.user.id)
     .then((response) => {
-      myRequests.value = response.data.resource
+      myRequests.value = response
     })
     .catch((error) => {
       console.log(error)
     })
+
   requestsService.getRequestsForMe(currentUser.state.user.id)
     .then((response) => {
-      requestsForMe.value = response.data.resource
+      requestsForMe.value = response
     })
     .catch((error) => {
       console.log(error)

@@ -6,7 +6,9 @@
       <div class="personalities">
         <h3>Personality types</h3>
         <div class="assign-attributes__list">
-          <div @click="toggleItem(attribute.id)" v-for="attribute in attributes.filter(attr => attr.type === 'personality')" :key="attribute.id" class="assign-attributes__list__item" :data-id="attribute.id">
+          <div @click="toggleItem(attribute.id)"
+            v-for="attribute in attributes.filter(attr => attr.type === 'personality')" :key="attribute.id"
+            class="assign-attributes__list__item" :data-id="attribute.id">
             <p>{{ attribute.name }}</p>
           </div>
         </div>
@@ -15,7 +17,9 @@
       <div class="personalities">
         <h3>Interests</h3>
         <div class="assign-attributes__list">
-          <div @click="toggleItem(attribute.id)" v-for="attribute in attributes.filter(attr => attr.type === 'interest')" :key="attribute.id" class="assign-attributes__list__item" :data-id="attribute.id">
+          <div @click="toggleItem(attribute.id)"
+            v-for="attribute in attributes.filter(attr => attr.type === 'interest')" :key="attribute.id"
+            class="assign-attributes__list__item" :data-id="attribute.id">
             <p>{{ attribute.name }}</p>
           </div>
         </div>
@@ -30,6 +34,7 @@
 
 <style lang="scss">
 @import '@/shared/ui/assets/scss/_buttons.scss';
+
 .assign-attributes__list {
   margin: 1rem 0;
   display: flex;
@@ -47,11 +52,12 @@
       background-color: $primary;
     }
   }
-}
-.divider {
+
+  .divider {
     margin: 3rem auto;
     background-color: rgba($color: #000000, $alpha: 1.0);
   }
+}
 </style>
 
 <script setup>

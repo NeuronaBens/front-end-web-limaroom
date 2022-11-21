@@ -35,10 +35,10 @@ const requests = ref([])
 
 onMounted(() => {
   // TODO: Get all offers by userId to get all requests by lessor
-  // const requestsService = new RequestsService()
-  // requestsService.getRequestsByUserId(route.params.id).then((response) => {
-  //   requests.value = response.data.resource
-  //   console.log(requests)
-  // })
+  const requestsService = new RequestsService()
+  requestsService.getAllByUserId(route.params.id).then((response) => {
+    requests.value = response
+    console.log(requests)
+  })
 })
 </script>
