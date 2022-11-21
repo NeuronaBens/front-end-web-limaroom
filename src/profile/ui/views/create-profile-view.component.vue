@@ -151,8 +151,7 @@ onMounted(() => {
   const hasProfile = currentUser.state.user.hasProfile
 
   if (hasProfile) {
-    const profileId = currentUser.state.user.profileId
-    router.push({ name: 'show-profile-view', params: { id: profileId } })
+    router.push({ name: 'show-profile-view' })
   }
 })
 </script>

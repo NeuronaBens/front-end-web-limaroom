@@ -11,21 +11,46 @@
         <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
         <p><span class="fw-bold">Last Name: </span> {{ profile.surname }}</p>
         <p><span class="fw-bold">Gender: </span> {{ profile.gender }}</p>
+        <p><span class="fw-bold">Age: </span> {{ profile.age }}</p>
         <p><span class="fw-bold">About me: </span> {{ profile.about }}</p>
-        <p><span class="fw-bold">Location: </span> {{ profile.country + ' - ' + profile.city  }}</p>
+        <p><span class="fw-bold">Location: </span> {{ profile.country + ' - ' + profile.city }}</p>
         <p v-if="isStudent"><span class="fw-bold">Status: </span> {{ teamStatus[profile.teamStatus] }}</p>
         <p><span class="fw-bold">Phone: </span>{{ profile.phone.code }} {{ profile.phone.number }}</p>
       </div>
 
       <div v-if="isStudent">
+        <div v-if="haveAttributes">
+          <div class="divider"></div>
+          <div class="profile__attributes">
+            <h2>Personality Type</h2>
+            <div class="profile__attributes__list">
+              <div v-for="attribute in attributes.filter(attr => attr.type === 'personality')" :key="attribute.id"
+                class="profile__attributes__list__item">
+                <p>{{ attribute.name }}</p>
+                <p>{{ attribute.value }}</p>
+              </div>
+            </div>
+            <h2>Interests</h2>
+            <div class="profile__attributes__list">
+              <div v-for="attribute in attributes.filter(attr => attr.type === 'interest')" :key="attribute.id"
+                class="profile__attributes__list__item">
+                <p>{{ attribute.name }}</p>
+                <p>{{ attribute.value }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="divider"></div>
+          <p>Tell us more about you! It will help us to find the best roommate for you</p>
+          <router-link :to="{ name: 'assign-attributes-view' }" class="button-primary">Take survey</router-link>
+        </div>
+
         <div v-if="!self">
           <div class="divider"></div>
           <RequestComponent :request="request" />
         </div>
-      </div>
-
-      <div v-if="isStudent">
-        <div v-if="self">
+        <div v-else>
           <div class="divider"></div>
           <div class="change__role">
             <h2>Do you want to be a lessor?</h2>
@@ -52,6 +77,7 @@
 .profile {
   text-align: center;
   margin: 2rem 0;
+
   .profile__image {
     width: 100%;
     overflow: hidden;
@@ -119,6 +145,7 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
 import ProfilesService from '@/profile/services/profiles-api.service.js'
+import AttributesService from '@/profile/services/attributes-api.service.js'
 import Profile from '@/profile/domain/profile.entity.js'
 import Request from '@/roommate/domain/request.entity.js'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
@@ -126,6 +153,7 @@ import RequestComponent from '@/roommate/ui/components/request-form-component.vu
 import { userStore } from '@/shared/config/store'
 
 const profile = ref(new Profile({}))
+const attributes = ref([])
 const request = ref(new Request({}))
 const route = useRoute()
 const currentUser = userStore()
@@ -145,6 +173,10 @@ const isStudent = computed(() => {
   return currentUser.state.user.role === 'ROLE_USER_STUDENT'
 })
 
+const haveAttributes = computed(() => {
+  return attributes.value.length > 0
+})
+
 const changeRole = () => {
   currentUser.changeRole(currentUser.state.user.id)
     .then(() => {
@@ -154,6 +186,7 @@ const changeRole = () => {
 }
 
 onMounted(() => {
+  const attributesService = new AttributesService()
   const profilesService = new ProfilesService()
   if (!self.value) {
     request.value.requestorId = currentUser.state.user.id
@@ -162,7 +195,10 @@ onMounted(() => {
     profilesService.getById(route.params.id)
       .then((response) => {
         profile.value = response
-        console.log(profile.value)
+        attributesService.getAllByProfileId(response.id)
+          .then((response) => {
+            attributes.value = response
+          })
       })
       .catch((error) => {
         console.log(error)
@@ -171,6 +207,10 @@ onMounted(() => {
     const userId = currentUser.state.user.id
     profilesService.getByUserId(userId).then((response) => {
       profile.value = response
+      attributesService.getAllByProfileId(response.id)
+        .then((response) => {
+          attributes.value = response
+        })
     })
   }
 })

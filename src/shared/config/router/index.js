@@ -17,6 +17,7 @@ const LessorRequetsView = () => import('@/rental/ui/views/lessors/requests-view.
 
 const CreateProfileView = () => import('@/profile/ui/views/create-profile-view.component.vue')
 const ProfileView = () => import('@/profile/ui/views/profile-view.component.vue')
+const AssignAttributesView = () => import('@/profile/ui/views/assign-attributes-view.component.vue')
 
 const RoommatesView = () => import('@/roommate/ui/views/roommates-view.component.vue')
 
@@ -59,6 +60,11 @@ const router = createRouter({
           path: 'create',
           name: 'create-profile-view',
           component: CreateProfileView
+        },
+        {
+          path: 'assign-attributes',
+          name: 'assign-attributes-view',
+          component: AssignAttributesView
         }
       ]
     },
@@ -124,7 +130,7 @@ const router = createRouter({
 const routesUsers = {
   ROLE_USER_STUDENT: {
     main: 'offers-view',
-    routes: ['offers-view', 'offer-detail-view', 'student-requests-view', 'profile-view', 'create-profile-view', 'show-profile-view', 'roommates-view']
+    routes: ['offers-view', 'offer-detail-view', 'student-requests-view', 'create-profile-view', 'show-profile-view', 'roommates-view', 'assign-attributes-view']
   },
   ROLE_USER_LESSOR: {
     main: 'my-offers-view',
