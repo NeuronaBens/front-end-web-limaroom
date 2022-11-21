@@ -1,22 +1,52 @@
 import http from '@/shared/services/http-common'
+import Property from '@/rental/domain/entity/property.entity'
 export default class PropertiesService {
-  getProperties () {
+  getAll () {
     return http.get('/properties')
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource.map(property => new Property(property))
+      })
   }
 
-  getProperty (id) {
+  getById (id) {
     return http.get(`/properties/${id}`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Property(data.resource)
+      })
   }
 
-  createProperty (property) {
+  create (property) {
     return http.post('/properties', property)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Property(data.resource)
+      })
   }
 
-  updateProperty (id, data) {
+  update (id, data) {
     return http.put(`/properties/${id}`, data)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Property(data.resource)
+      })
   }
 
-  deleteProperty (id) {
+  assignFeatures (id, features) {
+    return http.post(`/properties/${id}/features`, features)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource
+      })
+  }
+
+  delete (id) {
     return http.delete(`/properties/${id}`)
   }
 }

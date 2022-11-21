@@ -5,15 +5,17 @@ const AuthenticationView = () => import('@/iam/ui/views/authentication-view.vue'
 const SignInView = () => import('@/iam/ui/views/sign-in-view.vue')
 const SignUpView = () => import('@/iam/ui/views/sign-up-view.vue')
 
-const MyOffersView = () => import('@/rental/ui/views/lessors/my-offers-view.vue')
-const CreateOfferView = () => import('@/rental/ui/views/lessors/create-offer-view.vue')
-const EditOfferView = () => import('@/rental/ui/views/lessors/edit-offer-view.vue')
-const MyOfferDetailView = () => import('@/rental/ui/views/lessors/my-offer-detail-view.vue')
+const MyOffersView = () => import('@/rental/ui/views/lessors/my-offers-view.component.vue')
+const MyOfferDetailView = () => import('@/rental/ui/views/lessors/my-offer-detail-view.component.vue')
+const CreateOfferView = () => import('@/rental/ui/views/lessors/create-offer-view.component.vue')
+const EditOfferView = () => import('@/rental/ui/views/lessors/edit-offer-view.component.vue')
+const AssignFeaturesView = () => import('@/rental/ui/views/lessors/assign-features-view.component.vue')
+
 const OffersView = () => import('@/rental/ui/views/students/offers-view.vue')
 const OfferDetailView = () => import('@/rental/ui/views/students/offer-detail-view.vue')
 
 const StudentRequetsView = () => import('@/rental/ui/views/students/requests-view.vue')
-const LessorRequetsView = () => import('@/rental/ui/views/lessors/requests-view.vue')
+const LessorRequetsView = () => import('@/rental/ui/views/lessors/requests-view.component.vue')
 
 const CreateProfileView = () => import('@/profile/ui/views/create-profile-view.component.vue')
 const ProfileView = () => import('@/profile/ui/views/profile-view.component.vue')
@@ -70,23 +72,40 @@ const router = createRouter({
     },
     {
       path: '/my-offers/:id',
-      name: 'my-offers-view',
-      component: MyOffersView
-    },
-    {
-      path: '/my-offers/:id/create-offer',
-      name: 'create-offer-view',
-      component: CreateOfferView
+      name: 'my-offers',
+      children: [
+        {
+          path: '',
+          name: 'my-offers-view',
+          component: MyOffersView
+        },
+        {
+          path: 'create-offer',
+          name: 'create-offer-view',
+          component: CreateOfferView
+        }
+      ]
     },
     {
       path: '/my-offers/offer/:id',
-      name: 'my-offer-detail-view',
-      component: MyOfferDetailView
-    },
-    {
-      path: '/my-offers/offer/:id/edit',
-      name: 'edit-offer-view',
-      component: EditOfferView
+      name: 'my-offer-detail',
+      children: [
+        {
+          path: '',
+          name: 'my-offer-detail-view',
+          component: MyOfferDetailView
+        },
+        {
+          path: 'edit',
+          name: 'edit-offer-view',
+          component: EditOfferView
+        },
+        {
+          path: 'assign-features',
+          name: 'assign-features-view',
+          component: AssignFeaturesView
+        }
+      ]
     },
     {
       path: '/offers/:id',
@@ -134,7 +153,7 @@ const routesUsers = {
   },
   ROLE_USER_LESSOR: {
     main: 'my-offers-view',
-    routes: ['my-offers-view', 'profile-view', 'lessor-requests-view', 'create-profile-view', 'show-profile-view', 'create-offer-view', 'my-offer-detail-view', 'edit-offer-view']
+    routes: ['my-offers-view', 'profile-view', 'lessor-requests-view', 'create-profile-view', 'show-profile-view', 'create-offer-view', 'my-offer-detail-view', 'edit-offer-view', 'assign-features-view']
   }
 }
 

@@ -1,27 +1,48 @@
 import http from '@/shared/services/http-common'
-
+import Request from '@/rental/domain/entity/request.entity'
 export default class RequestsService {
-  getRequests () {
-    return http.get('/rental/request')
-  }
-
-  getRequestsByUserId (id) {
+  getAllByUserId (id) {
     return http.get(`/users/${id}/requests`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource.map(request => new Request(request))
+      })
   }
 
-  getRequestsByOfferId (id) {
+  getAllByOfferId (id) {
     return http.get(`/rentaloffers/${id}/requests`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource.map(request => new Request(request))
+      })
   }
 
-  createRequest (data) {
+  create (data) {
     return http.post('/requests', JSON.stringify(data))
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Request(data.resource)
+      })
   }
 
-  acceptRequest (id) {
+  accept (id) {
     return http.put(`/requests/${id}/accept`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Request(data.resource)
+      })
   }
 
-  declineRequest (id) {
+  decline (id) {
     return http.put(`/requests/${id}/decline`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Request(data.resource)
+      })
   }
 }

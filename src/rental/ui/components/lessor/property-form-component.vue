@@ -25,7 +25,7 @@
       <InputText class="input" type="text" v-model="property.location" required />
       <label>Location</label>
     </div>
-    <ImageInput ref="imageInputRef" :uploadService="assetsService.createAsset" />
+    <ImageInput ref="imageInputRef" :uploadService="assetsService.create" />
   </fieldset>
 </template>
 
@@ -35,18 +35,25 @@
 
 <script setup>
 import { ref } from 'vue'
-import ImageInput from '@/shared/ui/components/image-input-component.vue'
+// Services
 import AssetsService from '@/rental/services/assets-api.service'
-import Property from '@/rental/domain/property.entity.js'
-import PropertyTypes from '@/rental/domain/property-types.enum.js'
+// Coomponents
+import ImageInput from '@/shared/ui/components/image-input-component.vue'
+// Entities
+import Property from '@/rental/domain/entity/property.entity.js'
+import PROPERTY_TYPES from '@/rental/domain/enum/property-types.enum.js'
 
 const capitalize = (str) => str.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ')
 
 const imageInputRef = ref(null)
 const assetsService = new AssetsService()
 
-const property = ref(new Property({ propertyType: 0 }))
-const propertyTypes = Object.entries(PropertyTypes).map(([key, value]) => ({ key, value: capitalize(value) }))
+const property = ref(new Property(
+  {
+    propertyType: 0
+  }
+))
+const propertyTypes = Object.entries(PROPERTY_TYPES).map(([key, value]) => ({ key, value: capitalize(value) }))
 
 const validate = () => {
   // return property.value.validate()

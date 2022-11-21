@@ -8,11 +8,11 @@
       <fieldset>
         <legend>Price</legend>
         <div class="input-group">
-          <InputText class="input" type="number" v-model="amount.price" required />
+          <InputText class="input" type="number" v-model="offer.amount.price" required />
           <label>Price</label>
         </div>
         <div class="input-group">
-          <InputText class="input" type="text" v-model="amount.currency" required />
+          <InputText class="input" type="text" v-model="offer.amount.currency" required />
           <label>Currency</label>
         </div>
       </fieldset>
@@ -20,7 +20,7 @@
       <fieldset>
         <legend>Offer information</legend>
         <div class="input-group">
-          <InputText class="input" type="text" v-model="amount.currency" required />
+          <InputText class="input" type="text" v-model="offer.conditions" required />
           <label>Property Conditions</label>
         </div>
         <div class="input-group">
@@ -62,27 +62,27 @@ fieldset {
 </style>
 
 <script setup>
-/* eslint-disable */
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+// Services
 import OffersService from '@/rental/services/offers-api.service'
+// Components
 import PropertyForm from '@/rental/ui/components/lessor/property-form-component.vue'
+// Entitites
+import Offer from '@/rental/domain/entity/offer.entity'
 
 const route = useRoute()
 const router = useRouter()
 const propertyFormRef = ref(null)
 
-const offer = ref({
+const offer = ref(new Offer({
   lifecycle: {
     endAt: new Date().toISOString().split('T')[0]
   },
-  conditions: ''
-})
-
-const amount = ref({
-  price: 0,
-  currency: ''
-})
+  amount: {
+    price: 0
+  }
+}))
 
 const validateOffer = () => {
   return true
@@ -90,7 +90,7 @@ const validateOffer = () => {
 
 const onSubmit = (e) => {
   e.preventDefault()
-  if(!propertyFormRef.value.validate()){
+  if (!propertyFormRef.value.validate()) {
     return
   }
 
@@ -100,30 +100,26 @@ const onSubmit = (e) => {
 
   const data = {
     rentalOfferingResource: {
-      ...offer.value,
-      amount: amount.value
+      ...offer.value
     },
     propertyResource: propertyFormRef.value.property
   }
-
 
   const imageInputRef = propertyFormRef.value.imageInputRef
   if (!imageInputRef.imageBlob.files[0]) return
 
   const offersService = new OffersService()
-  offersService.createOffer(data, route.params.id).then((response) => {
-    if (response.data.resource) {
-      const propertyId = response.data.resource.property.id
+  offersService.create(data, route.params.id).then((response) => {
+    const propertyId = response.property.id
 
-      imageInputRef.uploadImage({ id: propertyId })
-        .then((response) => {
-          if (response) {
-            setTimeout(() => {
-              router.push({ name: 'my-offers-view', params: { id: route.params.id } })
-            }, 3000)
-          }
-        })
-    }
+    imageInputRef.uploadImage({ id: propertyId })
+      .then((response) => {
+        if (response) {
+          setTimeout(() => {
+            router.push({ name: 'my-offers-view', params: { id: route.params.id } })
+          }, 3000)
+        }
+      })
   })
 }
 

@@ -26,15 +26,15 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-
+// Services
 import OffersService from '@/rental/services/offers-api.service'
-
+// Components
 import PropertyComponent from '@/rental/ui/components/student/property-component.vue'
 import OfferComponent from '@/rental/ui/components/student/offer-component.vue'
 import OfferRequestComponent from '@/rental/ui/components/student/offer-request.vue'
-
-import Property from '@/rental/domain/property.entity'
-import Offer from '@/rental/domain/offer.entity'
+// Entities
+import Property from '@/rental/domain/entity/property.entity'
+import Offer from '@/rental/domain/entity/offer.entity'
 import Profile from '@/profile/domain/profile.entity'
 
 const route = useRoute()
@@ -45,10 +45,10 @@ const ownerProfile = ref(new Profile({}))
 onMounted(() => {
   const offersService = new OffersService()
 
-  offersService.getOffer(route.params.id).then((response) => {
-    offer.value = response.data.resource
-    property.value = response.data.resource.property
-    ownerProfile.value = response.data.resource.property.profile
+  offersService.getById(route.params.id).then((response) => {
+    offer.value = response
+    property.value = new Property(response.property)
+    ownerProfile.value = new Profile(response.property.profile)
     console.log(property.value)
   })
 })

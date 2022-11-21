@@ -23,7 +23,10 @@
       <p><span class="fw-bold">Category:</span> {{ property.propertyType }}</p>
       <p>{{ property.description }}</p>
     </div>
-
+    <div class="property__features" v-if="haveFeatures">
+      <h2>Features</h2>
+      <FeatureListComponent :handleSelected="false" :features="formatFeatures" />
+    </div>
     <div class="divider"></div>
   </div>
 
@@ -88,15 +91,31 @@
 </style>
 
 <script setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+// Components
+import FeatureListComponent from '@/rental/ui/components/feature-list.component.vue'
+// Entities
+import FEATURES from '@/rental/domain/enum/features.enum'
 
 const router = useRouter()
 
-defineProps({
+const props = defineProps({
   property: {
     type: Object,
     required: true
   }
+})
+
+const haveFeatures = computed(() => props.property.features.length > 0)
+
+const formatFeatures = computed(() => {
+  return props.property.features.map(({ id, feature }) => {
+    return {
+      name: feature.name,
+      icon: Object.entries(FEATURES).filter(([key, value]) => value.name === feature.name)[0][1].icon
+    }
+  })
 })
 
 const goBackToOffers = () => {

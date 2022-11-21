@@ -52,7 +52,7 @@ const uploadImage = (params = {}) => {
     .then((response) => {
       if (response) {
         toast.add({ severity: 'success', summary: 'Success', detail: 'Image uploaded', life: 3000 })
-        return response.data.resource
+        return response
       } else {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Error when uploading image', life: 3000 })
         return null

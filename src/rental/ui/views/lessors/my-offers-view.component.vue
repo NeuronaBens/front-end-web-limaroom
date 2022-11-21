@@ -44,8 +44,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import OffersService from '@/rental/services/offers-api.service'
 import { useRoute, useRouter } from 'vue-router'
+
+// Services
+import OffersService from '@/rental/services/offers-api.service'
+
+// Components
 import OfferPreviewComponent from '@/rental/ui/components/offer-preview-component.vue'
 
 const offers = ref([])
@@ -59,8 +63,8 @@ const goToOfferDetail = (id) => {
 onMounted(() => {
   const offersService = new OffersService()
 
-  offersService.getOffersByUserId(route.params.id).then((response) => {
-    offers.value = response.data.resource
+  offersService.getAllByUserId(route.params.id).then((response) => {
+    offers.value = response
   })
 })
 

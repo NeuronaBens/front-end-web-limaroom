@@ -73,6 +73,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
+// Services
 import OffersService from '@/rental/services/offers-api.service'
 
 const route = useRoute()
@@ -83,17 +84,19 @@ const props = defineProps({
   offer: {
     type: Object,
     required: true
+  },
+  changeVisibility: {
+    type: Function,
+    required: true
   }
 })
 
 const changeOfferVisibility = () => {
   const visible = props.offer.visibility === 'VISIBLE'
   const offersService = new OffersService()
-  offersService.changeOfferVisibility(route.params.id, visible)
+  offersService.changeVisibility(route.params.id, visible)
     .then((response) => {
-      console.log(response)
-      /* eslint-disable-next-line */
-      props.offer.visibility = response.data.resource.visibility
+      props.changeVisibility(response.visibility)
       toast.add({ severity: 'success', summary: 'Success', detail: 'Visibility changed', life: 3000 })
       handleChangeVisibility.value = false
     })

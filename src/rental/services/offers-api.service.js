@@ -1,24 +1,50 @@
 import http from '@/shared/services/http-common'
+import Offer from '@/rental/domain/entity/offer.entity'
 export default class OffersService {
-  getOffers () {
+  getVisibles () {
     return http.get('/rentaloffers/visibles')
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource.map(offer => new Offer(offer))
+      })
   }
 
-  getOffer (id) {
+  getById (id) {
     return http.get(`/rentaloffers/${id}`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Offer(data.resource)
+      })
   }
 
-  getOffersByUserId (id) {
+  getAllByUserId (id) {
     return http.get(`/users/${id}/rental/offers`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource.map(offer => new Offer(offer))
+      })
   }
 
-  createOffer (offer, id) {
+  create (offer, id) {
     return http.post(`/users/${id}/rental/offer`, offer)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Offer(data.resource)
+      })
   }
 
-  changeOfferVisibility (id, visible) {
+  changeVisibility (id, visible) {
     const path = visible ? 'not/visible' : 'visible'
 
     return http.put(`/rentaloffers/${id}/${path}`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Offer(data.resource)
+      })
   }
 }

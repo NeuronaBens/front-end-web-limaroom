@@ -2,10 +2,10 @@
   <div class="container">
     <div class="offer">
       <i class="pi pi-arrow-left icon" @click="goBackToOffers"></i>
-      <PropertyComponent :property="property" />
+      <PropertyComponent :property="property" :refreshAssetList="refreshAssetList"/>
       <div class="divider"></div>
       <div class="d-grid">
-        <OfferComponent :offer="offer" />
+        <OfferComponent :offer="offer" :changeVisibility="changeVisibility"/>
         <div class="requests">
           <h2>Requests</h2>
           <div class="offer-requests">
@@ -72,18 +72,17 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
 import { userStore } from '@/shared/config/store'
-
+// Services
 import OffersService from '@/rental/services/offers-api.service'
 import RequestsService from '@/rental/services/requests-api.service'
-
+// Components
 import PropertyComponent from '@/rental/ui/components/lessor/property-component.vue'
 import OfferComponent from '@/rental/ui/components/lessor/offer-component.vue'
 import RequestComponent from '@/rental/ui/components/request-component.vue'
-
-import Property from '@/rental/domain/property.entity'
-import Offer from '@/rental/domain/offer.entity'
+// Entities
+import Property from '@/rental/domain/entity/property.entity'
+import Offer from '@/rental/domain/entity/offer.entity'
 
 const route = useRoute()
 const router = useRouter()
@@ -94,10 +93,18 @@ const requests = ref([])
 
 const currentUser = userStore()
 
+const refreshAssetList = (assets) => {
+  property.value.assets.push(...assets)
+}
+
+const changeVisibility = (visibility) => {
+  offer.value.visibility = visibility
+}
+
 const getOfferRequests = () => {
   const requestsService = new RequestsService()
-  return requestsService.getRequestsByOfferId(route.params.id).then((response) => {
-    requests.value = response.data.resource
+  return requestsService.getAllByOfferId(route.params.id).then((response) => {
+    requests.value = response
   })
 }
 
@@ -116,9 +123,9 @@ const goBackToOffers = () => {
 
 onMounted(() => {
   const offersService = new OffersService()
-  offersService.getOffer(route.params.id).then((response) => {
-    offer.value = response.data.resource
-    property.value = response.data.resource.property
+  offersService.getById(route.params.id).then((response) => {
+    offer.value = response
+    property.value = new Property(offer.value.property)
   })
   getOfferRequests()
 })

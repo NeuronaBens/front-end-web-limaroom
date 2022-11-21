@@ -42,8 +42,8 @@ const offers = ref([])
 onMounted(() => {
   const offersService = new OffersService()
 
-  offersService.getOffers().then((response) => {
-    offers.value = response.data.resource
+  offersService.getVisibles().then((response) => {
+    offers.value = response
   })
 })
 </script>
