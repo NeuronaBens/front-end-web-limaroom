@@ -92,7 +92,8 @@ const accountRoutes = [
 const studentRoutes = [
   { name: 'Offers', to: 'offers-view' },
   { name: 'Roommates', to: 'roommates-view' },
-  { name: 'Requests', to: 'student-requests-view', params: { id } }
+  { name: 'Requests', to: 'student-requests-view', params: { id } },
+  { name: 'My Team', to: 'my-team-view', params: { id } }
 ]
 
 const lessorRoutes = [

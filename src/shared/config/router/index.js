@@ -23,6 +23,10 @@ const AssignAttributesView = () => import('@/profile/ui/views/assign-attributes-
 
 const RoommatesView = () => import('@/roommate/ui/views/roommates-view.component.vue')
 
+const MyTeamView = () => import('@/coexistance/ui/views/team-view.component.vue')
+const CreateDutyView = () => import('@/coexistance/ui/views/create-duty-view.component.vue')
+const AssignDutyToRoommateView = () => import('@/coexistance/ui/views/assign-duty-view.component.vue')
+
 const NotFound = () => import('@/shared/ui/views/not-found-view.vue')
 
 const router = createRouter({
@@ -139,17 +143,39 @@ const router = createRouter({
       component: RoommatesView
     },
     {
+      path: '/:id/my-team',
+      name: 'team-view',
+      children: [
+        {
+          path: '',
+          name: 'my-team-view',
+          component: MyTeamView
+        },
+        {
+          path: ':teamId/create-new-duty',
+          name: 'create-duty-view',
+          component: CreateDutyView
+        },
+        {
+          path: ':dutyId/assign-duty-to-roommate/',
+          name: 'assign-duty-to-roommate-view',
+          component: AssignDutyToRoommateView
+        }
+      ]
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found-view',
       component: NotFound
     }
+
   ]
 })
 
 const routesUsers = {
   ROLE_USER_STUDENT: {
     main: 'offers-view',
-    routes: ['offers-view', 'offer-detail-view', 'student-requests-view', 'create-profile-view', 'show-profile-view', 'roommates-view', 'assign-attributes-view']
+    routes: ['offers-view', 'offer-detail-view', 'student-requests-view', 'create-profile-view', 'show-profile-view', 'roommates-view', 'assign-attributes-view', 'my-team-view', 'create-duty-view', 'assign-duty-to-roommate-view']
   },
   ROLE_USER_LESSOR: {
     main: 'my-offers-view',

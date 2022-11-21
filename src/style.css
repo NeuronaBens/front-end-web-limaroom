@@ -88,7 +88,7 @@ a {
   z-index: 100;
 }
 
-.modal__content {
+.modal .modal__content {
   background-color: #FFF;
   padding: 2rem;
   border-radius: 1rem;
@@ -98,18 +98,19 @@ a {
   justify-content: center;
 }
 
-.modal__content h1 {
+.modal  .modal__content h1 {
   text-align: center;
 }
 
-.modal__actions {
+.modal .modal__actions {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
+  gap: 2rem;
 }
 
-.modal__actions button {
+.modal  .modal__actions button {
   margin-right: 1rem;
 }
 
