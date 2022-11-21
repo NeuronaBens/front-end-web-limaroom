@@ -19,9 +19,12 @@ const isAuthenticated = computed(() => {
 })
 
 const sessionExpires = () => {
-  const now = new Date()
-  if (now.getTime() > currentUser.state.user.expiration) {
-    localStorage.removeItem('user')
+  const user = localStorage.getItem('user')
+  if (user) {
+    const now = new Date()
+    if (now.getTime() > currentUser.state.user.expiration) {
+      localStorage.removeItem('user')
+    }
   }
 }
 

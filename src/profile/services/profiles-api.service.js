@@ -1,17 +1,33 @@
 import http from '@/shared/services/http-common'
 import { uploadImage } from '@/shared/config/firebase/storage'
+import Profile from '@/profile/domain/profile.entity'
 
 export default class ProfilesService {
   getAll () {
     return http.get('/profiles')
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource.map(profile => new Profile(profile))
+      })
   }
 
   getByUserId (userId) {
     return http.get(`/users/${userId}/profiles`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Profile(data.resource)
+      })
   }
 
   getById (id) {
     return http.get(`/profiles/${id}`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Profile(data.resource)
+      })
   }
 
   create (image, { profile, userId }) {
@@ -25,7 +41,7 @@ export default class ProfilesService {
               user.hasProfile = true
               user.profileId = response.data.resource.id
               localStorage.setItem('user', JSON.stringify(user))
-              return response.data.resource
+              return new Profile(response.data.resource)
             }
             return null
           })
@@ -34,9 +50,10 @@ export default class ProfilesService {
 
   update (id, data) {
     return http.put(`/profiles/${id}`, data)
-  }
-
-  delete (id) {
-    return http.delete(`/profiles/${id}`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Profile(data.resource)
+      })
   }
 }

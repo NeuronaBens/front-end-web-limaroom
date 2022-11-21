@@ -12,8 +12,8 @@
         <p><span class="fw-bold">Last Name: </span> {{ profile.surname }}</p>
         <p><span class="fw-bold">Gender: </span> {{ profile.gender }}</p>
         <p><span class="fw-bold">About me: </span> {{ profile.about }}</p>
-        <p><span class="fw-bold">Location: </span> {{ profile.location }}</p>
-        <p><span class="fw-bold">Status: </span> {{ teamStatus[profile.teamStatus] }}</p>
+        <p><span class="fw-bold">Location: </span> {{ profile.country + ' - ' + profile.city  }}</p>
+        <p v-if="isStudent"><span class="fw-bold">Status: </span> {{ teamStatus[profile.teamStatus] }}</p>
         <p><span class="fw-bold">Phone: </span>{{ profile.phone.code }} {{ profile.phone.number }}</p>
       </div>
 
@@ -51,7 +51,7 @@
 <style lang="scss">
 .profile {
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   .profile__image {
     width: 100%;
     overflow: hidden;
@@ -161,7 +161,7 @@ onMounted(() => {
 
     profilesService.getById(route.params.id)
       .then((response) => {
-        profile.value = response.data.resource
+        profile.value = response
         console.log(profile.value)
       })
       .catch((error) => {
@@ -169,9 +169,8 @@ onMounted(() => {
       })
   } else {
     const userId = currentUser.state.user.id
-
     profilesService.getByUserId(userId).then((response) => {
-      profile.value = response.data.resource
+      profile.value = response
     })
   }
 })
@@ -181,7 +180,7 @@ onBeforeRouteUpdate((to, from) => {
     const userId = currentUser.state.user.id
     const profilesService = new ProfilesService()
     profilesService.getByUserId(userId).then((response) => {
-      profile.value = response.data.resource
+      profile.value = response
     })
   }
 })

@@ -20,6 +20,10 @@
           <InputText class="input" type="text" v-model="profile.about" required="true" />
           <label>About</label>
         </div>
+        <div class="input-group">
+          <InputText class="input" type="date" v-model="birthdate" required />
+          <label>Birthdate</label>
+        </div>
         <div class="" style="margin-bottom: 2rem;">
           <label>Gender</label>
           <select v-model="profile.gender">
@@ -38,7 +42,7 @@
           <select v-model="profile.phone.code">
             <option value="0" disabled>--- Select Code ---</option>
             <option v-for="code in codes" v-bind:key="code.key" :value="code.value">
-              {{ code.key + ' ' + code.value }}
+              {{ code.value }}
             </option>
           </select>
         </div>
@@ -47,8 +51,12 @@
           <label>Phone</label>
         </div>
         <div class="input-group">
-          <InputText class="input" type="text" v-model="profile.location" required="true" />
-          <label>Location</label>
+          <InputText class="input" type="text" v-model="profile.country" required="true" />
+          <label>Country</label>
+        </div>
+        <div class="input-group">
+          <InputText class="input" type="text" v-model="profile.city" required="true" />
+          <label>City</label>
         </div>
       </fieldset>
 
@@ -91,12 +99,30 @@ import ImageInput from '@/shared/ui/components/image-input-component.vue'
 import Codes from '@/profile/domain/code.enum'
 import Genders from '@/profile/domain/gender.enum'
 
-const profile = ref(new Profile({ phone: { code: Codes.PERU }, gender: '0' }))
+const profile = ref(
+  new Profile(
+    {
+      phone: { code: Codes.PERU },
+      gender: '0'
+    }
+  ))
+const birthdate = ref(new Date().toISOString().split('T')[0])
 const currentUser = userStore()
 const router = useRouter()
 const imageInputRef = ref(null)
 const codes = Object.entries(Codes).map(([key, value]) => ({ key, value }))
 const genders = Object.entries(Genders).map(([key, value]) => ({ key, value: value.toUpperCase() }))
+
+const getAge = (dateString) => {
+  const today = new Date()
+  const birthDate = new Date(dateString)
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const m = today.getMonth() - birthDate.getMonth()
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--
+  }
+  return age
+}
 
 const onSubmit = (e) => {
   e.preventDefault()
@@ -106,10 +132,10 @@ const onSubmit = (e) => {
     console.log('No image')
     return
   }
-  console.log(profile.value)
   const userId = currentUser.state.user.id
-  // TODO: Validations
+  profile.value.age = getAge(birthdate.value)
 
+  // TODO: Validations
   if (profile.value.gender === '0') {
     return
   }
