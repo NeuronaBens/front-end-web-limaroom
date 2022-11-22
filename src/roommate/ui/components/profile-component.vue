@@ -1,7 +1,7 @@
 <template>
   <div class="roommate">
     <div class="roommate__image">
-      <img :src="profile.photoUrl ? profile.photoUrl : '/src/roommate/ui/assets/avatar.png' " alt="roommate">
+      <img :src="profile.photoUrl ? profile.photoUrl : 'https://firebasestorage.googleapis.com/v0/b/meet-your-roommate-c7ed7.appspot.com/o/common%2Fuser.png?alt=media&token=f39a2c1d-8321-4b2d-87fc-d3b64c4b2618' " alt="roommate">
     </div>
     <div class="roommate__name">
       <p>{{ profile.name }}</p>

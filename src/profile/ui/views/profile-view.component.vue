@@ -6,7 +6,7 @@
         <h1 v-else>Hello I'm {{ profile.name }}</h1>
       </div>
       <div class="profile__image">
-        <img :src="profile.photoUrl ? profile.photoUrl : '/src/roommate/ui/assets/avatar.png'" alt="">
+        <img :src="profile.photoUrl ? profile.photoUrl : 'https://firebasestorage.googleapis.com/v0/b/meet-your-roommate-c7ed7.appspot.com/o/common%2Fuser.png?alt=media&token=f39a2c1d-8321-4b2d-87fc-d3b64c4b2618'" alt="">
       </div>
       <div class="profile__information">
         <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
