@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { userStore } from '../store/index'
 
-const AuthenticationView = () => import('@/iam/ui/views/authentication-view.vue')
-const SignInView = () => import('@/iam/ui/views/sign-in-view.vue')
-const SignUpView = () => import('@/iam/ui/views/sign-up-view.vue')
+const AuthenticationView = () => import('@/iam/ui/views/authentication-view.component.vue')
+const SignInView = () => import('@/iam/ui/views/sign-in-view.component.vue')
+const SignUpView = () => import('@/iam/ui/views/sign-up-view.component.vue')
 
 const MyOffersView = () => import('@/rental/ui/views/lessors/my-offers-view.component.vue')
 const MyOfferDetailView = () => import('@/rental/ui/views/lessors/my-offer-detail-view.component.vue')
@@ -11,10 +11,10 @@ const CreateOfferView = () => import('@/rental/ui/views/lessors/create-offer-vie
 const EditOfferView = () => import('@/rental/ui/views/lessors/edit-offer-view.component.vue')
 const AssignFeaturesView = () => import('@/rental/ui/views/lessors/assign-features-view.component.vue')
 
-const OffersView = () => import('@/rental/ui/views/students/offers-view.vue')
-const OfferDetailView = () => import('@/rental/ui/views/students/offer-detail-view.vue')
+const OffersView = () => import('@/rental/ui/views/students/offers-view.component.vue')
+const OfferDetailView = () => import('@/rental/ui/views/students/offer-detail-view.component.vue')
 
-const StudentRequetsView = () => import('@/rental/ui/views/students/requests-view.vue')
+const StudentRequetsView = () => import('@/rental/ui/views/students/requests-view.component.vue')
 const LessorRequetsView = () => import('@/rental/ui/views/lessors/requests-view.component.vue')
 
 const CreateProfileView = () => import('@/profile/ui/views/create-profile-view.component.vue')
@@ -29,7 +29,7 @@ const MyTeamView = () => import('@/coexistance/ui/views/team-view.component.vue'
 const CreateDutyView = () => import('@/coexistance/ui/views/create-duty-view.component.vue')
 const AssignDutyToRoommateView = () => import('@/coexistance/ui/views/assign-duty-view.component.vue')
 
-const NotFound = () => import('@/shared/ui/views/not-found-view.vue')
+const NotFound = () => import('@/shared/ui/views/not-found-view.component.vue')
 
 const router = createRouter({
   history: createWebHistory(),

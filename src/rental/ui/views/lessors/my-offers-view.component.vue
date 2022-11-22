@@ -50,7 +50,7 @@ import { useRoute, useRouter } from 'vue-router'
 import OffersService from '@/rental/services/offers-api.service'
 
 // Components
-import OfferPreviewComponent from '@/rental/ui/components/offer-preview-component.vue'
+import OfferPreviewComponent from '@/rental/ui/components/offer-preview.component.vue'
 
 const offers = ref([])
 const route = useRoute()

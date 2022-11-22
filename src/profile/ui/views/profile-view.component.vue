@@ -149,12 +149,15 @@
 
 <script setup>
 import { onMounted, ref, computed } from 'vue'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import { userStore } from '@/shared/infraestructure/store'
+
 import ProfilesService from '@/profile/services/profiles-api.service.js'
 import AttributesService from '@/profile/services/attributes-api.service.js'
+
+import RequestComponent from '@/roommate/ui/components/request-form.component.vue'
+
 import Profile from '@/profile/domain/profile.entity.js'
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
-import RequestComponent from '@/roommate/ui/components/request-form-component.vue'
-import { userStore } from '@/shared/config/store'
 
 const profile = ref(new Profile({}))
 const attributes = ref([])

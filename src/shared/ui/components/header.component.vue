@@ -74,8 +74,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { userStore } from '@/shared/config/store'
-import LinkGroup from '@/shared/ui/components/link-group-component.vue'
+import { userStore } from '@/shared/infraestructure/store'
+import LinkGroup from '@/shared/ui/components/link-group.component.vue'
 
 const router = useRouter()
 const isNavVisible = ref(false)

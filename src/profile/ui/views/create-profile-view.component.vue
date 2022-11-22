@@ -91,11 +91,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import { useRouter } from 'vue-router'
-
+// Components
+import ImageInput from '@/shared/ui/components/image-input.component.vue'
+// Entities
 import Profile from '@/profile/domain/profile.entity.js'
-import ImageInput from '@/shared/ui/components/image-input-component.vue'
 import Codes from '@/profile/domain/code.enum'
 import Genders from '@/profile/domain/gender.enum'
 

@@ -72,14 +72,14 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 // Services
 import OffersService from '@/rental/services/offers-api.service'
 import RequestsService from '@/rental/services/requests-api.service'
 // Components
-import PropertyComponent from '@/rental/ui/components/lessor/property-component.vue'
-import OfferComponent from '@/rental/ui/components/lessor/offer-component.vue'
-import RequestComponent from '@/rental/ui/components/request-component.vue'
+import PropertyComponent from '@/rental/ui/components/lessor/property.component.vue'
+import OfferComponent from '@/rental/ui/components/lessor/offer.component.vue'
+import RequestComponent from '@/rental/ui/components/request.component.vue'
 // Entities
 import Property from '@/rental/domain/entity/property.entity'
 import Offer from '@/rental/domain/entity/offer.entity'

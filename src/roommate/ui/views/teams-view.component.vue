@@ -45,11 +45,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 // Services
 import TeamsService from '@/coexistance/services/teams-api.service'
 // Components
-import TeamPreviewComponent from '@/roommate/ui/components/team-preview-component.vue'
+import TeamPreviewComponent from '@/roommate/ui/components/team-preview.component.vue'
 
 const teams = ref([])
 const currentUser = userStore()

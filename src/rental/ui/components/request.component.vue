@@ -43,7 +43,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import { useToast } from 'primevue/usetoast'
 import RequestsService from '@/rental/services/requests-api.service'
 

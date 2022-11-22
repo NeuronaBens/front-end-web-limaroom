@@ -83,7 +83,7 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 // Services
 import TeamsService from '@/coexistance/services/teams-api.service'
 import TeamRequestsService from '@/coexistance/services/team-requests-api.service'

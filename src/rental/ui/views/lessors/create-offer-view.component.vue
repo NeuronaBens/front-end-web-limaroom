@@ -67,7 +67,7 @@ import { useRoute, useRouter } from 'vue-router'
 // Services
 import OffersService from '@/rental/services/offers-api.service'
 // Components
-import PropertyForm from '@/rental/ui/components/lessor/property-form-component.vue'
+import PropertyForm from '@/rental/ui/components/lessor/property-form.component.vue'
 // Entitites
 import Offer from '@/rental/domain/entity/offer.entity'
 

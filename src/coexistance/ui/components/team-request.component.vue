@@ -64,7 +64,7 @@
 </style>
 
 <script setup>
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import { useToast } from 'primevue/usetoast'
 // Services
 import TeamRequestsService from '@/coexistance/services/team-requests-api.service'

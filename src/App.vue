@@ -8,8 +8,8 @@
 </style>
 
 <script setup>
-import Header from '@/shared/ui/components/header-component.vue'
-import { userStore } from '@/shared/config/store/index.js'
+import Header from '@/shared/ui/components/header.component.vue'
+import { userStore } from '@/shared/infraestructure/store/index.js'
 import { computed, onMounted } from 'vue'
 
 const currentUser = userStore()

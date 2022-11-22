@@ -1,8 +1,9 @@
 export default class User {
-  constructor ({ id, name, email, password }) {
+  constructor ({ id, email, role, hasProfile, profile }) {
     this.id = id
-    this.name = name
     this.email = email
-    this.password = password
+    this.role = role
+    this.hasProfile = hasProfile
+    this.profile = profile
   }
 }

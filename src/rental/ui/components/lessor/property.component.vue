@@ -71,7 +71,7 @@ import { useRoute } from 'vue-router'
 // Services
 import AssetsService from '@/rental/services/assets-api.service'
 // Components
-import ImageInput from '@/shared/ui/components/image-input-component.vue'
+import ImageInput from '@/shared/ui/components/image-input.component.vue'
 import FeatureListComponent from '@/rental/ui/components/feature-list.component.vue'
 // Entities
 import FEATURES from '@/rental/domain/enum/features.enum'

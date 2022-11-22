@@ -32,9 +32,9 @@
 </style>
 
 <script setup>
-import OfferPreviewComponent from '@/rental/ui/components/offer-preview-component.vue'
 import { onMounted, ref } from 'vue'
 import OffersService from '@/rental/services/offers-api.service'
+import OfferPreviewComponent from '@/rental/ui/components/offer-preview.component.vue'
 // import AssetsService from '../../services/assets-api.service'
 
 const offers = ref([])

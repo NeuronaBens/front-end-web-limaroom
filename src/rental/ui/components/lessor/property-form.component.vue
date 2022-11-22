@@ -38,7 +38,7 @@ import { ref } from 'vue'
 // Services
 import AssetsService from '@/rental/services/assets-api.service'
 // Coomponents
-import ImageInput from '@/shared/ui/components/image-input-component.vue'
+import ImageInput from '@/shared/ui/components/image-input.component.vue'
 // Entities
 import Property from '@/rental/domain/entity/property.entity.js'
 import PROPERTY_TYPES from '@/rental/domain/enum/property-types.enum.js'

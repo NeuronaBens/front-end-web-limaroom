@@ -38,9 +38,9 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import RequestsService from '@/roommate/services/request-api.service.js'
-import RequestComponent from '@/roommate/ui/components/request-component.vue'
+import RequestComponent from '@/roommate/ui/components/request.component.vue'
 
 const myRequests = ref([])
 const requestsForMe = ref([])

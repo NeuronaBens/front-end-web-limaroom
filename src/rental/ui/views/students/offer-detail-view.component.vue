@@ -29,9 +29,9 @@ import { useRoute } from 'vue-router'
 // Services
 import OffersService from '@/rental/services/offers-api.service'
 // Components
-import PropertyComponent from '@/rental/ui/components/student/property-component.vue'
-import OfferComponent from '@/rental/ui/components/student/offer-component.vue'
-import OfferRequestComponent from '@/rental/ui/components/student/offer-request.vue'
+import PropertyComponent from '@/rental/ui/components/student/property.component.vue'
+import OfferComponent from '@/rental/ui/components/student/offer.component.vue'
+import OfferRequestComponent from '@/rental/ui/components/student/offer-request.component.vue'
 // Entities
 import Property from '@/rental/domain/entity/property.entity'
 import Offer from '@/rental/domain/entity/offer.entity'

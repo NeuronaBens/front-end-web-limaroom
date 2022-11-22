@@ -62,9 +62,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import AttributesService from '@/profile/services/attributes-api.service.js'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import { useRouter } from 'vue-router'
+// Services
+import AttributesService from '@/profile/services/attributes-api.service.js'
 
 const attributes = ref([])
 const selectedAttributes = ref([])

@@ -1,5 +1,5 @@
 import http from '@/shared/services/http-common'
-import { uploadImage } from '@/shared/config/firebase/storage'
+import { uploadImage } from '@/shared/infraestructure/firebase/storage'
 import Profile from '@/profile/domain/profile.entity'
 
 export default class ProfilesService {

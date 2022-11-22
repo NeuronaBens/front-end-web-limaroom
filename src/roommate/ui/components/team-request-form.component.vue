@@ -12,7 +12,7 @@
 <script setup>
 import { useToast } from 'primevue/usetoast'
 import { useRouter, useRoute } from 'vue-router'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 // Services
 import TeamRequestsService from '@/coexistance/services/team-requests-api.service'
 

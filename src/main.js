@@ -22,7 +22,7 @@ import { createPinia } from 'pinia'
 // App Configuration
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './shared/config/router'
+import router from './shared/infraestructure/router'
 const pinia = createPinia()
 
 createApp(App)

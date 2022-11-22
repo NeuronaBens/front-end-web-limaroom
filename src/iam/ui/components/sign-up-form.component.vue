@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import router from '../../../shared/config/router'
 
 const email = ref('')

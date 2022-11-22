@@ -34,10 +34,10 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-import RequestsService from '../../../services/requests-api.service'
+import RequestsService from '@/rental/services/requests-api.service'
 
-import RoommateRequestComponent from '@/roommate/ui/components/roommate-requests-component.vue'
-import RequestComponent from '@/rental/ui/components/request-component.vue'
+import RoommateRequestComponent from '@/roommate/ui/components/roommate-requests.component.vue'
+import RequestComponent from '@/rental/ui/components/request.component.vue'
 const route = useRoute()
 const requests = ref([])
 

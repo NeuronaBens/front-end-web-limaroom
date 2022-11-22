@@ -46,11 +46,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 // Services
 import RoommatesService from '@/roommate/services/roommate-api.service'
 // Components
-import ProfileComponent from '@/roommate/ui/components/profile-component.vue'
+import ProfileComponent from '@/roommate/ui/components/profile.component.vue'
 
 const roommates = ref([])
 const currentUser = userStore()

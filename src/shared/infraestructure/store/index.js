@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { authentication } from '@/shared/config/firebase/authentication'
+import { authentication } from '@/shared/infraestructure/firebase/authentication'
 import UsersService from '@/iam/services/users-api.service'
 import ProfilesService from '@/profile/services/profiles-api.service'
 

@@ -1,5 +1,5 @@
 import http from '@/shared/services/http-common'
-import { uploadImage } from '@/shared/config/firebase/storage'
+import { uploadImage } from '@/shared/infraestructure/firebase/storage'
 import Asset from '@/rental/domain/entity/asset.entity'
 
 export default class AssetsService {

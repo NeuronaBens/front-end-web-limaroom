@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { userStore } from '@/shared/config/store'
+import { userStore } from '@/shared/infraestructure/store'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

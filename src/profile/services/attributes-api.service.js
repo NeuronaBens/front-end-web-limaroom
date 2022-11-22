@@ -1,5 +1,5 @@
 import http from '@/shared/services/http-common'
-import Attribute from '@/profile/domain/attribute'
+import Attribute from '@/profile/domain/attribute.entity'
 
 export default class AttributesService {
   getAll () {
