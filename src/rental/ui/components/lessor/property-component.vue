@@ -93,11 +93,11 @@ const props = defineProps({
 })
 
 const haveFeatures = computed(() => {
-  return props.property.features.length > 0
+  return props.property.propertyFeatureList.length > 0
 })
 
 const formatFeatures = computed(() => {
-  return props.property.features.map(({ id, feature }) => {
+  return props.property.propertyFeatureList.map(({ id, feature }) => {
     return {
       name: feature.name,
       icon: Object.entries(FEATURES).filter(([key, value]) => value.name === feature.name)[0][1].icon
