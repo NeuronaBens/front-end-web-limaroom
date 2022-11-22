@@ -1,8 +1,8 @@
 <template>
   <div class="request">
-    <p class="request__status" :style="{color: statusColors[status]}">{{ status }}</p>
+    <p class="request__status" :style="{ color: statusColors[status] }">{{ status }}</p>
     <div v-if="actions">
-      <p class="request__name">{{ requestor.name }} {{ requestor.surname}}</p>
+      <p class="request__name">{{ requestor.name }} {{ requestor.surname }}</p>
 
       <div class="request__actions">
         <a @click="acceptRequest" class="button-primary">Accept</a>
@@ -26,6 +26,7 @@
 
 <style lang="scss">
 @import "@/shared/ui/assets/scss/_buttons.scss";
+
 .request {
   display: flex;
   flex-direction: column;
@@ -77,6 +78,9 @@ const props = defineProps({
 })
 
 const teamEnrollAnimation = () => {
+  const user = JSON.parse(localStorage.getItem('user'))
+  user.teamStatus = 'ONTEAM'
+  localStorage.setItem('user', JSON.stringify(user))
   handleTeamEnrollment.value = true
   setTimeout(() => {
     handleTeamEnrollment.value = false

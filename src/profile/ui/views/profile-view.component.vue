@@ -2,7 +2,8 @@
   <div class="container">
     <div class="profile">
       <div class="profile__title">
-        <h1>This is my profile</h1>
+        <h1 v-if="self">My profile</h1>
+        <h1 v-else>Hello I'm {{ profile.name }}</h1>
       </div>
       <div class="profile__image">
         <img :src="profile.photoUrl" alt="">
@@ -49,8 +50,10 @@
         </div>
 
         <div v-if="!self">
-          <div class="divider"></div>
-          <RequestComponent />
+          <div v-if="!haveTeam">
+            <div class="divider"></div>
+            <RequestComponent />
+          </div>
         </div>
         <div v-else>
           <div class="divider"></div>
@@ -173,6 +176,9 @@ const isStudent = computed(() => {
   return currentUser.state.user.role === 'ROLE_USER_STUDENT'
 })
 
+const haveTeam = computed(() => {
+  return currentUser.state.user.teamStatus === 'ONTEAM'
+})
 const haveAttributes = computed(() => {
   return attributes.value.length > 0
 })

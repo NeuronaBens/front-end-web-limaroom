@@ -63,7 +63,7 @@
 </style>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const props = defineProps({
@@ -89,7 +89,4 @@ const goToAssignRoommate = () => {
   router.push({ name: 'assign-duty-to-roommate-view', params: { id: route.params.id, dutyId: props.duty.id }, query: { title: props.duty.title } })
 }
 
-onMounted(() => {
-  console.log(props.duty)
-})
 </script>

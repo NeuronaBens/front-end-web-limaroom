@@ -1,6 +1,9 @@
 <template>
   <div class="roommates container">
-    <h1>Look for your roommate</h1>
+    <div class="roommates__header">
+      <h1>Look for your roommate</h1>
+      <router-link :to="{ name: 'teams-view' }" class="button-primary">Look for Team</router-link>
+    </div>
     <div class="divider"></div>
     <div class="roommates__list">
       <ProfileComponent v-for="roommate in roommates" v-bind:key="roommate.id" :profile="roommate"/>
@@ -18,10 +21,20 @@
   }
 
   .divider {
-    margin: 0;
+    width: 100%;
+    margin: 1rem 0;
     background-color: rgba($color: #000000, $alpha: 0.2);
   }
 
+  .roommates__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .button-primary {
+      margin: 0;
+    }
+  }
   .roommates__list {
     margin-top: 2rem;
     display: grid;

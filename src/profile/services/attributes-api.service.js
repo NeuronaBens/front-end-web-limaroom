@@ -21,7 +21,7 @@ export default class AttributesService {
   }
 
   assignToProfile (profileId, attributeId) {
-    return http.put(`/profiles/${profileId}/attributes${attributeId}`)
+    return http.put(`/profiles/${profileId}/attributes/${attributeId}`)
       .then(response => {
         const data = response.data
         if (!data.success) { throw new Error(data.message) }

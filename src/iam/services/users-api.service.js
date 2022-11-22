@@ -17,6 +17,7 @@ export default class UsersService {
             active,
             hasProfile,
             profileId: profile.id ? profile.id : 0,
+            teamStatus: profile.teamStatus ? profile.teamStatus : 'WITHOUTTEAM',
             expiration: new Date().getTime() + ttl
           }
 
@@ -45,6 +46,7 @@ export default class UsersService {
             active,
             hasProfile: false,
             profileId: 0,
+            teamStatus: 'WITHOUTTEAM',
             expiration: new Date().getTime() + ttl
           }
           localStorage.setItem('user', JSON.stringify(user))
@@ -66,6 +68,7 @@ export default class UsersService {
             active,
             hasProfile,
             profileId: profile.id ? profile.id : 0,
+            teamStatus: profile.teamStatus ? profile.teamStatus : 'WITHOUTTEAM',
             expiration: new Date().getTime() + ttl
           }
 
