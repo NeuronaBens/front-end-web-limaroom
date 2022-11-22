@@ -45,7 +45,7 @@ onMounted(() => {
   const requestsService = new RequestsService()
   requestsService.getAllByUserId(route.params.id).then((response) => {
     requests.value = response
-    console.log(requests)
+    console.log(requests.value)
   })
 })
 </script>

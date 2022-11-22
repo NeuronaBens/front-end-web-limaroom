@@ -1,7 +1,9 @@
 export default class Request {
-  constructor ({ userId, offerId, status }) {
-    this.userId = userId
-    this.offerId = offerId
+  constructor ({ id = 0, status = '', message = '', studentProfile = {}, rentalOffering = {} } = {}) {
+    this.id = id
     this.status = status
+    this.message = message
+    this.studentProfile = studentProfile
+    this.rentalOffering = rentalOffering
   }
 }

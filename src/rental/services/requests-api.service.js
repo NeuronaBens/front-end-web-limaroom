@@ -6,6 +6,7 @@ export default class RequestsService {
       .then((response) => {
         const data = response.data
         if (!data.success) { throw new Error(data.message) }
+        console.log(data.resource)
         return data.resource.map(request => new Request(request))
       })
   }

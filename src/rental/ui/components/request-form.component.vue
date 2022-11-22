@@ -63,7 +63,7 @@ const save = () => {
   }
 
   const requestService = new RequestsService()
-  requestService.createRequest(request.value)
+  requestService.create(request.value)
     .then((response) => {
       form.value.reset()
       request.value.message = ''
