@@ -55,15 +55,14 @@ const statusColors = {
   ACCEPTED: 'green',
   DECLINED: 'red'
 }
-const props = defineProps({
+defineProps({
   request: {
     type: Object,
     required: true
-  },
-  refreshRequest: {
-    type: Function
   }
 })
+
+const emit = defineEmits(['refresh'])
 
 const isStudent = computed(() => {
   return currentUser.state.user.role === 'ROLE_USER_STUDENT'
@@ -74,7 +73,7 @@ const acceptRequest = (id) => {
   requestsService.accept(id)
     .then((response) => {
       /* eslint-disable-next-line */
-      props.refresRequest(response.data.resource)
+      emit('refresh', response)
       toast.add({ severity: 'success', summary: 'Request accepted correctly', life: 3000 })
     })
     .catch(() => {
@@ -87,7 +86,7 @@ const declineRequest = (id) => {
   requestsService.decline(id)
     .then(() => {
       /* eslint-disable-next-line */
-      props.refresRequest(response.data.resource)
+      emit('refresh', response)
       toast.add({ severity: 'success', summary: 'Request accepted correctly', life: 3000 })
     })
     .catch(() => {

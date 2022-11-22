@@ -9,7 +9,7 @@
         <div class="requests">
           <h2>Requests</h2>
           <div class="offer-requests">
-            <RequestComponent v-for="request in requests" v-bind:key="request.id" :request="request" :refreshRequest="refreshRequest"/>
+            <RequestComponent v-for="request in requests" v-bind:key="request.id" :request="request" @refresh="refreshRequest"/>
           </div>
         </div>
       </div>
