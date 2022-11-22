@@ -71,7 +71,7 @@ const isStudent = computed(() => {
 
 const acceptRequest = (id) => {
   const requestsService = new RequestsService()
-  requestsService.acceptRequest(id)
+  requestsService.accept(id)
     .then((response) => {
       /* eslint-disable-next-line */
       props.refresRequest(response.data.resource)
@@ -84,7 +84,7 @@ const acceptRequest = (id) => {
 
 const declineRequest = (id) => {
   const requestsService = new RequestsService()
-  requestsService.declineRequest(id)
+  requestsService.decline(id)
     .then(() => {
       /* eslint-disable-next-line */
       props.refresRequest(response.data.resource)
