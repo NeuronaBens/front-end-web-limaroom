@@ -6,7 +6,7 @@
         <h1 v-else>Hello I'm {{ profile.name }}</h1>
       </div>
       <div class="profile__image">
-        <img :src="profile.photoUrl" alt="">
+        <img :src="profile.photoUrl ? profile.photoUrl : '/src/roommate/ui/assets/avatar.png'" alt="">
       </div>
       <div class="profile__information">
         <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
