@@ -27,8 +27,8 @@
         </div>
       </div>
       <div class="modal__actions">
-        <a @click="handleDetail = !handleDetail" class="button-black">Close</a>
-        <a v-if="!haveRoommateAssigned" @click="goToAssignRoommate" class="button-primary">Assign Roommate</a>
+        <Button @click="handleDetail = !handleDetail" text="Close" color="secondary" />
+        <Button v-if="!haveRoommateAssigned" @click="goToAssignRoommate" text="Assign Roommate"/>
       </div>
     </div>
   </div>
@@ -65,6 +65,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+// Components
+import Button from '@/shared/ui/components/button.component.vue'
 
 const props = defineProps({
   duty: {

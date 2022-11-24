@@ -5,8 +5,8 @@
       <p class="request__name">{{ requestor.name }} {{ requestor.surname }}</p>
 
       <div class="request__actions">
-        <a @click="acceptRequest" class="button-primary">Accept</a>
-        <a @click="declineRequest" class="button-black">Decline</a>
+        <Button text="Decline" color="secondary" :loader="declining" @click="declineRequest" />
+        <Button text="Accept" :loader="accepting" @click="acceptRequest" />
       </div>
     </div>
     <div v-else>
@@ -25,7 +25,6 @@
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
 
 .request {
   display: flex;
@@ -49,14 +48,20 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
 // Services
 import RequestsService from '@/roommate/services/request-api.service.js'
+// Component
+import Button from '@/shared/ui/components/button.component.vue'
 
+const router = useRouter()
 const requestor = ref({})
 const requested = ref({})
 const status = ref('')
 const toast = useToast()
 const handleTeamEnrollment = ref(false)
+const accepting = ref(false)
+const declining = ref(false)
 
 const statusColors = {
   PENDING: '#c2a200',
@@ -81,8 +86,10 @@ const teamEnrollAnimation = () => {
   const user = JSON.parse(localStorage.getItem('user'))
   user.teamStatus = 'ONTEAM'
   localStorage.setItem('user', JSON.stringify(user))
+
   handleTeamEnrollment.value = true
   setTimeout(() => {
+    router.push({ name: 'my-team-view', params: { id: user.id } })
     handleTeamEnrollment.value = false
   }, 2000)
 }
@@ -91,6 +98,10 @@ const acceptRequest = () => {
   if (!isPending.value) {
     return
   }
+
+  if (declining.value) return
+
+  accepting.value = true
   const requestsService = new RequestsService()
   requestsService.accept(props.request.id)
     .then((response) => {
@@ -101,12 +112,18 @@ const acceptRequest = () => {
     .catch((error) => {
       toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
     })
+    .finally(() => {
+      accepting.value = false
+    })
 }
 
 const declineRequest = () => {
   if (!isPending.value) {
     return
   }
+  if (accepting.value) return
+
+  declining.value = true
   const requestsService = new RequestsService()
   requestsService.decline(props.request.id)
     .then((response) => {
@@ -115,6 +132,9 @@ const declineRequest = () => {
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: 'Error when accepting request', detail: error.message, life: 3000 })
+    })
+    .finally(() => {
+      declining.value = false
     })
 }
 

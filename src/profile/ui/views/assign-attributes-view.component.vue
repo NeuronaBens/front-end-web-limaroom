@@ -13,7 +13,6 @@
           </div>
         </div>
       </div>
-      <div class="divider"></div>
       <div class="personalities">
         <h3>Interests</h3>
         <div class="assign-attributes__list">
@@ -26,36 +25,38 @@
       </div>
 
       <div class="assign-attributes__actions">
-        <a class="button-primary" @click="saveAttributes">Save</a>
+        <p class="error">{{ error }}</p>
+        <Button text="Save" :loader="saving" @click="saveAttributes" />
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-@import '@/shared/ui/assets/scss/_buttons.scss';
 
-.assign-attributes__list {
-  margin: 1rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  .assign-attributes__list__item {
-    cursor: pointer;
-    padding: .5rem 2rem;
-    background-color: $black;
-    color: $white;
-    border-radius: 1rem;
-
-    &.active {
-      background-color: $primary;
-    }
+.assign-attributes {
+  p.error {
+    color: $primary;
   }
 
-  .divider {
-    margin: 3rem auto;
-    background-color: rgba($color: #000000, $alpha: 1.0);
+  .assign-attributes__list {
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .assign-attributes__list__item {
+      cursor: pointer;
+      padding: .5rem 2rem;
+      background-color: $black;
+      color: $white;
+      border-radius: 1rem;
+
+      &.active {
+        background-color: $primary;
+      }
+    }
+
   }
 }
 </style>
@@ -66,12 +67,15 @@ import { userStore } from '@/shared/infraestructure/store'
 import { useRouter } from 'vue-router'
 // Services
 import AttributesService from '@/profile/services/attributes-api.service.js'
+// Component
+import Button from '@/shared/ui/components/button.component.vue'
 
 const attributes = ref([])
 const selectedAttributes = ref([])
 const currentUser = userStore()
 const router = useRouter()
-
+const saving = ref(false)
+const error = ref('')
 const toggleItem = (id) => {
   const attr = document.querySelector(`[data-id="${id}"]`)
   attr.classList.toggle('active')
@@ -81,11 +85,17 @@ const toggleItem = (id) => {
 }
 
 const saveAttributes = () => {
+  if (selectedAttributes.value.length === 0) {
+    error.value = 'You must select at least one attribute'
+    return
+  }
+
+  saving.value = true
   const profileId = currentUser.state.user.profileId
   const attributesService = new AttributesService()
   attributesService.assignListToProfile(profileId, selectedAttributes.value)
     .then((response) => {
-      console.log(response)
+      saving.value = false
       router.push({ name: 'show-profile-view' })
     })
     .catch((error) => {

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="team">
+    <LoadingComponent v-if="loading"></LoadingComponent>
+    <div v-else class="team">
       <h1>My Team</h1>
       <div class="divider"></div>
       <p v-if="!haveTeam">Look for a roommate to enroll a team!</p>
@@ -22,8 +23,11 @@
             <p>There's no duties</p>
             <p>Create a duty to organice your team</p>
           </div>
-          <router-link :to="{ name: 'create-duty-view', params: { id: route.params.id, teamId: team.id } }"
-            class="button-primary">Create duty</router-link>
+          <Button
+            text="Create duty"
+            :to="{ name: 'create-duty-view', params: { id: route.params.id, teamId: team.id } }"
+            :inline="true"
+          />
         </div>
 
         <div class="divider"></div>
@@ -44,8 +48,6 @@
 </template>
 
 <style lang="scss">
-@import '@/shared/ui/assets/scss/_buttons.scss';
-
 .team {
   margin: 2rem 0;
 
@@ -91,6 +93,8 @@ import TeamRequestsService from '@/coexistance/services/team-requests-api.servic
 import RoommateComponent from '@/coexistance/ui/components/roommate.component.vue'
 import DutyComponent from '@/coexistance/ui/components/duty.component.vue'
 import TeamRequestComponent from '@/coexistance/ui/components/team-request.component.vue'
+import Button from '@/shared/ui/components/button.component.vue'
+import LoadingComponent from '@/shared/ui/components/loaders/team-detail-loading.component.vue'
 // Entities
 import Team from '@/coexistance/domain/team.entity'
 import Roommate from '@/coexistance/domain/roommate.entity'
@@ -104,6 +108,7 @@ const roommates = ref([])
 const duties = ref([])
 const teamRequests = ref([])
 const haveTeam = ref(false)
+const loading = ref(true)
 
 const goToProfile = (id) => {
   if (id === currentUser.state.user.profileId) {
@@ -148,6 +153,7 @@ onMounted(() => {
   const teamsService = new TeamsService()
   teamsService.getByUserId(route.params.id)
     .then((response) => {
+      // TODO: Order duties by dateline
       team.value = response
       roommates.value = response.roommates.map((roommate) => new Roommate(roommate))
       duties.value = response.duties.map((duty) => new Duty(duty))
@@ -157,6 +163,7 @@ onMounted(() => {
       teamRequestsService.getAllByTeamId(response.id)
         .then((response) => {
           teamRequests.value = response
+          loading.value = false
         })
     })
 })

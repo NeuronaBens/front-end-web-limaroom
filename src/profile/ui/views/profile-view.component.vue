@@ -6,7 +6,9 @@
         <h1 v-else>Hello I'm {{ profile.name }}</h1>
       </div>
       <div class="profile__image">
-        <img :src="profile.photoUrl ? profile.photoUrl : 'https://firebasestorage.googleapis.com/v0/b/meet-your-roommate-c7ed7.appspot.com/o/common%2Fuser.png?alt=media&token=f39a2c1d-8321-4b2d-87fc-d3b64c4b2618'" alt="">
+        <img
+          :src="profile.photoUrl ? profile.photoUrl : 'https://firebasestorage.googleapis.com/v0/b/meet-your-roommate-c7ed7.appspot.com/o/common%2Fuser.png?alt=media&token=f39a2c1d-8321-4b2d-87fc-d3b64c4b2618'"
+          alt="">
       </div>
       <div class="profile__information">
         <p><span class="fw-bold">Name: </span> {{ profile.name }}</p>
@@ -45,7 +47,7 @@
           <div v-if="self">
             <div class="divider"></div>
             <p>Tell us more about you! It will help us to find the best roommate for you</p>
-            <router-link :to="{ name: 'assign-attributes-view' }" class="button-primary">Take survey</router-link>
+            <Button text="take survey" :to="{ name: 'assign-attributes-view' }" />
           </div>
         </div>
 
@@ -59,7 +61,7 @@
           <div class="divider"></div>
           <div class="change__role">
             <h2>Do you want to be a lessor?</h2>
-            <button @click="handleChangingRole = !handleChangingRole" class="button-primary">Change to Lessor</button>
+            <Button text="change to lessor" @click="handleChangingRole = !handleChangingRole" />
           </div>
         </div>
       </div>
@@ -71,8 +73,8 @@
       <h1>Are you sure you want to change to lessor?</h1>
       <p>You can not go back to student</p>
       <div class="modal__actions">
-        <button @click="handleChangingRole = !handleChangingRole" class="button-black">Cancel</button>
-        <button @click="changeRole" class="button-primary">Change to Lessor</button>
+        <Button text="cancel" color="secondary" @click="handleChangingRole = !handleChangingRole" />
+        <Button text="confirm" :loader="changingRole" @click="changeRole" />
       </div>
     </div>
   </div>
@@ -151,12 +153,13 @@
 import { onMounted, ref, computed } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { userStore } from '@/shared/infraestructure/store'
-
+// Services
 import ProfilesService from '@/profile/services/profiles-api.service.js'
 import AttributesService from '@/profile/services/attributes-api.service.js'
-
+// Components
 import RequestComponent from '@/roommate/ui/components/request-form.component.vue'
-
+import Button from '@/shared/ui/components/button.component.vue'
+// Entities
 import Profile from '@/profile/domain/profile.entity.js'
 
 const profile = ref(new Profile({}))
@@ -165,6 +168,7 @@ const route = useRoute()
 const currentUser = userStore()
 const router = useRouter()
 const handleChangingRole = ref(false)
+const changingRole = ref(false)
 
 const teamStatus = {
   WITHOUTTEAM: 'Looking for a roommate',
@@ -187,8 +191,10 @@ const haveAttributes = computed(() => {
 })
 
 const changeRole = () => {
+  changingRole.value = true
   currentUser.changeRole(currentUser.state.user.id)
     .then(() => {
+      changingRole.value = false
       handleChangingRole.value = false
       router.push({ name: 'my-offers-view', params: { id: currentUser.state.user.id } })
     })
@@ -197,28 +203,20 @@ const changeRole = () => {
 onMounted(() => {
   const attributesService = new AttributesService()
   const profilesService = new ProfilesService()
-  if (!self.value) {
-    profilesService.getById(route.params.id)
-      .then((response) => {
-        profile.value = response
-        attributesService.getAllByProfileId(response.id)
-          .then((response) => {
-            attributes.value = response
-          })
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  } else {
-    const userId = currentUser.state.user.id
-    profilesService.getByUserId(userId).then((response) => {
+  const id = self.value ? currentUser.state.user.id : route.params.id
+  const getProfile = self.value ? profilesService.getByUserId : profilesService.getById
+
+  getProfile(id)
+    .then((response) => {
       profile.value = response
       attributesService.getAllByProfileId(response.id)
         .then((response) => {
           attributes.value = response
         })
     })
-  }
+    .catch((error) => {
+      console.log(error)
+    })
 })
 
 onBeforeRouteUpdate((to, from) => {

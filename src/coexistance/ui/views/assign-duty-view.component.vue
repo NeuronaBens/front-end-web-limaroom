@@ -16,13 +16,17 @@
         </div>
       </div>
 
-      <a @click="confirmAssignment" class="button-primary">Confirm</a>
+      <Button
+        text="Confirm"
+        :loader="confirming"
+        @click="confirmAssignment"
+      />
+
     </div>
   </div>
 </template>
 
 <style lang="scss">
-@import '@/shared/ui/assets/scss/_buttons.scss';
 .assign__roommate {
   margin: 2rem 0;
 
@@ -47,12 +51,14 @@ import { ref, onMounted } from 'vue'
 import DutiesService from '@/coexistance/services/duties-api.service'
 // Components
 import AssignRoommateComponent from '@/coexistance/ui/components/assign-roommate.component.vue'
+import Button from '@/shared/ui/components/button.component.vue'
 
 /* eslint-disable-next-line */
 const router = useRouter()
 const route = useRoute()
 const roommates = ref([])
 const selectedRoommates = ref([])
+const confirming = ref(false)
 
 const onToggleRoommate = (id) => {
   const index = selectedRoommates.value.indexOf(id)
@@ -60,15 +66,19 @@ const onToggleRoommate = (id) => {
 }
 
 const confirmAssignment = () => {
+  if (confirming.value) return
+
+  confirming.value = true
   const dutiesService = new DutiesService()
   dutiesService.assignRoommates(route.params.dutyId, selectedRoommates.value)
     .then(() => {
+      confirming.value = false
       router.push({ name: 'my-team-view', params: { id: route.params.id } })
     })
 }
+
 onMounted(() => {
   const dutiesService = new DutiesService()
-
   dutiesService.getRoommatesAvailablesForDuty(route.params.dutyId)
     .then((response) => {
       roommates.value = response

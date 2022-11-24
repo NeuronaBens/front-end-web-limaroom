@@ -15,9 +15,9 @@
         </div>
       </div>
 
-      <div class="request__actions">
-        <a @click="acceptRequest" class="button-primary">Accept</a>
-        <a @click="declineRequest" class="button-black">Decline</a>
+      <div v-if="!allStudentsAccept" class="request__actions">
+        <Button text="Decline" :loader="declining" @click="declineRequest" color="secondary"/>
+        <Button text="Accept" :loader="accepting" @click="acceptRequest"/>
       </div>
     </div>
   </div>
@@ -66,8 +66,11 @@
 <script setup>
 import { userStore } from '@/shared/infraestructure/store'
 import { useToast } from 'primevue/usetoast'
+import { ref, computed } from 'vue'
 // Services
 import TeamRequestsService from '@/coexistance/services/team-requests-api.service'
+// Components
+import Button from '@/shared/ui/components/button.component.vue'
 
 const currentUser = userStore()
 const toast = useToast()
@@ -86,11 +89,23 @@ const props = defineProps({
 
 const emit = defineEmits(['update'])
 
+const accepting = ref(false)
+const declining = ref(false)
+
+const allStudentsAccept = computed(() => {
+  return props.request.roommateStatuses.every(roommateStatus => roommateStatus.status === 'ACCEPTED')
+})
+
 const acceptRequest = () => {
+  if (declining.value) return
+
+  accepting.value = true
+
   const teamRequestsService = new TeamRequestsService()
   teamRequestsService.accept(currentUser.state.user.id, props.request.id)
     .then((response) => {
       toast.add({ severity: 'success', summary: 'Request accepted correctly', life: 2000 })
+      accepting.value = false
       emit('update', response)
     })
     .catch((error) => {
@@ -100,10 +115,15 @@ const acceptRequest = () => {
 }
 
 const declineRequest = () => {
+  if (accepting.value) return
+
+  declining.value = true
+
   const teamRequestsService = new TeamRequestsService()
   teamRequestsService.decline(currentUser.state.user.id, props.request.id)
     .then((response) => {
       toast.add({ severity: 'success', summary: 'Request declined correctly', life: 2000 })
+      declining.value = false
       emit('update', response)
     })
     .catch((error) => {

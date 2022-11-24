@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="create-profile container">
     <div class="form-header">
       <h1>Create your profile! </h1>
       <p>Let people know more about you</p>
@@ -60,31 +60,34 @@
         </div>
       </fieldset>
 
-      <button type="submit" class="button-primary">Create</button>
+      <Button text="Create" :loader="submiting" @click="onSubmit" />
     </form>
   </div>
 
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
 @import "@/shared/ui/assets/scss/_inputs.scss";
 
-.input-group {
-  @include input-group;
-}
-
-.form-header {
-  text-align: center;
+.create-profile {
   margin-bottom: 2rem;
 
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+  .input-group {
+    @include input-group;
   }
 
-  p {
-    font-size: 1.5rem;
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
   }
 }
 </style>
@@ -95,6 +98,7 @@ import { userStore } from '@/shared/infraestructure/store'
 import { useRouter } from 'vue-router'
 // Components
 import ImageInput from '@/shared/ui/components/image-input.component.vue'
+import Button from '@/shared/ui/components/button.component.vue'
 // Entities
 import Profile from '@/profile/domain/profile.entity.js'
 import Codes from '@/profile/domain/code.enum'
@@ -107,6 +111,9 @@ const profile = ref(
       gender: '0'
     }
   ))
+
+const submiting = ref(false)
+
 const birthdate = ref(new Date().toISOString().split('T')[0])
 const currentUser = userStore()
 const router = useRouter()
@@ -141,9 +148,11 @@ const onSubmit = (e) => {
     return
   }
 
+  submiting.value = true
   // Create profile
   imageInputRef.value.uploadImage({ profile: profile.value, userId })
     .then(() => {
+      submiting.value = false
       router.go()
     })
 }

@@ -47,4 +47,18 @@ export default class OffersService {
         return new Offer(data.resource)
       })
   }
+
+  update (id, offer) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('Correct')
+      }, 3000)
+    })
+    // return http.put(`/rentaloffers/${id}`, offer)
+    //   .then((response) => {
+    //     const data = response.data
+    //     if (!data.success) { throw new Error(data.message) }
+    //     return new Offer(data.resource)
+    //   })
+  }
 }

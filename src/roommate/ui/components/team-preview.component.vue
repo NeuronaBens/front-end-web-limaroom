@@ -7,7 +7,10 @@
       <p>Team {{ team.id}}</p>
     </div>
 
-    <router-link :to="{name: 'show-team-view', params: {id: team.id}}" class="button-primary-block">See More</router-link>
+    <Button
+      text="see team"
+      :to="{name: 'show-team-view', params: {id: team.id}}"
+    />
   </div>
 </template>
 
@@ -40,6 +43,8 @@
 </style>
 
 <script setup>
+import Button from '@/shared/ui/components/button.component.vue'
+
 defineProps({
   team: {
     type: Object,

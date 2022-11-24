@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="offer">
+    <OfferDetailLoading v-if="loading"></OfferDetailLoading>
+    <div v-else class="offer">
       <PropertyComponent :property="property"/>
 
       <div class="offer__footer">
@@ -32,6 +33,7 @@ import OffersService from '@/rental/services/offers-api.service'
 import PropertyComponent from '@/rental/ui/components/student/property.component.vue'
 import OfferComponent from '@/rental/ui/components/student/offer.component.vue'
 import OfferRequestComponent from '@/rental/ui/components/student/offer-request.component.vue'
+import OfferDetailLoading from '@/shared/ui/components/loaders/offer-detail-loading.component.vue'
 // Entities
 import Property from '@/rental/domain/entity/property.entity'
 import Offer from '@/rental/domain/entity/offer.entity'
@@ -41,6 +43,7 @@ const route = useRoute()
 const offer = ref(new Offer({}))
 const property = ref(new Property({}))
 const ownerProfile = ref(new Profile({}))
+const loading = ref(true)
 
 onMounted(() => {
   const offersService = new OffersService()
@@ -49,7 +52,7 @@ onMounted(() => {
     offer.value = response
     property.value = new Property(response.property)
     ownerProfile.value = new Profile(response.property.profile)
-    console.log(property.value)
+    loading.value = false
   })
 })
 </script>

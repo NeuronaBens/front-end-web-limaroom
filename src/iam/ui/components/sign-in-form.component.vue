@@ -11,12 +11,11 @@
     <p class="error">{{ errorMessage }}</p>
     <p class="forgot-password">Forgot password? <a href="#">Click Here</a></p>
   </form>
-  <button @click="signIn" class="button-primary-block">Login</button>
-  <button @click="signInWithGoogle" class="button-primary-block">Sign In With Google</button>
+  <Button text="login" :loader="signingIn" :block="true" @click="signIn" />
+  <Button text="sign in with google" :loader="signingInWithGoogle" :block="true" @click="signInWithGoogle" />
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
 @import "@/shared/ui/assets/scss/_inputs.scss";
 
 .form {
@@ -27,11 +26,18 @@
 
   p {
     color: $black;
+
     a {
       color: $primary;
       cursor: pointer;
     }
+
+    &.error {
+      font-weight: bold;
+      color: $primary;
+    }
   }
+
 }
 
 .input-group {
@@ -48,6 +54,8 @@
 import { ref } from 'vue'
 import { userStore } from '@/shared/infraestructure/store'
 import { useRouter } from 'vue-router'
+// Components
+import Button from '@/shared/ui/components/button.component.vue'
 
 const router = useRouter()
 const store = userStore()
@@ -55,6 +63,9 @@ const user = ref({
   email: '',
   password: ''
 })
+
+const signingIn = ref(false)
+const signingInWithGoogle = ref(false)
 
 const errorMessage = ref('')
 
@@ -66,8 +77,15 @@ const errorCodes = {
 }
 
 const signIn = () => {
+  if (!user.value.email || !user.value.password) {
+    errorMessage.value = 'Please fill all the fields'
+    return
+  }
+
+  signingIn.value = true
   store.signIn(user.value)
     .then((response) => {
+      signingIn.value = false
       if (response.role === 'ROLE_USER_LESSOR') {
         router.push({ name: 'my-offers-view', params: { id: response.id } })
       } else {
@@ -75,18 +93,25 @@ const signIn = () => {
       }
     })
     .catch((error) => {
+      signingIn.value = false
       errorMessage.value = errorCodes[error.code]
     })
 }
 
 const signInWithGoogle = () => {
+  signingInWithGoogle.value = true
   store.signInWithGoogle()
     .then((response) => {
+      signingInWithGoogle.value = false
       if (response.role === 'ROLE_USER_LESSOR') {
         router.push({ name: 'my-offers-view', params: { id: response.id } })
       } else {
         router.push({ name: 'offers-view' })
       }
+    })
+    .catch((error) => {
+      signingIn.value = false
+      errorMessage.value = errorCodes[error.code]
     })
 }
 </script>

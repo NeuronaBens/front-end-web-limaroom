@@ -12,7 +12,10 @@
       <img :src="asset.urlImage" alt="">
     </div>
   </div>
-  <a @click="handleUploadImage = !handleUploadImage" class="button-primary">Añadir Imagenes</a>
+  <Button
+    text="add image"
+    @click="handleUploadImage = !handleUploadImage"
+  />
   <div class="divider"></div>
 
   <div class="property__description">
@@ -22,12 +25,11 @@
 
   <div class="property__features">
     <h2>Features</h2>
-    <router-link
+    <Button
       v-if="!haveFeatures"
+      text="add features"
       :to="{ name: 'assign-features-view', params: { id: route.params.id }, query: { propertyId: property.id} }"
-      class="button-primary">
-      Add Features
-    </router-link>
+    />
     <div v-else>
       <FeatureListComponent :handleSelected="false" :features="formatFeatures"/>
     </div>
@@ -38,8 +40,16 @@
       <h1>Upload your image</h1>
       <ImageInput ref="imageInputRef" :uploadService="assetsService.create" />
       <div class="modal__actions">
-        <button @click="handleUploadImage = !handleUploadImage" class="button-black">Cancel</button>
-        <button @click="uploadImage" class="button-primary">Upload</button>
+        <Button
+          text="cancel"
+          color="secondary"
+          @click="handleUploadImage = !handleUploadImage"
+        />
+        <Button
+          text="upload"
+          :loader="uploadingImage"
+          @click="uploadImage"
+        />
       </div>
     </div>
   </div>
@@ -73,6 +83,7 @@ import AssetsService from '@/rental/services/assets-api.service'
 // Components
 import ImageInput from '@/shared/ui/components/image-input.component.vue'
 import FeatureListComponent from '@/rental/ui/components/feature-list.component.vue'
+import Button from '@/shared/ui/components/button.component.vue'
 // Entities
 import FEATURES from '@/rental/domain/enum/features.enum'
 
@@ -80,6 +91,7 @@ const route = useRoute()
 const assetsService = new AssetsService()
 const imageInputRef = ref(null)
 const handleUploadImage = ref(false)
+const uploadingImage = ref(false)
 
 const props = defineProps({
   property: {
@@ -110,10 +122,14 @@ const uploadImage = () => {
     console.log('No image')
     return
   }
+  uploadingImage.value = true
   imageInputRef.value.uploadImage({ id: props.property.id })
     .then((response) => {
       props.refreshAssetList(response)
       handleUploadImage.value = !handleUploadImage.value
+    })
+    .finally(() => {
+      uploadingImage.value = false
     })
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="offer offer-preview" @click="goToOfferDetail">
     <div class="offer__image">
-      <img :src="image" alt="offer image" />
+      <img loading="lazy" :src="image" alt="offer image" />
     </div>
     <div class="offer__information">
       <h3 class="offer__title">{{ offer.property.title }}</h3>
@@ -20,8 +20,6 @@
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
-
 .offer {
   width: 100%;
   margin-bottom: 3rem;

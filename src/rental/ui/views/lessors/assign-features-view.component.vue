@@ -4,7 +4,11 @@
       <div class="feature__assing__header">
         <h2>Select features your property has</h2>
         <div class="feature__assign__actions">
-          <a class="button-primary" @click="onSubmit">Submit</a>
+          <Button
+            text="submit"
+            :loader="submiting"
+            @click="onSubmit"
+          />
         </div>
       </div>
       <div class="divider"></div>
@@ -16,7 +20,6 @@
 </template>
 
 <style lang="scss">
-@import '@/shared/ui/assets/scss/_buttons.scss';
 
 .feature__assign {
   margin: 2rem 0;
@@ -36,11 +39,13 @@ import { useRouter, useRoute } from 'vue-router'
 import PropertiesService from '@/rental/services/properties-api.service'
 // Components
 import FeatureListComponent from '@/rental/ui/components/feature-list.component.vue'
+import Button from '@/shared/ui/components/button.component.vue'
 // Entities
 import FEATURES from '@/rental/domain/enum/features.enum'
 
 const router = useRouter()
 const route = useRoute()
+const submiting = ref(false)
 
 const serviceFeatures = Object.entries(FEATURES)
   .map(([_, value]) => (value))
@@ -69,12 +74,16 @@ const onSubmit = () => {
     return
   }
 
+  submiting.value = true
   const propertyId = route.query.propertyId
   // console.log(propertyId)
   const propertiesService = new PropertiesService()
   propertiesService.assignFeatures(propertyId, features)
     .then(() => {
       router.push({ name: 'my-offer-detail-view', params: { id: route.params.id } })
+    })
+    .finally(() => {
+      submiting.value = false
     })
 }
 

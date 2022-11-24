@@ -25,19 +25,19 @@
       </div>
     </div>
     <div class="offer__actions">
-      <router-link :to="{ name: 'edit-offer-view', params: { id: route.params.id } }" class="button-primary">
-        Editar
-      </router-link>
-      <a @click="handleChangeVisibility = !handleChangeVisibility" class="button-black">Change
-        visibility</a>
+      <Button
+        text="edit"
+        :to="{ name: 'edit-offer-view', params: { id: route.params.id } }"
+      />
+      <Button text="change visibility" color="secondary" @click="handleChangeVisibility = !handleChangeVisibility" />
     </div>
   </div>
   <div class="modal" v-if="handleChangeVisibility">
     <div class="modal__content">
       <h1>Are you sure you want to change visibility?</h1>
       <div class="modal__actions">
-        <button @click="handleChangeVisibility = !handleChangeVisibility" class="button-black">Cancel</button>
-        <button @click="changeOfferVisibility" class="button-primary">Change</button>
+        <Button text="cancel" color="secondary" @click="handleChangeVisibility = !handleChangeVisibility"/>
+        <Button text="change" :loader="changing" @click="changeOfferVisibility" />
       </div>
     </div>
   </div>
@@ -75,10 +75,13 @@ import { useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 // Services
 import OffersService from '@/rental/services/offers-api.service'
+// Components
+import Button from '@/shared/ui/components/button.component.vue'
 
 const route = useRoute()
 const handleChangeVisibility = ref(false)
 const toast = useToast()
+const changing = ref(false)
 
 const props = defineProps({
   offer: {
@@ -94,11 +97,18 @@ const props = defineProps({
 const changeOfferVisibility = () => {
   const visible = props.offer.visibility === 'VISIBLE'
   const offersService = new OffersService()
+  changing.value = true
   offersService.changeVisibility(route.params.id, visible)
     .then((response) => {
       props.changeVisibility(response.visibility)
       toast.add({ severity: 'success', summary: 'Success', detail: 'Visibility changed', life: 3000 })
       handleChangeVisibility.value = false
+    })
+    .catch(() => {
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Visibility not changed', life: 3000 })
+    })
+    .finally(() => {
+      changing.value = false
     })
 }
 

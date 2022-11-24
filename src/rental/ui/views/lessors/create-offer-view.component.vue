@@ -3,7 +3,7 @@
   <div class="container">
     <h1>Create new Offer</h1>
     <form @submit="onSubmit">
-      <PropertyForm ref="propertyFormRef"/>
+      <PropertyForm ref="propertyFormRef" />
 
       <fieldset>
         <legend>Price</legend>
@@ -28,15 +28,16 @@
           <label>End Offer Date</label>
         </div>
       </fieldset>
-      <button type="submit" class="button-primary">Save</button>
-      <router-link :to="{ name: 'my-offers-view', params: { id: route.params.id } }" class="button-black">Back
-      </router-link>
+
+      <div class="form__actions">
+        <Button text="submit" :loader="submiting" @click="onSubmit" />
+        <Button text="back" color="secondary" :to="{ name: 'my-offers-view', params: { id: route.params.id } }" />
+      </div>
     </form>
   </div>
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
 @import "@/shared/ui/assets/scss/_inputs.scss";
 
 h1 {
@@ -59,6 +60,14 @@ fieldset {
     @include input-group;
   }
 }
+
+form {
+  margin-bottom: 2rem;
+  .form__actions {
+    display: flex;
+    gap: 2rem;
+  }
+}
 </style>
 
 <script setup>
@@ -68,12 +77,14 @@ import { useRoute, useRouter } from 'vue-router'
 import OffersService from '@/rental/services/offers-api.service'
 // Components
 import PropertyForm from '@/rental/ui/components/lessor/property-form.component.vue'
+import Button from '@/shared/ui/components/button.component.vue'
 // Entitites
 import Offer from '@/rental/domain/entity/offer.entity'
 
 const route = useRoute()
 const router = useRouter()
 const propertyFormRef = ref(null)
+const submiting = ref(false)
 
 const offer = ref(new Offer({
   lifecycle: {
@@ -98,6 +109,7 @@ const onSubmit = (e) => {
     return
   }
 
+  submiting.value = true
   const data = {
     rentalOfferingResource: {
       ...offer.value
@@ -109,18 +121,26 @@ const onSubmit = (e) => {
   if (!imageInputRef.imageBlob.files[0]) return
 
   const offersService = new OffersService()
-  offersService.create(data, route.params.id).then((response) => {
-    const propertyId = response.property.id
+  offersService.create(data, route.params.id)
+    .then((response) => {
+      const propertyId = response.property.id
 
-    imageInputRef.uploadImage({ id: propertyId })
-      .then((response) => {
-        if (response) {
-          setTimeout(() => {
-            router.push({ name: 'my-offers-view', params: { id: route.params.id } })
-          }, 3000)
-        }
-      })
-  })
+      imageInputRef.uploadImage({ id: propertyId })
+        .then((response) => {
+          if (response) {
+            submiting.value = false
+            setTimeout(() => {
+              router.push({ name: 'my-offers-view', params: { id: route.params.id } })
+            }, 3000)
+          }
+        })
+        .catch(() => {
+          submiting.value = false
+        })
+    })
+    .catch(() => {
+      submiting.value = false
+    })
 }
 
 </script>

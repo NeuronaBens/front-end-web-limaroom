@@ -4,27 +4,38 @@
       <InputText class="input" type="text" v-model="email" required="true" />
       <label>Email</label>
     </div>
-    <p v-for="error in emailErrors" v-bind:key="error">{{ error }}</p>
+    <p class="error" v-for="error in emailErrors" v-bind:key="error">{{ error }}</p>
     <div class="input-group">
       <InputText class="input" type="password" v-model="password" required="true"/>
       <label>Password</label>
     </div>
-    <p v-for="error in passwordErrors" v-bind:key="error">{{ error }}</p>
+    <p class="error" v-for="error in passwordErrors" v-bind:key="error">{{ error }}</p>
     <div class="input-group">
       <InputText class="input" type="password" v-model="confirmPassword" required="true" />
       <label>Password</label>
     </div>
-    <p v-for="error in confirmPasswordErrors" v-bind:key="error">{{ error }}</p>
+    <p class="error" v-for="error in confirmPasswordErrors" v-bind:key="error">{{ error }}</p>
 
     <p class="error">{{ errorMessage }}</p>
-    <button type="submit" class="button-primary-block">Register</button>
+    <Button
+      text="Register"
+      :loader="signingUp"
+      :block="true"
+      @click="submitSignUp"
+    />
   </form>
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
 @import "@/shared/ui/assets/scss/_inputs.scss";
 
+.form {
+  p.error {
+    color: $primary;
+    font-weight: bold;
+    text-transform: lowercase;
+  }
+}
 .input-group {
   width: 95%;
   @include input-group();
@@ -38,7 +49,12 @@
 <script setup>
 import { ref } from 'vue'
 import { userStore } from '@/shared/infraestructure/store'
-import router from '../../../shared/config/router'
+import { useRouter } from 'vue-router'
+
+// Components
+import Button from '@/shared/ui/components/button.component.vue'
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
@@ -49,6 +65,7 @@ const passwordErrors = ref('')
 const confirmPasswordErrors = ref('')
 
 const store = userStore()
+const signingUp = ref(false)
 
 const errorCodes = {
   'auth/wrong-password': 'Wrong password',
@@ -93,8 +110,11 @@ const submitSignUp = (e) => {
     return
   }
 
+  signingUp.value = true
+
   store.signUp({ email: email.value, password: password.value })
     .then((user) => {
+      signingUp.value = false
       if (user.role === 'ROLE_USER_STUDENT') {
         router.push({ name: 'offers-view' })
       } else {
@@ -102,6 +122,7 @@ const submitSignUp = (e) => {
       }
     })
     .catch((error) => {
+      signingUp.value = false
       errorMessage.value = errorCodes[error.code]
     })
 }

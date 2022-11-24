@@ -18,7 +18,6 @@
 </template>
 
 <style lang="scss">
-@import '@/shared/ui/assets/scss/_buttons.scss';
 
 .offer {
   margin: 2rem 0;

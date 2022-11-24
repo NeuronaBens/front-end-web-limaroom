@@ -37,44 +37,61 @@
           <label>End Offer Date</label>
         </div>
       </fieldset>
-      <button type="submit" class="button-primary">Save</button>
-      <router-link :to="{ name: 'my-offer-detail-view', params: { id: route.params.id } }" class="button-black">Back</router-link>
+
+      <div class="form__actions">
+        <Button text="save" :loader="submiting" @click="onSubmit" />
+        <Button text="back" color="secondary" :to="{ name: 'my-offer-detail-view', params: { id: route.params.id } }" />
+      </div>
+
     </form>
 
   </div>
 </template>
 
 <style lang="scss">
-@import "@/shared/ui/assets/scss/_buttons.scss";
 @import "@/shared/ui/assets/scss/_inputs.scss";
 
 h1 {
   text-transform: uppercase;
 }
+
 fieldset {
   margin: 1rem 0;
   padding: 1.5rem 1rem;
   border-color: rgba($color: #000000, $alpha: 0.2);
   border-width: .1rem;
+
   legend {
     margin-bottom: 1rem;
     font-weight: $bold;
     text-transform: uppercase;
   }
 
-  .input-group{
+  .input-group {
     @include input-group;
   }
 }
 
+form {
+  margin-bottom: 2rem;
+  .form__actions {
+    display: flex;
+    gap: 2rem;
+  }
+}
 </style>
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+// Services
 import OffersService from '@/rental/services/offers-api.service'
+// Components
+import Button from '@/shared/ui/components/button.component.vue'
 
 const route = useRoute()
+const router = useRouter()
+const submiting = ref(false)
 
 const offer = ref({
   lifecycle: {
@@ -93,6 +110,7 @@ const property = ref({
   description: ''
 })
 const validateOffer = (data) => {
+  if (data) { return true }
   return true
 }
 
@@ -111,23 +129,37 @@ const onSubmit = (e) => {
     console.log(data)
   }
 
+  submiting.value = true
   // TODO: Edit Offer Service Implemenation
+  const offersService = new OffersService()
+  offersService.update(route.params.id, data)
+    .then((response) => {
+      console.log(response)
+      router.push({ name: 'my-offer-detail-view', params: { id: route.params.id } })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .finally(() => {
+      submiting.value = false
+    })
 }
 
 onMounted(() => {
   const offersService = new OffersService()
-  offersService.getOffer(route.params.id).then((response) => {
-    const data = response.data.resource
+  offersService.getById(route.params.id)
+    .then((response) => {
+      const data = response
 
-    offer.value = {
-      lifecycle: {
-        endAt: data.lifecycle.endAt.split('T')[0]
-      },
-      conditions: data.conditions
-    }
-    amount.value = data.amount
-    property.value = data.property
-  })
+      offer.value = {
+        lifecycle: {
+          endAt: data.lifecycle.endAt.split('T')[0]
+        },
+        conditions: data.conditions
+      }
+      amount.value = data.amount
+      property.value = data.property
+    })
 })
 
 </script>

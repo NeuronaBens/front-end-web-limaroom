@@ -27,7 +27,6 @@
 <script setup>
 /* eslint-disable */
 import FeatureComponent from '@/rental/ui/components/feature.component.vue'
-defineEmits(['someEvent'])
 
 defineProps({
   features: {

@@ -2,7 +2,8 @@
   <div class="offers container">
     <h1>Look for your place</h1>
     <div class="divider"></div>
-    <div class="offers__list">
+    <LoadingComponent v-if="loading"></LoadingComponent>
+    <div v-else class="offers__list">
       <OfferPreviewComponent v-for="offer in offers" :key="offer.id" :offer="offer" />
     </div>
   </div>
@@ -33,17 +34,21 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+// Services
 import OffersService from '@/rental/services/offers-api.service'
+// Components
 import OfferPreviewComponent from '@/rental/ui/components/offer-preview.component.vue'
-// import AssetsService from '../../services/assets-api.service'
+import LoadingComponent from '@/shared/ui/components/loaders/list-loading.component.vue'
 
 const offers = ref([])
+const loading = ref(true)
 
 onMounted(() => {
   const offersService = new OffersService()
 
   offersService.getVisibles().then((response) => {
     offers.value = response
+    loading.value = false
   })
 })
 </script>
