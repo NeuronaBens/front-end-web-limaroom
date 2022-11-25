@@ -97,8 +97,7 @@ const studentRoutes = [
 ]
 
 const lessorRoutes = [
-  { name: 'My Properties', to: 'my-offers-view', params: { id } },
-  { name: 'Requests', to: 'lessor-requests-view', params: { id } }
+  { name: 'My Properties', to: 'my-offers-view', params: { id } }
 ]
 
 const toggleNav = () => {

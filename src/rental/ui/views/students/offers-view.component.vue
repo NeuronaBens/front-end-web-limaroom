@@ -17,7 +17,7 @@
     padding: 2rem 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
-    gap: 2rem;
+    gap: 3rem;
   }
 
   h1 {

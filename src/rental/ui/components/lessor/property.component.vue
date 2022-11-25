@@ -5,17 +5,13 @@
     </div>
     <p class="property__location">{{ property.location }}</p>
   </div>
-
   <!-- TODO: Change to a component, create default layout and slider -->
   <div class="property__assets">
     <div class="property__asset" v-for="asset in property.assets" v-bind:key="asset.url">
       <img :src="asset.urlImage" alt="">
     </div>
   </div>
-  <Button
-    text="add image"
-    @click="handleUploadImage = !handleUploadImage"
-  />
+  <Button text="add image" @click="handleUploadImage = !handleUploadImage" />
   <div class="divider"></div>
 
   <div class="property__description">
@@ -25,13 +21,10 @@
 
   <div class="property__features">
     <h2>Features</h2>
-    <Button
-      v-if="!haveFeatures"
-      text="add features"
-      :to="{ name: 'assign-features-view', params: { id: route.params.id }, query: { propertyId: property.id} }"
-    />
+    <Button v-if="!haveFeatures" text="add features"
+      :to="{ name: 'assign-features-view', params: { id: route.params.id }, query: { propertyId: property.id } }" />
     <div v-else>
-      <FeatureListComponent :handleSelected="false" :features="formatFeatures"/>
+      <FeatureListComponent :handleSelected="false" :features="formatFeatures" />
     </div>
   </div>
 
@@ -40,16 +33,8 @@
       <h1>Upload your image</h1>
       <ImageInput ref="imageInputRef" :uploadService="assetsService.create" />
       <div class="modal__actions">
-        <Button
-          text="cancel"
-          color="secondary"
-          @click="handleUploadImage = !handleUploadImage"
-        />
-        <Button
-          text="upload"
-          :loader="uploadingImage"
-          @click="uploadImage"
-        />
+        <Button text="cancel" color="secondary" @click="handleUploadImage = !handleUploadImage" />
+        <Button text="upload" :loader="uploadingImage" @click="uploadImage" />
       </div>
     </div>
   </div>

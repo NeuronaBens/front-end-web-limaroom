@@ -20,6 +20,7 @@
 
 <style lang="scss">
 .properties {
+  margin-bottom: 2rem;
   .properties__title {
     margin: 2rem 0;
 
@@ -34,7 +35,7 @@
   }
 
   .property__list {
-
+    margin-bottom: 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
     gap: 2rem;

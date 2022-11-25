@@ -23,6 +23,7 @@
       </div>
     </div>
     <ProfileAttributes
+      v-if="isStudent"
       :roommateHaveAttributes="roommateHaveAttributes"
       :haveAttributes="haveAttributes"
       :attributes="attributes"
