@@ -4,16 +4,14 @@
       <img loading="lazy" :src="image" alt="offer image" />
     </div>
     <div class="offer__information">
-      <h3 class="offer__title">{{ offer.property.title }}</h3>
+      <p class="offer__title">{{ offer.property.title }}</p>
       <div class="offer__extra">
-        <p class="offer__location">Lima, Peru</p>
+        <p class="offer__location">{{ offer.property.location }}</p>
         <div class="offer__stars">
           <i class="pi pi-star-fill"></i>
           <p>5.00</p>
         </div>
       </div>
-
-      <p class="offer__condition">{{ offer.conditions }}</p>
       <p class="offer__price"><span>{{ offer.amount.price }}</span> {{ offer.amount.currency }}</p>
     </div>
   </div>
@@ -22,8 +20,6 @@
 <style lang="scss">
 .offer {
   width: 100%;
-  margin-bottom: 3rem;
-
   &.offer-preview {
     cursor: pointer;
 
@@ -33,18 +29,20 @@
   }
 
   .offer__information {
-    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .offer__image {
     width: 100%;
+    height: 25rem;
     overflow: hidden;
+    border-radius: 1rem;
 
     img {
-      border-radius: 1rem;
       width: 100%;
       height: 100%;
-      max-height: 35rem;
       object-fit: cover;
     }
   }
@@ -52,6 +50,11 @@
 }
 
 .offer__information {
+  .offer__title {
+    font-size: 1.9rem;
+    font-weight: 600;
+    margin-bottom: .5rem;
+  }
   .offer__extra{
     display: flex;
     justify-content: space-between;
