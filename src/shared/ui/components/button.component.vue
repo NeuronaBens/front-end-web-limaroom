@@ -1,5 +1,5 @@
 <template>
-  <a @click="onClick" class="button" :class="buttonTypeStyle">{{ text }}</a>
+  <a @click="onClick" class="button" :class="buttonTypeStyle" :href="href">{{ text }}</a>
 </template>
 
 <style lang="scss">
@@ -117,6 +117,9 @@ const props = defineProps({
   block: {
     type: Boolean,
     default: false
+  },
+  href: {
+    type: String
   }
 })
 

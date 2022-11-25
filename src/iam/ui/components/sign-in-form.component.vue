@@ -13,6 +13,7 @@
   </form>
   <Button text="login" :loader="signingIn" :block="true" @click="signIn" />
   <Button text="sign in with google" :loader="signingInWithGoogle" :block="true" @click="signInWithGoogle" />
+  <Button text="get the mobile app" href="https://portal.testapp.io/apps/install/45aNXpZ773BNG" :block="true" color="secondary"></Button>
 </template>
 
 <style lang="scss">
