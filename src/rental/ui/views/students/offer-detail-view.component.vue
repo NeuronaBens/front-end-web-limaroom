@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <OfferDetailLoading v-if="loading"></OfferDetailLoading>
-    <div v-else class="offer">
+    <div v-else class="offer__header">
       <PropertyComponent :property="property"/>
 
       <div class="offer__footer">
@@ -13,7 +13,7 @@
 </template>
 
 <style lang="scss">
-.offer {
+.offer__header {
   padding: 2rem 0;
 
   .offer__footer {

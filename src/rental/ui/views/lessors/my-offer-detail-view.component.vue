@@ -2,15 +2,15 @@
   <div class="container">
     <div class="offer">
       <i class="pi pi-arrow-left icon" @click="goBackToOffers"></i>
-      <PropertyComponent :property="property" :refreshAssetList="refreshAssetList"/>
+      <PropertyComponent :property="property" :refreshAssetList="refreshAssetList" />
       <div class="divider"></div>
-      <div class="d-grid">
-        <OfferComponent :offer="offer" :changeVisibility="changeVisibility"/>
-        <div class="requests">
-          <h2>Requests</h2>
-          <div class="offer-requests">
-            <RequestComponent v-for="request in requests" v-bind:key="request.id" :request="request" @refresh="refreshRequest"/>
-          </div>
+
+      <OfferComponent :offer="offer" :changeVisibility="changeVisibility" />
+      <div class="requests">
+        <h2>Requests</h2>
+        <div class="offer-requests">
+          <RequestComponent v-for="request in requests" v-bind:key="request.id" :request="request"
+            @refresh="refreshRequest" />
         </div>
       </div>
     </div>
@@ -18,7 +18,6 @@
 </template>
 
 <style lang="scss">
-
 .offer {
   margin: 2rem 0;
 
@@ -36,7 +35,7 @@
 .offer-requests {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
   gap: 2rem;
 }
 
