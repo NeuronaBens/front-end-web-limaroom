@@ -17,7 +17,7 @@
         <div class="section">
           <h2>Duties</h2>
           <div v-if="haveDuties" class="team__duties">
-            <DutyComponent v-for="duty in duties" v-bind:key="duty.id" :duty="duty" />
+            <DutyComponent v-for="duty in duties" v-bind:key="duty.id" :duty="duty" @finish="refreshDuty"/>
           </div>
           <div v-else>
             <p>There's no duties</p>
@@ -137,6 +137,15 @@ const updateRequest = (request) => {
   if (request.status === 'ACCEPTED') {
     getTeam()
   }
+}
+
+const refreshDuty = (duty) => {
+  duties.value = duties.value.map((d) => {
+    if (d.id === duty.id) {
+      return duty
+    }
+    return d
+  })
 }
 
 const getTeam = () => {

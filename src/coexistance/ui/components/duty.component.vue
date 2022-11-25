@@ -29,6 +29,7 @@
       <div class="modal__actions">
         <Button @click="handleDetail = !handleDetail" text="Close" color="secondary" />
         <Button v-if="!haveRoommateAssigned" @click="goToAssignRoommate" text="Assign Roommate"/>
+        <Button v-else-if="isMyDuty" @click="finishDuty" text="Finish" :loader="finishing"/>
       </div>
     </div>
   </div>
@@ -65,9 +66,14 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { userStore } from '@/shared/infraestructure/store'
+// Services
+import DutiesService from '@/coexistance/services/duties-api.service'
 // Components
 import Button from '@/shared/ui/components/button.component.vue'
 
+const emit = defineEmits(['finish'])
+const currentUser = userStore()
 const props = defineProps({
   duty: {
     type: Object,
@@ -78,9 +84,32 @@ const props = defineProps({
 const router = useRouter()
 const route = useRoute()
 const handleDetail = ref(false)
+const finishing = ref(false)
 
 const haveRoommateAssigned = computed(() => {
   return props.duty.roommateList.length > 0
+})
+
+const finishDuty = () => {
+  finishing.value = true
+  const dutiesService = new DutiesService()
+  dutiesService.finish(props.duty.id)
+    .then((response) => {
+      emit('finish', response)
+    })
+    .finally(() => {
+      finishing.value = false
+    })
+}
+
+const getRoommatesProfiles = () => {
+  return props.duty.roommateList.map((roommate) => {
+    return roommate.profile.id
+  })
+}
+
+const isMyDuty = computed(() => {
+  return getRoommatesProfiles().includes(currentUser.state.user.profileId)
 })
 
 const datelineFormat = computed(() => {

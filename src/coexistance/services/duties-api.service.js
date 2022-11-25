@@ -38,4 +38,13 @@ export default class DutiesService {
         return new Duty(data.resource)
       })
   }
+
+  finish (id) {
+    return http.put(`/duties/${id}/finish`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) throw new Error(data.message)
+        return new Duty(data.resource)
+      })
+  }
 }
