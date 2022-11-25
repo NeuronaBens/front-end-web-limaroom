@@ -10,6 +10,15 @@ export default class RequestsService {
       })
   }
 
+  getRequestByUserIdAndProfileId (userId, profileId) {
+    return http.get(`roommate/request/requestor/${userId}/requested/${profileId}`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) throw new Error(data.message)
+        return new Request(data.resource)
+      })
+  }
+
   getMyRequests (requestedId) {
     return http.get(`/users/${requestedId}/roommate/requested`)
       .then(response => {

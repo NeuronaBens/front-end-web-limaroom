@@ -108,6 +108,7 @@ const roommates = ref([])
 const duties = ref([])
 const teamRequests = ref([])
 const loading = ref(true)
+const haveTeam = ref(false)
 
 const goToProfile = (id) => {
   if (id === currentUser.state.user.profileId) {
@@ -123,10 +124,6 @@ const haveDuties = computed(() => {
 
 const haveRequests = computed(() => {
   return teamRequests.value.length > 0
-})
-
-const haveTeam = computed(() => {
-  return currentUser.state.user.teamStatus === 'ONTEAM'
 })
 
 const updateRequest = (request) => {
@@ -154,10 +151,6 @@ const getTeam = () => {
 
 onMounted(() => {
   const teamsService = new TeamsService()
-  if (!haveTeam.value) {
-    loading.value = false
-    return
-  }
 
   teamsService.getByUserId(route.params.id)
     .then((response) => {

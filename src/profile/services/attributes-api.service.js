@@ -30,11 +30,11 @@ export default class AttributesService {
   }
 
   assignListToProfile (profileId, attributeIds) {
-    return new Promise((resolve, reject) => {
-      const promises = attributeIds.map(attributeId => this.assignToProfile(profileId, attributeId))
-      Promise.all(promises)
-        .then((response) => resolve(response))
-        .catch(error => reject(error))
-    })
+    return http.put(`/profiles/${profileId}/attributes`, attributeIds)
+      .then(response => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return data.resource
+      })
   }
 }

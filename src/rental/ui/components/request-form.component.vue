@@ -5,15 +5,10 @@
       <label>Message</label>
     </div>
     <p v-for="error in errors" v-bind:key="error.message" class="error">
-    {{ error.message }}
+      {{ error.message }}
     </p>
   </form>
-  <Button
-    text="send request"
-    :loader="submiting"
-    :block="true"
-    @click="onSubmit"
-  />
+  <Button text="send request" :loader="submiting" :block="true" @click="onSubmit" />
 
   <Toast />
 </template>
@@ -24,6 +19,7 @@
 .input-group {
   width: 95%;
   @include input-group();
+
   .input {
     margin-bottom: 1rem;
   }
@@ -71,20 +67,27 @@ const onSubmit = () => {
 
   submiting.value = true
   const requestService = new RequestsService()
-  requestService.create(request.value)
-    .then((response) => {
-      form.value.reset()
+  requestService.getByOfferIdAndUserId(request.value.rentalOfferId, request.value.userId)
+    .then(() => {
       submiting.value = false
-      request.value.message = ''
-      toast.add({ severity: 'success', summary: 'Request sended correctly', life: 3000 })
-      setTimeout(() => {
-        router.push({ name: 'offers-view' })
-      }, 2000)
+      toast.add({ severity: 'error', summary: 'Error when sending request', detail: 'You already send request to this offer', life: 3000 })
     })
-    .catch((err) => {
-      submiting.value = false
-      console.log(err)
-      toast.add({ severity: 'error', summary: 'Error when sending request', detail: err.message, life: 3000 })
+    .catch(() => {
+      requestService.create(request.value)
+        .then((response) => {
+          form.value.reset()
+          submiting.value = false
+          request.value.message = ''
+          toast.add({ severity: 'success', summary: 'Request sended correctly', life: 3000 })
+          setTimeout(() => {
+            router.push({ name: 'offers-view' })
+          }, 2000)
+        })
+        .catch((err) => {
+          submiting.value = false
+          console.log(err)
+          toast.add({ severity: 'error', summary: 'Error when sending request', detail: err.message, life: 3000 })
+        })
     })
 }
 

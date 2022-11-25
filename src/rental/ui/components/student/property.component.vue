@@ -116,7 +116,7 @@ const formatFeatures = computed(() => {
   return props.property.propertyFeatureList.map(({ id, feature }) => {
     return {
       name: feature.name,
-      icon: Object.entries(FEATURES).filter(([key, value]) => value.name === feature.name)[0][1].icon
+      icon: Object.entries(FEATURES).filter(([key, value]) => value.name.toUpperCase() === feature.name.toUpperCase())[0][1].icon
     }
   })
 })

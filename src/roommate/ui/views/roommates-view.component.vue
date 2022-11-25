@@ -41,7 +41,7 @@
     margin-top: 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
-    gap: 2rem;
+    gap: 3rem;
   }
 }
 </style>

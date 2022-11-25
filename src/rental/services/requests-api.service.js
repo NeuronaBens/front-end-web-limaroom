@@ -11,6 +11,15 @@ export default class RequestsService {
       })
   }
 
+  getByOfferIdAndUserId (offerId, userId) {
+    return http.get(`/requests/student/${userId}/rentals/offers/${offerId}`)
+      .then((response) => {
+        const data = response.data
+        if (!data.success) { throw new Error(data.message) }
+        return new Request(data.resource)
+      })
+  }
+
   getAllByOfferId (id) {
     return http.get(`/rentaloffers/${id}/requests`)
       .then((response) => {

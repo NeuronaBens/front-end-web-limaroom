@@ -31,19 +31,26 @@ const sendRequest = () => {
   const requestedId = route.params.id
 
   sending.value = true
-  requestsService.create(requestorId, requestedId)
-    .then(() => {
-      toast.add({ severity: 'success', summary: 'Request sended correctly', life: 2000 })
-
-      setTimeout(() => {
-        router.push({ name: 'roommates-view' })
-      }, 2000)
-    })
-    .catch((error) => {
-      toast.add({ severity: 'error', summary: 'Error when sending request', detail: error.message, life: 3000 })
-    })
-    .finally(() => {
+  requestsService.getRequestByUserIdAndProfileId(requestorId, requestedId)
+    .then((response) => {
+      toast.add({ severity: 'error', summary: 'Error sending request', detail: 'You already send a request to this student', life: 3000 })
       sending.value = false
+    })
+    .catch(() => {
+      requestsService.create(requestorId, requestedId)
+        .then(() => {
+          toast.add({ severity: 'success', summary: 'Request sended correctly', life: 2000 })
+
+          setTimeout(() => {
+            router.push({ name: 'roommates-view' })
+          }, 2000)
+        })
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: 'Error when sending request', detail: error.message, life: 3000 })
+        })
+        .finally(() => {
+          sending.value = false
+        })
     })
 }
 
