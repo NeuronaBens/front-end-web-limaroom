@@ -36,6 +36,10 @@
 
     @include tablet {
       padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 
