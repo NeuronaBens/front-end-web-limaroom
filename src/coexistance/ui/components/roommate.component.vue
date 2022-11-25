@@ -1,7 +1,7 @@
 <template>
   <div class="roommate" @click="goToProfile">
     <div class="roommate__image">
-      <img :src="roommate.profile.photoUrl" alt="">
+      <img :src="roommate.profile.photoUrl ? roommate.profile.photoUrl : defaultProfileImage" alt="">
     </div>
     <div class="roommate__name">
       <p>{{ roommate.profile.name }}</p>
@@ -43,6 +43,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const defaultProfileImage = 'https://firebasestorage.googleapis.com/v0/b/meet-your-roommate-c7ed7.appspot.com/o/common%2Fuser.png?alt=media&token=f39a2c1d-8321-4b2d-87fc-d3b64c4b2618'
 
 const goToProfile = () => {
   const profileId = props.roommate.profile.id
