@@ -76,6 +76,7 @@ const currentUser = userStore()
 const router = useRouter()
 const saving = ref(false)
 const error = ref('')
+
 const toggleItem = (id) => {
   const attr = document.querySelector(`[data-id="${id}"]`)
   attr.classList.toggle('active')
@@ -107,14 +108,17 @@ onMounted(() => {
   const profileId = currentUser.state.user.profileId
   const attributesService = new AttributesService()
 
-  attributesService.getAllByProfileId(profileId).then((response) => {
-    if (response.length > 0) {
-      router.push({ name: 'show-profile-view' })
-    }
-  })
-
   attributesService.getAll().then((response) => {
     attributes.value = response
+  })
+
+  attributesService.getAllByProfileId(profileId).then((response) => {
+    console.log(response)
+    response.forEach(attr => {
+      selectedAttributes.value.push(attr.id)
+      const attrHtml = document.querySelector(`[data-id="${attr.id}"]`)
+      attrHtml.classList.toggle('active')
+    })
   })
 })
 </script>

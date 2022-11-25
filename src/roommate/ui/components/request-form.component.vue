@@ -1,18 +1,9 @@
 <template>
-  <div class="request__form">
-    <h3>Want him/her to be your roommate?</h3>
-    <p>Send him/her a request!</p>
-    <Button
-      text="send request"
-      :loader="sending"
-      @click="sendRequest"
-    />
-    <Toast />
-  </div>
+  <Button text="send roommate request" :loader="sending" @click="sendRequest" />
+  <Toast />
 </template>
 
 <style lang="scss">
-
 .request__form {
   text-align: center;
 }
