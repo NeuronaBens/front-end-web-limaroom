@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="edit__form">
     <div class="profile__preview">
       <div class="profile__image">
         <img :src="profile.photoUrl ? profile.photoUrl : defaultProfileImage" alt="">
@@ -50,7 +50,20 @@
 <style lang="scss">
 @import "@/shared/ui/assets/scss/_inputs.scss";
 
-.form {
+.profile__preview {
+  .profile__image {
+    width: 100%;
+    overflow: hidden;
+
+    img {
+      border-radius: 1rem;
+      max-height: 35rem;
+      object-fit: cover;
+    }
+  }
+}
+
+.edit__form {
   display: grid;
   height: 100%;
   grid-template-columns: repeat(2, 1fr);

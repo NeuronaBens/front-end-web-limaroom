@@ -17,17 +17,19 @@
         <div class="section">
           <h2>Duties</h2>
           <div v-if="haveDuties" class="team__duties">
-            <DutyComponent v-for="duty in duties" v-bind:key="duty.id" :duty="duty" @finish="refreshDuty"/>
+            <DutyComponent v-for="duty in duties" v-bind:key="duty.id" :duty="duty" @finish="refreshDuty" />
           </div>
           <div v-else>
             <p>There's no duties</p>
             <p>Create a duty to organice your team</p>
           </div>
-          <Button
-            text="Create duty"
-            :to="{ name: 'create-duty-view', params: { id: route.params.id, teamId: team.id } }"
-            :inline="true"
-          />
+
+          <div class="team__buttons">
+            <Button text="delete team" color="secondary" @click="deleteTeam" />
+            <Button text="Create duty"
+              :to="{ name: 'create-duty-view', params: { id: route.params.id, teamId: team.id } }" :inline="true" />
+          </div>
+
         </div>
 
         <div class="divider"></div>
@@ -54,7 +56,9 @@
   .section {
     margin: 2rem 0;
   }
+
   .team__members {
+    margin: 2rem 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     align-items: center;
@@ -62,6 +66,7 @@
   }
 
   .team__duties {
+    margin: 2rem 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
     gap: 2rem;
@@ -74,6 +79,10 @@
     gap: 2rem;
   }
 
+  .team__buttons {
+    display: flex;
+    gap: 1rem;
+  }
   .divider {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
@@ -155,6 +164,17 @@ const getTeam = () => {
       team.value = response
       roommates.value = response.roommates.map((roommate) => new Roommate(roommate))
       duties.value = response.duties.map((duty) => new Duty(duty))
+    })
+}
+
+const deleteTeam = () => {
+  const teamsService = new TeamsService()
+  teamsService.delete(team.value.id)
+    .then(() => {
+      const user = localStorage.getItem('user')
+      user.teamStatus = 'WITHOUTTEAM'
+      localStorage.setItem('user', JSON.stringify(user))
+      router.push({ name: 'show-profile-view' })
     })
 }
 

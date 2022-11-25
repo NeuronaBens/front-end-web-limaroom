@@ -38,4 +38,13 @@ export default class TeamsService {
         return data.resource.map(roommate => new Roommate(roommate))
       })
   }
+
+  delete (teamId) {
+    return http.delete(`/teams/${teamId}`)
+      .then(response => {
+        const data = response.data
+        if (!data.success) throw new Error(data.message)
+        return data.resource
+      })
+  }
 }
